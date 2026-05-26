@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>家族年表</title>
-<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@300;400;600&family=Noto+Sans+JP:wght@400;500;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@300;400;600&family=Cinzel:wght@400;700&family=DM+Serif+Display&family=Libre+Baskerville:wght@400;700&family=Noto+Serif+JP:wght@400;700&family=Playfair+Display:wght@400;700;900&family=Noto+Sans+JP:wght@400;500;700&display=swap" rel="stylesheet">
 <style>
 :root{--bg:#0d0d0d;--surface:#1a1a1a;--surface2:#222;--border:#333;--text:#f0ece4;--muted:#999;--accent:#c9a96e;}
 *{margin:0;padding:0;box-sizing:border-box;}
@@ -120,14 +120,18 @@ nav{display:flex;align-items:center;justify-content:space-between;padding:1rem 1
 
 /* PROFILE */
 .prof-wrap{padding:1.5rem 1.8rem;}
-.prof-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:1.2rem;}
+.prof-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:1rem;}
 .prof-card{background:var(--surface);border:1px solid var(--border);border-top:4px solid;padding:1.5rem;}
+.prof-card-inner{display:grid;grid-template-columns:1fr 110px;gap:1rem;align-items:center;overflow:hidden;}.prof-left{min-width:0;overflow:hidden;}
+.prof-icon-wrap{display:flex;justify-content:center;align-items:center;flex-shrink:0;}
+.prof-icon{width:100px;height:100px;border-radius:50%;object-fit:cover;border:3px solid;display:block;}
+.prof-icon-placeholder{width:100px;height:100px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:2.5rem;font-weight:700;color:#fff;border:3px solid;flex-shrink:0;}
 .prof-name{font-size:1.2rem;font-weight:700;margin-bottom:0.3rem;letter-spacing:0.05em;}
-.prof-age{font-size:0.82rem;font-weight:500;color:var(--muted);margin-bottom:1.2rem;}
+.prof-age{font-size:0.82rem;font-weight:500;color:var(--muted);margin-bottom:1rem;line-height:1.6;}
 .prof-fields{display:flex;flex-direction:column;gap:0.5rem;}
 .prof-field{display:flex;gap:0.8rem;align-items:flex-start;}
-.prof-field-label{font-size:0.68rem;font-weight:700;letter-spacing:0.15em;color:var(--muted);width:72px;flex-shrink:0;padding-top:0.1rem;}
-.prof-field-val{font-size:0.85rem;font-weight:500;flex:1;line-height:1.6;}
+.prof-field-label{font-size:0.68rem;font-weight:700;letter-spacing:0.1em;color:var(--muted);width:68px;flex-shrink:0;padding-top:0.1rem;line-height:1.4;word-break:keep-all;}
+.prof-field-val{font-size:0.85rem;font-weight:500;flex:1;line-height:1.6;word-break:break-word;}
 .prof-divider{height:1px;background:var(--border);margin:1rem 0;}
 .prof-stats-row{display:flex;gap:1.2rem;}
 .prof-stat{text-align:center;flex:1;}
@@ -246,6 +250,7 @@ input[type=color].cpick{width:28px;height:28px;border:none;background:none;curso
   <button class="btn-primary" onclick="openAddModal()">＋ 記録を追加</button>
 </nav>
 <div id="page-timeline" class="page active">
+  <div class="page-title" id="timeline-page-title" style="padding:1rem 1.8rem 0;font-family:'Playfair Display',serif;font-size:1.6rem;font-weight:700;color:var(--accent);letter-spacing:0.05em;"></div>
   <div class="stats-bar" id="stats-bar"></div>
   <div class="filters" id="filters-area"></div>
   <div class="tl-wrap"><div id="timeline"></div></div>
@@ -312,6 +317,10 @@ input[type=color].cpick{width:28px;height:28px;border:none;background:none;curso
       <div class="set-irow"><label>プロフィール</label><input type="text" id="tab-profile" placeholder="プロフィール"></div>
       <div class="set-irow"><label>年齢一覧</label><input type="text" id="tab-age" placeholder="年齢一覧"></div>
       <div class="set-irow"><label>俯瞰</label><input type="text" id="tab-overview" placeholder="俯瞰"></div>
+    </div>
+    <div class="set-sec">
+      <div class="set-ttl">ロゴフォント</div>
+      <div style="display:flex;gap:0.6rem;flex-wrap:wrap;" id="font-picker"></div>
     </div>
     <div class="set-sec">
       <div class="set-ttl">メンバー管理</div>
@@ -382,17 +391,25 @@ input[type=color].cpick{width:28px;height:28px;border:none;background:none;curso
 
 <script>
 const SK="family_v5";
-const ACC_THEMES=["#c9a96e","#e8a598","#7eb3c8","#98c9a3","#c9b8e8","#e8c87a","#7ab5a0","#d4a8c4","#a8c4d8","#b8998a"];
-const BG_PRESETS=["#0d0d0d","#0f1117","#1a1008","#08110d","#0e0c1a","#fafaf8","#f5f0e8","#1c1c1e"];
+const LOGO_FONTS=[
+  {name:"Playfair Display",label:"Playfair（おすすめ）"},
+  {name:"Cormorant Garamond",label:"Cormorant（細め）"},
+  {name:"Cinzel",label:"Cinzel（クラシック）"},
+  {name:"DM Serif Display",label:"DM Serif"},
+  {name:"Libre Baskerville",label:"Baskerville"},
+  {name:"Noto Serif JP",label:"明朝体（日本語）"},
+];
+const ACC_THEMES=["#e87c7c","#e8956e","#e8b86e","#e8d96e","#a8d46e","#6ec87e","#6ec8b8","#6ea8d4","#7e8ee8","#9e7ec8","#d47ec8","#e87ca8"];
+const BG_PRESETS=["#0d0d0d","#1c1c1e","#2c2c2e","#ffffff","#f5f5f5","#e8e8e8","#f5f0e8","#ede8e0"];
 const PREFS=["A","B","O","AB"];
 const PREFS_ALL=["A","B","O","AB","A+","A-","B+","B-","O+","O-","AB+","AB-"];
 const JAPAN_PREFS=["北海道","青森","岩手","宮城","秋田","山形","福島","茨城","栃木","群馬","埼玉","千葉","東京","神奈川","新潟","富山","石川","福井","山梨","長野","岐阜","静岡","愛知","三重","滋賀","京都","大阪","兵庫","奈良","和歌山","鳥取","島根","岡山","広島","山口","徳島","香川","愛媛","高知","福岡","佐賀","長崎","熊本","大分","宮崎","鹿児島","沖縄"];
 const DEF_TABS={timeline:"年表",timetable:"テーブル",person:"人物史",profile:"プロフィール",age:"年齢一覧",overview:"俯瞰"};
 const DEF_MEM=[
-  {id:"m1",name:"ママ",color:"#e8a598",birth:"1985-03-15",birthTime:"",birthPref:"東京",blood:"A",memo:""},
-  {id:"m2",name:"パパ",color:"#7eb3c8",birth:"1983-07-20",birthTime:"",birthPref:"大阪",blood:"O",memo:""},
-  {id:"m3",name:"子ども①",color:"#98c9a3",birth:"2015-04-01",birthTime:"",birthPref:"東京",blood:"A",memo:""},
-  {id:"m4",name:"子ども②",color:"#c9b8e8",birth:"2018-09-10",birthTime:"",birthPref:"東京",blood:"B",memo:""},
+  {id:"m1",name:"ママ",color:"#e8a598",birth:"1985-03-15",birthTime:"",birthPref:"東京",blood:"A",memo:"",icon:""},
+  {id:"m2",name:"パパ",color:"#7eb3c8",birth:"1983-07-20",birthTime:"",birthPref:"大阪",blood:"O",memo:"",icon:""},
+  {id:"m3",name:"子ども①",color:"#98c9a3",birth:"2015-04-01",birthTime:"",birthPref:"東京",blood:"A",memo:"",icon:""},
+  {id:"m4",name:"子ども②",color:"#c9b8e8",birth:"2018-09-10",birthTime:"",birthPref:"東京",blood:"B",memo:"",icon:""},
 ];
 const DEF_CAT=[
   {id:"c1",name:"学校",color:"#7eb3c8"},
@@ -408,7 +425,7 @@ const SAMPLE=[
   {id:"s4",title:"そろばん 3級 合格",date:"2025-09-10",cat:"c3",members:["m3"],importance:"★★",memo:"半年間の努力が実った！"},
 ];
 
-let S={title:"Family Chronicle",subtitle:"家族年表",tabs:{...DEF_TABS},tabOrder:["timeline","timetable","person","profile","age","overview","settings"],events:[],members:[...DEF_MEM.map(m=>({...m}))],cats:[...DEF_CAT.map(c=>({...c}))],accent:"#c9a96e",bg:"#0d0d0d"};
+let S={title:"Family Chronicle",subtitle:"家族年表",logoFont:"Playfair Display",tabs:{...DEF_TABS},tabOrder:["timeline","timetable","person","profile","age","overview","settings"],events:[],members:[...DEF_MEM.map(m=>({...m}))],cats:[...DEF_CAT.map(c=>({...c}))],accent:"#c9a96e",bg:"#0d0d0d"};
 let fMem="all",fCat="all",ttY=new Date().getFullYear(),ttMode="month";
 let pendingCb=null; // generic confirm callback
 let editEvId=null;
@@ -435,7 +452,7 @@ function applyTheme(){
   document.documentElement.style.setProperty("--border",d?adj(S.bg,23):adj(S.bg,-18));
   document.documentElement.style.setProperty("--text",d?"#f0ece4":"#1a1a1a");
   document.documentElement.style.setProperty("--muted",d?"#999":"#666");
-  const lt=document.getElementById("logo-text");if(lt)lt.innerHTML=S.title+"<small>"+S.subtitle+"</small>";
+  const lt=document.getElementById("logo-text");if(lt){lt.innerHTML=S.title+"<small>"+S.subtitle+"</small>";lt.style.fontFamily="'"+( S.logoFont||"Playfair Display")+"',serif";}
   const ia=document.getElementById("inp-accent");if(ia)ia.value=S.accent;
   const ib=document.getElementById("inp-bg");if(ib)ib.value=S.bg;
 }
@@ -485,6 +502,7 @@ function showPage(n,btn){
   document.querySelectorAll(".nav-tab").forEach(b=>b.classList.remove("active"));
   document.getElementById("page-"+n).classList.add("active");
   btn.classList.add("active");
+  updatePageTitles();
   if(n==="overview")renderOv();
   if(n==="settings")renderSet();
   if(n==="timetable")renderTT();
@@ -612,22 +630,34 @@ function renderProfile(){
     const now=new Date().getFullYear();
     const age=mem.birth?now-parseInt(mem.birth.slice(0,4)):null;
     const evs=S.events.filter(e=>e.members.includes(mem.id));
-    const imp3=0;
     const lat=[...evs].sort((a,b)=>b.date.localeCompare(a.date))[0];
+    const iconHtml=mem.icon
+      ?`<img class="prof-icon" src="${mem.icon}" style="border-color:${mem.color}">`
+      :`<div class="prof-icon-placeholder" style="background:${mem.color};border-color:${mem.color}">${mem.name.slice(0,1)}</div>`;
     return`<div class="prof-card" style="border-top-color:${mem.color}">
-      <div class="prof-name" style="color:${mem.color}">${mem.name}</div>
-      <div class="prof-age">${age!==null?age+"歳 ("+mem.birth+")":"生年月日未設定"}</div>
-      <div class="prof-fields">
-        ${mem.birthPref?`<div class="prof-field"><div class="prof-field-label">出身地</div><div class="prof-field-val">${mem.birthPref}</div></div>`:""}
-        ${mem.birthTime?`<div class="prof-field"><div class="prof-field-label">生まれた時間</div><div class="prof-field-val">${mem.birthTime}</div></div>`:""}
-        ${mem.blood?`<div class="prof-field"><div class="prof-field-label">血液型</div><div class="prof-field-val">${mem.blood}型</div></div>`:""}
-        ${mem.memo?`<div class="prof-field"><div class="prof-field-label">メモ</div><div class="prof-field-val">${mem.memo}</div></div>`:""}
-      </div>
-      <div class="prof-divider"></div>
-      <div class="prof-stats-row">
-        <div class="prof-stat"><div class="prof-stat-num">${evs.length}</div><div class="prof-stat-lbl">総記録</div></div>
-        
-        ${lat?`<div class="prof-stat"><div class="prof-stat-num" style="font-size:0.85rem">${lat.date.slice(0,4)}</div><div class="prof-stat-lbl">最新記録</div></div>`:""}
+      <div class="prof-card-inner">
+        <div class="prof-left">
+          <div class="prof-name" style="color:${mem.color}">${mem.name}</div>
+          <div class="prof-age">${(()=>{
+            if(!mem.birth)return"生年月日未設定";
+            const[y,m,d]=mem.birth.split("-");
+            const wareki=toWareki(parseInt(y));
+            return`${parseInt(y)}年${parseInt(m)}月${parseInt(d)}日<span style="font-size:0.78rem;color:var(--muted);margin-left:0.4em">（${wareki}年）</span><span style="font-size:0.82rem;color:var(--accent);font-weight:700;margin-left:0.5em">${age}歳</span>`;
+          })()}</div>
+          <div class="prof-fields">
+            ${mem.birthPref?`<div class="prof-field"><div class="prof-field-label">出身地</div><div class="prof-field-val">${mem.birthPref}</div></div>`:""}
+            ${mem.birthTime?`<div class="prof-field"><div class="prof-field-label" style="white-space:pre-line">生まれた
+時間</div><div class="prof-field-val">${mem.birthTime}</div></div>`:""}
+            ${mem.blood?`<div class="prof-field"><div class="prof-field-label">血液型</div><div class="prof-field-val">${mem.blood}型</div></div>`:""}
+            ${mem.memo?`<div class="prof-field"><div class="prof-field-label">メモ</div><div class="prof-field-val">${mem.memo}</div></div>`:""}
+          </div>
+          <div class="prof-divider"></div>
+          <div class="prof-stats-row">
+            <div class="prof-stat"><div class="prof-stat-num">${evs.length}</div><div class="prof-stat-lbl">総記録</div></div>
+            ${lat?`<div class="prof-stat"><div class="prof-stat-num" style="font-size:0.85rem">${lat.date.slice(0,4)}</div><div class="prof-stat-lbl">最新記録</div></div>`:""}
+          </div>
+        </div>
+        <div class="prof-icon-wrap">${iconHtml}</div>
       </div>
     </div>`;
   }).join("");
@@ -726,6 +756,18 @@ function renderSet(){
           </select>
         </div>
         <div class="mem-extra-field" style="grid-column:1/-1"><span class="mef-label">メモ</span><input type="text" class="si" style="width:100%" data-mid="${m.id}" value="${m.memo||""}" placeholder="ひとことメモ" oninput="updField('${m.id}','memo',this.value)"></div>
+        <div class="mem-extra-field" style="grid-column:1/-1">
+          <span class="mef-label">プロフィール画像</span>
+          <div style="display:flex;align-items:center;gap:0.8rem;margin-top:0.3rem;">
+            ${m.icon?`<img src="${m.icon}" style="width:40px;height:40px;border-radius:50%;object-fit:cover;border:2px solid ${m.color}">`:
+              `<div style="width:40px;height:40px;border-radius:50%;background:${m.color};display:flex;align-items:center;justify-content:center;color:#fff;font-weight:700;font-size:1rem">${m.name.slice(0,1)}</div>`}
+            <label style="background:var(--accent);color:var(--bg);padding:0.35rem 0.8rem;border-radius:2px;font-size:0.75rem;font-weight:700;cursor:pointer;white-space:nowrap;">
+              画像を選ぶ
+              <input type="file" accept="image/*" style="display:none" data-mid="${m.id}" class="mem-icon-upload">
+            </label>
+            ${m.icon?`<button class="btn-rm" style="font-size:0.72rem;padding:0.25rem 0.5rem;" data-mid="${m.id}" class="mem-icon-clear">削除</button>`:""}
+          </div>
+        </div>
       </div>
     </div>`).join("");
 
@@ -736,6 +778,19 @@ function renderSet(){
   ml.querySelectorAll(".mem-btime").forEach(el=>el.addEventListener("change",()=>{const m=S.members.find(m=>m.id===el.dataset.mid);if(m)m.birthTime=el.value;}));
   ml.querySelectorAll(".mem-bpref").forEach(el=>el.addEventListener("change",()=>{const m=S.members.find(m=>m.id===el.dataset.mid);if(m)m.birthPref=el.value;}));
   ml.querySelectorAll(".mem-blood").forEach(el=>el.addEventListener("change",()=>{const m=S.members.find(m=>m.id===el.dataset.mid);if(m)m.blood=el.value;}));
+  ml.querySelectorAll(".mem-icon-upload").forEach(el=>el.addEventListener("change",e=>{
+    const file=e.target.files[0];if(!file)return;
+    const reader=new FileReader();
+    reader.onload=ev=>{
+      const m=S.members.find(m=>m.id===el.dataset.mid);
+      if(m){m.icon=ev.target.result;saveS();renderSet();}
+    };
+    reader.readAsDataURL(file);
+  }));
+  ml.querySelectorAll(".mem-icon-clear").forEach(el=>el.addEventListener("click",()=>{
+    const m=S.members.find(m=>m.id===el.dataset.mid);
+    if(m){m.icon="";saveS();renderSet();}
+  }));
   ml.querySelectorAll(".mem-del").forEach(el=>el.addEventListener("click",()=>{
     if(S.members.length<=1){alert("メンバーは最低1人必要です");return;}
     const name=S.members.find(m=>m.id===el.dataset.mid)?.name||"このメンバー";
@@ -773,21 +828,42 @@ function renderSet(){
   }));
 
   // THEME SWATCHES
+  // Font picker
+  const fp=document.getElementById("font-picker");
+  if(fp){
+    fp.innerHTML=LOGO_FONTS.map(f=>
+      `<button class="fbtn${(S.logoFont||"Playfair Display")===f.name?" active":""}" 
+        style="${(S.logoFont||"Playfair Display")===f.name?"border-color:var(--accent);color:var(--accent)":""};font-family:'${f.name}',serif;font-size:0.85rem;"
+        data-font="${f.name}">${f.label}</button>`
+    ).join("");
+    fp.querySelectorAll("[data-font]").forEach(b=>b.addEventListener("click",()=>{
+      S.logoFont=b.dataset.font;
+      const lt=document.getElementById("logo-text");
+      if(lt)lt.style.fontFamily="'"+S.logoFont+"',serif";
+      fp.querySelectorAll("[data-font]").forEach(s=>{s.classList.toggle("active",s.dataset.font===S.logoFont);s.style.borderColor=s.dataset.font===S.logoFont?"var(--accent)":"";s.style.color=s.dataset.font===S.logoFont?"var(--accent)":"";});
+    }));
+  }
   document.getElementById("acc-swatches").innerHTML=ACC_THEMES.map(c=>`<div class="sw${S.accent===c?" active":""}" data-acc="${c}" style="background:${c}"></div>`).join("");
   document.getElementById("bg-swatches").innerHTML=BG_PRESETS.map(c=>`<div class="sw${S.bg===c?" active":""}" data-bg="${c}" style="background:${c}"></div>`).join("");
   document.querySelectorAll("[data-acc]").forEach(el=>el.addEventListener("click",()=>{S.accent=el.dataset.acc;applyAccent(S.accent);document.getElementById("inp-accent").value=S.accent;document.querySelectorAll("[data-acc]").forEach(s=>s.classList.toggle("active",s.dataset.acc===S.accent));}));
   document.querySelectorAll("[data-bg]").forEach(el=>el.addEventListener("click",()=>{S.bg=el.dataset.bg;applyBg(S.bg);document.querySelectorAll("[data-bg]").forEach(s=>s.classList.toggle("active",s.dataset.bg===S.bg));}));
 }
 function updField(id,field,val){const m=S.members.find(m=>m.id===id);if(m)m[field]=val;}
-function addMember(){S.members.push({id:"m"+Date.now(),name:"新メンバー",color:"#c9a96e",birth:"",birthTime:"",birthPref:"",blood:"",memo:""});renderSet();}
+function addMember(){S.members.push({id:"m"+Date.now(),name:"新メンバー",color:"#c9a96e",birth:"",birthTime:"",birthPref:"",blood:"",memo:"",icon:""});renderSet();}
 function addCat(){S.cats.push({id:"c"+Date.now(),name:"新カテゴリ",color:"#c9a96e"});renderSet();}
 
 
 function updatePageTitles(){
-  const map={timeline:"stats-bar",timetable:"tt-page-title",person:"ph-page-title",profile:"prof-page-title",age:"age-page-title",overview:"ov-page-title"};
+  const idMap={timeline:"timeline-page-title",timetable:"tt-page-title",person:"ph-page-title",profile:"prof-page-title",age:"age-page-title",overview:"ov-page-title"};
   Object.entries(S.tabs).forEach(([k,v])=>{
-    const el=document.getElementById(k+"-page-title");
+    const elId=idMap[k]||(k+"-page-title");
+    const el=document.getElementById(elId);
     if(el)el.textContent=v;
+  });
+  // Also update nav tab button labels
+  Object.entries(S.tabs).forEach(([k,v])=>{
+    const btn=document.getElementById("tab-btn-"+k);
+    if(btn)btn.textContent=v;
   });
 }
 function saveSettings(){
@@ -818,7 +894,7 @@ function importData(evt){
       const data=JSON.parse(e.target.result);
       askConfirm("インポートしますか？","現在のデータが上書きされます。",()=>{
         S={...S,...data,tabs:{...DEF_TABS,...(data.tabs||{})}};
-        saveS();applyTheme();renderNavTabs();renderFilters();renderTL();
+        saveS();applyTheme();renderNavTabs();renderFilters();renderTL();updatePageTitles();
         alert("インポート完了！");
       });
     }catch(err){alert("ファイルの読み込みに失敗しました。");}
@@ -871,7 +947,7 @@ document.getElementById("btn-add-member").addEventListener("click",addMember);
 document.getElementById("btn-add-cat").addEventListener("click",addCat);
 loadS();
 document.getElementById("logo-text").innerHTML=S.title+"<small>"+S.subtitle+"</small>";
-renderNavTabs();renderFilters();renderTL();
+renderNavTabs();renderFilters();renderTL();updatePageTitles();
 const now2=new Date().getFullYear();
 document.getElementById("age-from").value=now2-5;
 document.getElementById("age-to").value=now2+10;
