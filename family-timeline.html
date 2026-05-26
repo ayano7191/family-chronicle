@@ -14,7 +14,7 @@ nav{display:flex;align-items:center;justify-content:space-between;padding:1rem 1
 .logo-wrap{display:flex;align-items:center;gap:0.5rem;}
 .logo{font-family:"Cormorant Garamond",serif;font-size:1.6rem;font-weight:400;letter-spacing:0.1em;color:var(--accent);cursor:pointer;}
 .logo small{display:block;font-family:"Noto Sans JP",sans-serif;font-size:0.65rem;letter-spacing:0.3em;color:var(--muted);margin-top:0.1rem;font-weight:400;}
-.logo-input{background:transparent;border:none;border-bottom:1px solid var(--accent);color:var(--accent);font-family:"Cormorant Garamond",serif;font-size:1.6rem;font-weight:400;letter-spacing:0.1em;outline:none;width:200px;}
+
 .edit-btn{background:none;border:none;color:var(--muted);cursor:pointer;font-size:0.85rem;padding:0.2rem 0.3rem;transition:color 0.2s;}
 .edit-btn:hover{color:var(--accent);}
 .nav-tabs{display:flex;gap:0.2rem;flex-wrap:wrap;}
@@ -166,6 +166,13 @@ nav{display:flex;align-items:center;justify-content:space-between;padding:1rem 1
 .set-sec{background:var(--surface);border:1px solid var(--border);padding:1.3rem 1.5rem;margin-bottom:1rem;}
 .set-ttl{font-size:0.68rem;font-weight:700;letter-spacing:0.25em;color:var(--muted);margin-bottom:1rem;padding-bottom:0.5rem;border-bottom:1px solid var(--border);}
 .set-irow{display:flex;align-items:center;gap:0.8rem;padding:0.5rem 0;border-bottom:1px solid var(--border);}
+.tab-order-item{display:flex;align-items:center;gap:0.7rem;padding:0.6rem 0.8rem;background:var(--surface2);border:1px solid var(--border);border-radius:2px;margin-bottom:0.4rem;}
+.tab-order-label{font-size:0.8rem;font-weight:700;color:var(--muted);width:60px;flex-shrink:0;}
+.tab-order-input{flex:1;background:var(--bg);border:1px solid var(--border);color:var(--text);font-family:"Noto Sans JP",sans-serif;font-size:0.82rem;font-weight:500;outline:none;padding:0.3rem 0.5rem;border-radius:2px;transition:border-color 0.2s;}
+.tab-order-input:focus{border-color:var(--accent);}
+.tab-order-btns{display:flex;flex-direction:column;gap:2px;flex-shrink:0;}
+.tab-order-btn{background:none;border:1px solid var(--border);color:var(--muted);width:26px;height:22px;cursor:pointer;font-size:0.7rem;display:flex;align-items:center;justify-content:center;border-radius:2px;transition:all 0.2s;line-height:1;}
+.tab-order-btn:hover{border-color:var(--accent);color:var(--accent);}
 .set-irow:last-of-type{border-bottom:none;}
 .set-irow label{font-size:0.8rem;font-weight:500;color:var(--muted);flex:1;}
 .set-irow input[type=text]{background:var(--bg);border:1px solid var(--border);color:var(--text);padding:0.38rem 0.65rem;font-family:"Noto Sans JP",sans-serif;font-size:0.83rem;font-weight:500;outline:none;border-radius:2px;transition:border-color 0.2s;width:200px;}
@@ -242,9 +249,7 @@ input[type=color].cpick{width:28px;height:28px;border:none;background:none;curso
 <body>
 <nav>
   <div class="logo-wrap">
-    <div id="logo-display"><div class="logo" id="logo-text" onclick="startEditTitle()"></div></div>
-    <div id="logo-edit" style="display:none"><input class="logo-input" id="logo-input" onblur="finishEditTitle()" onkeydown="if(event.key==='Enter')finishEditTitle()"></div>
-    <button class="edit-btn" onclick="startEditTitle()">✏️</button>
+    <div id="logo-display"><div class="logo" id="logo-text"></div></div>
   </div>
   <div class="nav-tabs" id="nav-tabs"></div>
   <button class="btn-primary" onclick="openAddModal()">＋ 記録を追加</button>
@@ -310,13 +315,9 @@ input[type=color].cpick{width:28px;height:28px;border:none;background:none;curso
       <div class="set-irow"><label>サブタイトル</label><input type="text" id="inp-sub" placeholder="家族年表"></div>
     </div>
     <div class="set-sec">
-      <div class="set-ttl">ナビタブ名のカスタマイズ</div>
-      <div class="set-irow"><label>年表</label><input type="text" id="tab-timeline" placeholder="年表"></div>
-      <div class="set-irow"><label>テーブル</label><input type="text" id="tab-timetable" placeholder="テーブル"></div>
-      <div class="set-irow"><label>人物史</label><input type="text" id="tab-person" placeholder="人物史"></div>
-      <div class="set-irow"><label>プロフィール</label><input type="text" id="tab-profile" placeholder="プロフィール"></div>
-      <div class="set-irow"><label>年齢一覧</label><input type="text" id="tab-age" placeholder="年齢一覧"></div>
-      <div class="set-irow"><label>俯瞰</label><input type="text" id="tab-overview" placeholder="俯瞰"></div>
+      <div class="set-ttl">ナビタブ名・順番のカスタマイズ</div>
+      <div style="font-size:0.78rem;color:var(--muted);margin-bottom:1rem;">↑↓ボタンで順番を変更できます</div>
+      <div id="tab-order-list"></div>
     </div>
     <div class="set-sec">
       <div class="set-ttl">ロゴフォント</div>
@@ -460,8 +461,8 @@ function applyAccent(v){S.accent=v;document.documentElement.style.setProperty("-
 function applyBg(v){S.bg=v;applyTheme();}
 
 /* ---- TITLE ---- */
-function startEditTitle(){document.getElementById("logo-display").style.display="none";document.getElementById("logo-edit").style.display="block";const i=document.getElementById("logo-input");i.value=S.title;i.focus();i.select();}
-function finishEditTitle(){const v=document.getElementById("logo-input").value.trim();if(v)S.title=v;document.getElementById("logo-display").style.display="block";document.getElementById("logo-edit").style.display="none";document.getElementById("logo-text").innerHTML=S.title+"<small>"+S.subtitle+"</small>";}
+
+
 
 /* ---- HELPERS ---- */
 function gMem(id){return S.members.find(m=>m.id===id)||{name:id,color:"#888",birth:"",blood:"",birthPref:"",birthTime:"",memo:""};}
@@ -723,12 +724,40 @@ function renderOv(){
 function renderSet(){
   document.getElementById("inp-title").value=S.title;
   document.getElementById("inp-sub").value=S.subtitle;
-  document.getElementById("tab-timeline").value=S.tabs.timeline||"";
-  document.getElementById("tab-timetable").value=S.tabs.timetable||"";
-  document.getElementById("tab-person").value=S.tabs.person||"";
-  document.getElementById("tab-profile").value=S.tabs.profile||"";
-  document.getElementById("tab-age").value=S.tabs.age||"";
-  document.getElementById("tab-overview").value=S.tabs.overview||"";
+  // Tab order list
+  const tabOrderList=document.getElementById("tab-order-list");
+  if(tabOrderList){
+    const order=(S.tabOrder||["timeline","timetable","person","profile","age","overview","settings"]).filter(id=>id!=="settings");
+    tabOrderList.innerHTML=order.map((id,i)=>`
+      <div class="tab-order-item" data-tabid="${id}">
+        <div class="tab-order-label">TAB ${i+1}</div>
+        <input class="tab-order-input" data-tabid="${id}" value="${S.tabs[id]||id}" placeholder="${id}">
+        <div class="tab-order-btns">
+          <button class="tab-order-btn tab-up" data-idx="${i}" ${i===0?"disabled style='opacity:0.3'":""}>▲</button>
+          <button class="tab-order-btn tab-dn" data-idx="${i}" ${i===order.length-1?"disabled style='opacity:0.3'":""}>▼</button>
+        </div>
+      </div>`).join("");
+    tabOrderList.querySelectorAll(".tab-order-input").forEach(el=>el.addEventListener("input",()=>{
+      const m=S.members; // just to avoid unused var
+      S.tabs[el.dataset.tabid]=el.value;
+    }));
+    tabOrderList.querySelectorAll(".tab-up").forEach(btn=>btn.addEventListener("click",()=>{
+      const idx=parseInt(btn.dataset.idx);
+      if(idx===0)return;
+      const ord=S.tabOrder.filter(id=>id!=="settings");
+      [ord[idx-1],ord[idx]]=[ord[idx],ord[idx-1]];
+      S.tabOrder=[...ord,"settings"];
+      renderSet();
+    }));
+    tabOrderList.querySelectorAll(".tab-dn").forEach(btn=>btn.addEventListener("click",()=>{
+      const idx=parseInt(btn.dataset.idx);
+      const ord=S.tabOrder.filter(id=>id!=="settings");
+      if(idx>=ord.length-1)return;
+      [ord[idx],ord[idx+1]]=[ord[idx+1],ord[idx]];
+      S.tabOrder=[...ord,"settings"];
+      renderSet();
+    }));
+  }
 
   // MEMBERS
   const ml=document.getElementById("members-list");
@@ -869,12 +898,13 @@ function updatePageTitles(){
 function saveSettings(){
   S.title=document.getElementById("inp-title").value.trim()||S.title;
   S.subtitle=document.getElementById("inp-sub").value.trim()||S.subtitle;
-  S.tabs.timeline=document.getElementById("tab-timeline").value.trim()||DEF_TABS.timeline;
-  S.tabs.timetable=document.getElementById("tab-timetable").value.trim()||DEF_TABS.timetable;
-  S.tabs.person=document.getElementById("tab-person").value.trim()||DEF_TABS.person;
-  S.tabs.profile=document.getElementById("tab-profile").value.trim()||DEF_TABS.profile;
-  S.tabs.age=document.getElementById("tab-age").value.trim()||DEF_TABS.age;
-  S.tabs.overview=document.getElementById("tab-overview").value.trim()||DEF_TABS.overview;
+  // Tab names already updated live via input listeners
+  // Ensure no empty values
+  Object.keys(DEF_TABS).forEach(k=>{if(!S.tabs[k])S.tabs[k]=DEF_TABS[k];});
+  // Read final values from inputs
+  document.querySelectorAll(".tab-order-input").forEach(el=>{
+    if(el.value.trim())S.tabs[el.dataset.tabid]=el.value.trim();
+  });
   saveS();renderNavTabs();renderTL();renderFilters();applyTheme();updatePageTitles();
   const n=document.getElementById("save-ok");n.classList.add("show");setTimeout(()=>n.classList.remove("show"),2000);
 }
