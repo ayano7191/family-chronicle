@@ -84,9 +84,9 @@ nav{display:flex;align-items:center;justify-content:space-between;padding:1rem 1
 .tt-grid{min-width:600px;}
 .tt-head{display:grid;font-size:0.66rem;font-weight:700;letter-spacing:0.1em;color:var(--muted);border-bottom:1px solid var(--border);padding-bottom:0.5rem;margin-bottom:0.5rem;}
 .tt-row{display:grid;min-height:36px;border-bottom:1px solid var(--border);align-items:center;}
-.tt-mlbl{font-size:0.78rem;font-weight:700;padding:0.25rem 0.4rem 0.25rem 0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+.tt-mlbl{font-size:0.78rem;font-weight:700;padding:0.25rem 0.6rem 0.25rem 0.5rem;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;color:var(--text);border-radius:3px;}
 .tt-cell{display:flex;flex-direction:column;gap:2px;padding:2px;}
-.tt-blk{border-radius:2px;padding:2px 5px;font-size:0.62rem;font-weight:700;color:#0d0d0d;overflow:hidden;white-space:nowrap;text-overflow:ellipsis;}
+.tt-blk{border-radius:2px;padding:2px 5px;font-size:0.62rem;font-weight:700;color:#111;overflow:hidden;white-space:nowrap;text-overflow:ellipsis;}
 
 /* PERSON HISTORY */
 .ph-wrap{padding:1.5rem 1.8rem;}
@@ -315,6 +315,7 @@ input[type=color].cpick{width:28px;height:28px;border:none;background:none;curso
       <button class="tc-btn active" id="btn-month" onclick="setTtMode('month')">月単位</button>
       <button class="tc-btn" id="btn-year" onclick="setTtMode('year')">全年表示</button>
     </div>
+    <div id="tt-mem-filter" style="display:flex;gap:0.35rem;flex-wrap:wrap;margin-bottom:0.8rem;"></div>
     <div id="tt-grid" class="tt-grid"></div>
   </div>
 </div>
@@ -558,7 +559,7 @@ const SAMPLE=[
 ];
 
 let S={title:"Family Chronicle",subtitle:"家族年表",logoFont:"Playfair Display",tabs:{...DEF_TABS},tabOrder:["timeline","timetable","person","profile","age","overview","settings"],events:[],members:[...DEF_MEM.map(m=>({...m}))],cats:[...DEF_CAT.map(c=>({...c}))],accent:"#c9a96e",bg:"#0d0d0d",guests:[],sbUrl:"",sbKey:"",sbTable:"family_chronicle",sbRecordId:"my-family"};
-let fMem="all",fCat="all",ttY=new Date().getFullYear(),ttMode="month";
+let fMem="all",fCat="all",ttY=new Date().getFullYear(),ttMode="month",ttMemFilter=[];
 let pendingCb=null; // generic confirm callback
 let editEvId=null;
 let phMemberId=null;
@@ -684,7 +685,22 @@ function clearHeaderImage(){
 function gMem(id){return S.members.find(m=>m.id===id)||{name:id,color:"#888",birth:"",blood:"",birthPref:"",birthTime:"",memo:""};}
 function gCat(id){return S.cats.find(c=>c.id===id)||{name:id,color:"#888"};}
 function fmt(d){var p=d.split("-");return p[1]+"月"+p[2]+"日";}
-function getAge(birth,year){if(!birth)return null;return year-parseInt(birth.slice(0,4));}
+function getAge(birth,year){
+  if(!birth)return null;
+  var byear=parseInt(birth.slice(0,4));
+  var age=year-byear;
+  // 今年の場合、誕生日が今日より後なら1引く
+  if(year===new Date().getFullYear()){
+    var today=new Date();
+    var parts=birth.split("-");
+    if(parts.length>=3){
+      var bm=parseInt(parts[1]),bd=parseInt(parts[2]);
+      var tm=today.getMonth()+1,td=today.getDate();
+      if(bm>tm||(bm===tm&&bd>td))age--;
+    }
+  }
+  return age;
+}
 
 /* ---- NAV ---- */
 function renderNavTabs(){
@@ -778,13 +794,25 @@ function ttChangeYear(d){ttY+=d;renderTT();}
 function setTtMode(m){ttMode=m;document.getElementById("btn-month").classList.toggle("active",m==="month");document.getElementById("btn-year").classList.toggle("active",m==="year");renderTT();}
 function renderTT(){
   document.getElementById("tt-year-lbl").textContent=ttY+"年";
+  // メンバーフィルターボタンを描画
+  const mf=document.getElementById("tt-mem-filter");
+  if(mf){
+    const allActive=ttMemFilter.length===0;
+    mf.innerHTML=`<span style="font-size:0.68rem;font-weight:700;letter-spacing:0.15em;color:var(--muted);line-height:2;">表示：</span>`+
+      `<button class="tc-btn${allActive?" active":""}" onclick="ttMemFilter=[];renderTT()"  style="font-size:0.72rem;">全員</button>`+
+      S.members.map(m=>{
+        const on=ttMemFilter.includes(m.id);
+        return`<button class="tc-btn" onclick="ttToggleMem('${m.id}')" style="font-size:0.72rem;${on?"background:"+m.color+";color:#111;border-color:"+m.color:"color:"+m.color+";border-color:"+m.color}">${m.name}</button>`;
+      }).join("");
+  }
+  const showMembers=ttMemFilter.length?S.members.filter(m=>ttMemFilter.includes(m.id)):S.members;
   const g=document.getElementById("tt-grid");
   if(ttMode==="month"){
     const ms=Array.from({length:12},(_,i)=>i+1);
     const cols="90px "+ms.map(()=>"1fr").join(" ");
     let h=`<div class="tt-head" style="grid-template-columns:${cols}"><div></div>${ms.map(m=>`<div style="text-align:center">${m}月</div>`).join("")}</div>`;
-    S.members.forEach(mem=>{
-      h+=`<div class="tt-row" style="grid-template-columns:${cols}"><div class="tt-mlbl" style="color:${mem.color}">${mem.name}</div>${ms.map(mo=>{
+    showMembers.forEach(mem=>{
+      h+=`<div class="tt-row" style="grid-template-columns:${cols}"><div class="tt-mlbl" style="background:${mem.color}22;border-left:3px solid ${mem.color}">${mem.name}</div>${ms.map(mo=>{
         const ms2=String(mo).padStart(2,"0");
         const evs=S.events.filter(e=>e.members.includes(mem.id)&&e.date.startsWith(String(ttY))&&e.date.slice(5,7)===ms2);
         if(!evs.length)return`<div class="tt-cell"></div>`;
@@ -799,8 +827,8 @@ function renderTT(){
     const years=Array.from({length:mx-mn+1},(_,i)=>mn+i);
     const cols="90px "+years.map(()=>"1fr").join(" ");
     let h=`<div class="tt-head" style="grid-template-columns:${cols}"><div></div>${years.map(y=>`<div style="text-align:center;font-size:0.62rem">${y}</div>`).join("")}</div>`;
-    S.members.forEach(mem=>{
-      h+=`<div class="tt-row" style="grid-template-columns:${cols}"><div class="tt-mlbl" style="color:${mem.color}">${mem.name}</div>${years.map(y=>{
+    showMembers.forEach(mem=>{
+      h+=`<div class="tt-row" style="grid-template-columns:${cols}"><div class="tt-mlbl" style="background:${mem.color}22;border-left:3px solid ${mem.color}">${mem.name}</div>${years.map(y=>{
         const evs=S.events.filter(e=>e.members.includes(mem.id)&&e.date.startsWith(String(y)));
         if(!evs.length)return`<div class="tt-cell"></div>`;
         return`<div class="tt-cell">${evs.map(e=>`<div class="tt-blk" style="background:${gCat(e.cat).color}">${e.title}</div>`).join("")}</div>`;
@@ -808,6 +836,12 @@ function renderTT(){
     });
     g.innerHTML=h;
   }
+}
+function ttToggleMem(id){
+  const idx=ttMemFilter.indexOf(id);
+  if(idx>-1)ttMemFilter.splice(idx,1);
+  else ttMemFilter.push(id);
+  renderTT();
 }
 
 /* ---- PERSON HISTORY (横スクロール年表) ---- */
@@ -834,7 +868,7 @@ function renderPerson(){
   html+=`<div class="ph-age-row"><div class="ph-age-label" style="flex:0 0 ${cellW}px">年齢</div>${years.map(y=>{const a=getAge(mem.birth,y);return`<div class="ph-age-cell${y===now?" now-col":""}" style="flex:0 0 ${cellW}px">${a!==null?a+"歳":"—"}</div>`;}).join("")}</div>`;
   // per category rows
   S.cats.forEach(cat=>{
-    html+=`<div class="ph-cat-row"><div class="ph-cat-label" style="flex:0 0 ${cellW}px;color:${cat.color}">${cat.name}</div><div class="ph-cat-cells">`;
+    html+=`<div class="ph-cat-row"><div class="ph-cat-label" style="flex:0 0 ${cellW}px;color:var(--text);background:${cat.color}22;border-left:3px solid ${cat.color}">${cat.name}</div><div class="ph-cat-cells">`;
     years.forEach(y=>{
       const evs=S.events.filter(e=>e.members.includes(mem.id)&&e.cat===cat.id&&e.date.startsWith(String(y)));
       html+=`<div class="ph-year-cell${y===now?" now-col":""}" style="flex:0 0 ${cellW}px">${evs.map(e=>`<div class="ph-ev-block" style="background:${cat.color}" title="${e.title}">${e.title}</div>`).join("")}</div>`;
