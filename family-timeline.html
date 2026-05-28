@@ -11,13 +11,17 @@
 body{background:var(--bg);color:var(--text);font-family:"Noto Sans JP",sans-serif;font-weight:400;min-height:100vh;font-size:15px;}
 /* NAV */
 nav{display:flex;align-items:center;justify-content:space-between;padding:1rem 1.8rem;border-bottom:1px solid var(--border);position:sticky;top:0;background:var(--bg);z-index:200;gap:0.8rem;flex-wrap:wrap;}
+.nav-has-img{background-size:cover;background-position:center;background-repeat:no-repeat;}
+.nav-has-img::before{content:"";position:absolute;inset:0;background:rgba(0,0,0,0.68);z-index:0;}
+.nav-has-img>*{position:relative;z-index:1;}
 .logo-wrap{display:flex;align-items:center;gap:0.5rem;}
 .logo{font-family:"Cormorant Garamond",serif;font-size:1.6rem;font-weight:400;letter-spacing:0.1em;color:var(--accent);cursor:pointer;}
 .logo small{display:block;font-family:"Noto Sans JP",sans-serif;font-size:0.65rem;letter-spacing:0.3em;color:var(--muted);margin-top:0.1rem;font-weight:400;}
 
 .edit-btn{background:none;border:none;color:var(--muted);cursor:pointer;font-size:0.85rem;padding:0.2rem 0.3rem;transition:color 0.2s;}
 .edit-btn:hover{color:var(--accent);}
-.nav-tabs{display:flex;gap:0.2rem;flex-wrap:wrap;}
+.nav-tabs{display:flex;gap:0.2rem;flex-wrap:wrap;flex:1;}
+.nav-tab-settings{font-size:1rem;padding:0.3rem 0.6rem !important;}
 .nav-tab{background:none;border:1px solid transparent;color:var(--muted);padding:0.42rem 0.9rem;font-family:"Noto Sans JP",sans-serif;font-size:0.78rem;font-weight:500;letter-spacing:0.1em;cursor:pointer;transition:all 0.2s;border-radius:2px;}
 .nav-tab:hover{color:var(--text);}
 .nav-tab.active{border-color:var(--accent);color:var(--accent);}
@@ -50,11 +54,14 @@ nav{display:flex;align-items:center;justify-content:space-between;padding:1rem 1
 .ecard{background:var(--surface);border:1px solid var(--border);padding:0.9rem 1.1rem;margin-bottom:0.4rem;display:grid;grid-template-columns:70px 1fr;gap:0.9rem;align-items:start;transition:all 0.2s;position:relative;}
 .ecard:hover{border-color:var(--accent);background:var(--surface2);}
 .ecard::before{content:"";position:absolute;left:-1.6rem;top:50%;transform:translateY(-50%);width:8px;height:8px;border-radius:50%;background:var(--accent);}
+.econtent{display:flex;flex-direction:column;gap:0.3rem;min-width:0;}
+.etitle-row{display:flex;align-items:flex-start;gap:0.5rem;margin-bottom:0.2rem;}
+.etitle{font-size:0.95rem;font-weight:700;flex:1;word-break:break-word;}
+.eactions{display:flex;gap:0.2rem;flex-shrink:0;margin-top:0.5rem;justify-content:flex-end;}
+.ecard-img-wrap{display:flex;gap:0.7rem;align-items:flex-start;}
+.ev-thumb{width:56px;height:56px;object-fit:cover;border-radius:4px;flex-shrink:0;border:1px solid var(--border);margin-top:0.2rem;}
 .eleft{display:flex;flex-direction:column;gap:0.3rem;}
 .edate{font-size:0.74rem;font-weight:500;color:var(--muted);white-space:nowrap;}
-.etitle-row{display:flex;justify-content:space-between;align-items:flex-start;gap:0.5rem;margin-bottom:0.25rem;}
-.etitle{font-size:0.95rem;font-weight:700;}
-.eactions{display:flex;gap:0.2rem;flex-shrink:0;}
 .btn-ed,.btn-dl{background:none;border:none;color:var(--muted);font-size:0.72rem;font-weight:500;cursor:pointer;padding:0.1rem 0.3rem;transition:color 0.2s;font-family:"Noto Sans JP",sans-serif;}
 .btn-ed:hover{color:var(--accent);}.btn-cp{background:none;border:none;color:var(--muted);font-size:0.72rem;font-weight:500;cursor:pointer;padding:0.1rem 0.3rem;transition:color 0.2s;font-family:"Noto Sans JP",sans-serif;}.btn-cp:hover{color:#98c9a3;}
 .btn-dl:hover{color:#e87777;}
@@ -130,8 +137,8 @@ nav{display:flex;align-items:center;justify-content:space-between;padding:1rem 1
 .prof-age{font-size:0.82rem;font-weight:500;color:var(--muted);margin-bottom:1rem;line-height:1.6;}
 .prof-fields{display:flex;flex-direction:column;gap:0.5rem;}
 .prof-field{display:flex;gap:0.8rem;align-items:flex-start;}
-.prof-field-label{font-size:0.68rem;font-weight:700;letter-spacing:0.1em;color:var(--muted);width:68px;flex-shrink:0;padding-top:0.1rem;line-height:1.4;word-break:keep-all;}
-.prof-field-val{font-size:0.85rem;font-weight:500;flex:1;line-height:1.6;word-break:break-word;}
+.prof-field-label{font-size:0.68rem;font-weight:700;letter-spacing:0.1em;color:var(--muted);width:52px;flex-shrink:0;padding-top:0.1rem;line-height:1.4;word-break:keep-all;}
+.prof-field-val{font-size:0.8rem;font-weight:500;flex:1;line-height:1.6;word-break:break-word;color:var(--muted);}
 .prof-divider{height:1px;background:var(--border);margin:1rem 0;}
 .prof-stats-row{display:flex;gap:1.2rem;}
 .prof-stat{text-align:center;flex:1;}
@@ -222,6 +229,8 @@ input[type=color].cpick{width:28px;height:28px;border:none;background:none;curso
 .cfield label{font-size:0.72rem;font-weight:500;color:var(--muted);}
 .cfield input[type=color]{width:30px;height:30px;border:1px solid var(--border);background:none;cursor:pointer;padding:2px;border-radius:3px;}
 .export-row{display:flex;gap:0.8rem;flex-wrap:wrap;margin-top:0.5rem;}
+.ev-thumb{width:52px;height:52px;object-fit:cover;border-radius:3px;flex-shrink:0;border:1px solid var(--border);}
+.ecard-img{display:flex;align-items:flex-start;gap:0.8rem;}
 .save-ok{font-size:0.74rem;font-weight:700;color:#7ec87e;margin-left:0.9rem;opacity:0;transition:opacity 0.3s;}
 .save-ok.show{opacity:1;}
 .sync-badge{font-size:0.68rem;font-weight:700;padding:0.18rem 0.55rem;border-radius:10px;letter-spacing:0.05em;border:1px solid;cursor:default;}
@@ -266,6 +275,18 @@ input[type=color].cpick{width:28px;height:28px;border:none;background:none;curso
 .btn-cndl{background:#c0392b;color:#fff;border:none;padding:0.52rem 1.4rem;font-family:"Noto Sans JP",sans-serif;font-size:0.8rem;font-weight:700;cursor:pointer;border-radius:2px;transition:opacity 0.2s;}
 .btn-cndl:hover{opacity:0.85;}
 @media(max-width:600px){nav{padding:0.9rem 1rem;} .nav-tabs{order:3;width:100%;justify-content:center;} .tl-wrap,.ov-wrap,.set-wrap,.tt-wrap,.age-wrap,.ph-wrap,.prof-wrap{padding:1rem;} .ecard{grid-template-columns:1fr;} .mem-extra{grid-template-columns:1fr;}}
+@media print{
+  nav,#stats-bar,.filters,.eactions,.btn-primary,.btn-ghost,.sync-badge,
+  .ftree-toolbar,.ftree-family-tabs,.ftree-hint,
+  .age-controls button,.tc-btn{display:none!important;}
+  body{background:#fff!important;color:#111!important;font-size:12px;}
+  .page{display:none!important;}
+  .page.active{display:block!important;}
+  .ecard{break-inside:avoid;border:1px solid #ddd!important;background:#fff!important;margin-bottom:6px;}
+  .year-div-west{color:#8B6914!important;-webkit-print-color-adjust:exact;print-color-adjust:exact;}
+  .ev-thumb{width:36px!important;height:36px!important;}
+  .tag{border:1px solid #ccc!important;color:#555!important;-webkit-print-color-adjust:exact;print-color-adjust:exact;}
+}
 </style>
 </head>
 <body>
@@ -336,44 +357,21 @@ input[type=color].cpick{width:28px;height:28px;border:none;background:none;curso
     <div class="page-title" id="ftree-page-title">家系図</div>
     <div class="ftree-family-tabs" id="ftree-family-tabs"></div>
     <div class="ftree-toolbar">
-      <button class="btn-primary" onclick="ftreeAddNode()" style="font-size:0.76rem;padding:0.38rem 0.9rem;">＋ 人物を追加</button>
-      <button class="btn-ghost" id="ftree-connect-btn" onclick="ftreeToggleConnect()" style="font-size:0.76rem;padding:0.38rem 0.9rem;">🔗 関係を繋ぐ</button>
+      <button class="btn-primary" onclick="ftreeAddRoot()" style="font-size:0.76rem;padding:0.38rem 0.9rem;">＋ 先祖を追加</button>
       <button class="btn-ghost" onclick="ftreeAutoLayout()" style="font-size:0.76rem;padding:0.38rem 0.9rem;">⊞ 自動整列</button>
-      <button class="btn-ghost" onclick="ftreeResetZoom()" style="font-size:0.76rem;padding:0.38rem 0.9rem;">⬜ リセット</button>
-      <span id="ftree-connect-hint" style="font-size:0.74rem;color:var(--accent);display:none;">1人目を選択してください</span>
+      <button class="btn-ghost" onclick="ftreeResetZoom()" style="font-size:0.76rem;padding:0.38rem 0.9rem;">⬜ 表示リセット</button>
     </div>
     <div class="ftree-canvas-wrap" id="ftree-canvas-wrap">
       <canvas id="ftree-canvas"></canvas>
       <div class="ftree-tooltip" id="ftree-tooltip"></div>
     </div>
     <div class="ftree-hint">
-      ドラッグ：人物を移動 ／ ダブルクリック：人物を編集 ／ ホイール：ズーム ／ 右クリック：削除<br>
-      「関係を繋ぐ」モードで2人を順番にクリックすると線が引けます
+      ノードの「＋」：子を追加 ／ 「✕」：削除 ／ 「✎」：編集 ／ ドラッグ：移動 ／ ホイール：ズーム
     </div>
   </div>
 </div>
 <div id="page-settings" class="page">
   <div class="set-wrap">
-    <div class="set-sec">
-      <div class="set-ttl">☁️ Supabase クラウド同期</div>
-      <div style="font-size:0.78rem;color:var(--muted);margin-bottom:1rem;line-height:1.8;">Supabaseに接続すると、PCとスマホなど複数デバイスで同じデータを共有できます。<br>
-        <a href="https://supabase.com" target="_blank" style="color:var(--accent)">supabase.com</a> でプロジェクトを作成し、URLとAnon Keyを入力してください。</div>
-      <div class="set-irow"><label>Project URL</label><input type="text" id="sb-url" placeholder="https://xxxx.supabase.co" style="width:280px;font-size:0.76rem;"></div>
-      <div class="set-irow"><label>Anon Key</label><input type="password" id="sb-key" placeholder="eyJhbGciOi..." style="width:280px;font-size:0.76rem;"></div>
-      <div class="set-irow"><label>テーブル名</label><input type="text" id="sb-table" placeholder="family_chronicle" style="width:160px;"></div>
-      <div class="set-irow"><label>レコードID（識別キー）</label><input type="text" id="sb-record-id" placeholder="my-family" style="width:160px;"></div>
-      <div style="font-size:0.72rem;color:var(--muted);margin:0.5rem 0 1rem;line-height:1.8;">
-        ※ Supabaseで以下のSQLを実行してテーブルを作成してください：<br>
-        <code style="font-size:0.68rem;background:var(--surface2);padding:0.5rem 0.7rem;display:block;margin-top:0.4rem;border-radius:2px;color:var(--accent);line-height:1.8;">CREATE TABLE family_chronicle (<br>&nbsp;&nbsp;id TEXT PRIMARY KEY,<br>&nbsp;&nbsp;data JSONB,<br>&nbsp;&nbsp;updated_at TIMESTAMPTZ DEFAULT NOW()<br>);</code>
-      </div>
-      <div style="display:flex;gap:0.7rem;align-items:center;flex-wrap:wrap;">
-        <button class="btn-primary" onclick="sbSaveConfig()" style="font-size:0.8rem;">接続を保存</button>
-        <button class="btn-ghost" onclick="sbTestConnection()" style="font-size:0.8rem;">接続テスト</button>
-        <button class="btn-ghost" onclick="sbPullData()" style="font-size:0.8rem;">↓ クラウドから取得</button>
-        <button class="btn-ghost" onclick="sbPushData()" style="font-size:0.8rem;">↑ クラウドへ保存</button>
-        <span id="sb-status" style="font-size:0.74rem;color:var(--muted);"></span>
-      </div>
-    </div>
     <div class="set-sec">
       <div class="set-ttl">サイトタイトル</div>
       <div class="set-irow"><label>メインタイトル</label><input type="text" id="inp-title" placeholder="Family Chronicle"></div>
@@ -399,7 +397,7 @@ input[type=color].cpick{width:28px;height:28px;border:none;background:none;curso
       <button class="btn-add-row" id="btn-add-cat">＋ カテゴリを追加</button>
     </div>
     <div class="set-sec">
-      <div class="set-ttl">テーマカラー</div>
+      <div class="set-ttl">テーマカラー・ヘッダー画像</div>
       <div class="swatches" id="acc-swatches"></div>
       <div class="cfield-row">
         <div class="cfield"><label>アクセント</label><input type="color" id="inp-accent" oninput="applyAccent(this.value)"></div>
@@ -407,6 +405,40 @@ input[type=color].cpick{width:28px;height:28px;border:none;background:none;curso
       </div>
       <div class="set-ttl" style="margin-top:1rem;">背景プリセット</div>
       <div class="swatches" id="bg-swatches"></div>
+      <div class="set-ttl" style="margin-top:1rem;">ヘッダー画像・文字色</div>
+      <div style="font-size:0.78rem;color:var(--muted);margin-bottom:0.8rem;line-height:1.8;">ナビバーの背景画像と、その上の文字色を設定できます。</div>
+      <div style="display:flex;gap:0.7rem;align-items:center;flex-wrap:wrap;margin-bottom:0.8rem;">
+        <button class="btn-ghost" onclick="document.getElementById('header-img-input').click()" style="font-size:0.78rem;">🖼 画像をアップロード</button>
+        <input type="file" id="header-img-input" accept="image/*" style="display:none" onchange="setHeaderImage(event)">
+        <button class="btn-ghost" onclick="clearHeaderImage()" style="font-size:0.78rem;">✕ 画像を削除</button>
+      </div>
+      <div style="display:flex;align-items:center;gap:0.8rem;margin-bottom:0.8rem;">
+        <span style="font-size:0.78rem;color:var(--muted);">ナビ文字色：</span>
+        <input type="color" id="nav-text-color" value="#ffffff" oninput="applyNavTextColor(this.value)" style="width:32px;height:32px;border:1px solid var(--border);background:none;cursor:pointer;padding:2px;border-radius:3px;">
+        <button class="btn-ghost" onclick="applyNavTextColor('#ffffff');document.getElementById('nav-text-color').value='#ffffff'" style="font-size:0.74rem;">白</button>
+        <button class="btn-ghost" onclick="applyNavTextColor('#1a1a1a');document.getElementById('nav-text-color').value='#1a1a1a'" style="font-size:0.74rem;">黒</button>
+        <button class="btn-ghost" onclick="applyNavTextColor(S.accent);document.getElementById('nav-text-color').value=S.accent" style="font-size:0.74rem;">アクセント色</button>
+      </div>
+      <div id="header-img-preview" style="display:none;">
+        <img id="header-img-thumb" style="max-width:100%;max-height:80px;border-radius:4px;border:1px solid var(--border);object-fit:cover;">
+        <div style="font-size:0.72rem;color:var(--muted);margin-top:0.4rem;">↑ 現在のヘッダー画像</div>
+      </div>
+    </div>
+    <div class="set-sec">
+      <div class="set-ttl">☁️ Supabase クラウド同期</div>
+      <div style="font-size:0.78rem;color:var(--muted);margin-bottom:1rem;line-height:1.8;">Supabaseに接続すると、PCとスマホなど複数デバイスで同じデータを共有できます。<br>
+        <a href="https://supabase.com" target="_blank" style="color:var(--accent)">supabase.com</a> でプロジェクトを作成し、URLとAnon Keyを入力してください。</div>
+      <div class="set-irow"><label>Project URL</label><input type="text" id="sb-url" placeholder="https://xxxx.supabase.co" style="width:280px;font-size:0.76rem;"></div>
+      <div class="set-irow"><label>Anon Key</label><input type="password" id="sb-key" placeholder="eyJhbGciOi..." style="width:280px;font-size:0.76rem;"></div>
+      <div class="set-irow"><label>テーブル名</label><input type="text" id="sb-table" placeholder="family_chronicle" style="width:160px;"></div>
+      <div class="set-irow"><label>レコードID（識別キー）</label><input type="text" id="sb-record-id" placeholder="my-family" style="width:160px;"></div>
+      <div style="display:flex;gap:0.7rem;align-items:center;flex-wrap:wrap;">
+        <button class="btn-primary" onclick="sbSaveConfig()" style="font-size:0.8rem;">接続を保存</button>
+        <button class="btn-ghost" onclick="sbTestConnection()" style="font-size:0.8rem;">接続テスト</button>
+        <button class="btn-ghost" onclick="sbPullData()" style="font-size:0.8rem;">↓ クラウドから取得</button>
+        <button class="btn-ghost" onclick="sbPushData()" style="font-size:0.8rem;">↑ クラウドへ保存</button>
+        <span id="sb-status" style="font-size:0.74rem;color:var(--muted);"></span>
+      </div>
     </div>
     <div class="set-sec">
       <div class="set-ttl">データ エクスポート / インポート</div>
@@ -430,8 +462,17 @@ input[type=color].cpick{width:28px;height:28px;border:none;background:none;curso
     <div class="mhd"><span class="mttl" id="ftree-modal-ttl">人物を追加</span><button class="mx" onclick="closeFtreeModal()">✕</button></div>
     <div class="mbd">
       <input type="hidden" id="ftree-node-id">
-      <div class="fg"><label class="fl">名前 *</label><input class="fi" id="ftree-node-name" placeholder="例：祖父 山田太郎"></div>
-      <div class="fg"><label class="fl">生年（任意）</label><input class="fi" type="number" id="ftree-node-birth" placeholder="例：1940"></div>
+      <div class="fg"><label class="fl">名前 *</label><input class="fi" id="ftree-node-name" placeholder="例：山田太郎"></div>
+      <div class="fg"><label class="fl">生年月日（任意）</label>
+        <div style="display:flex;gap:0.5rem;align-items:center;">
+          <input class="fi" type="number" id="ftree-node-year" placeholder="1940" style="width:80px;">
+          <span style="color:var(--muted);font-size:0.85rem;">年</span>
+          <input class="fi" type="number" id="ftree-node-month" placeholder="1" min="1" max="12" style="width:58px;">
+          <span style="color:var(--muted);font-size:0.85rem;">月</span>
+          <input class="fi" type="number" id="ftree-node-day" placeholder="1" min="1" max="31" style="width:58px;">
+          <span style="color:var(--muted);font-size:0.85rem;">日</span>
+        </div>
+      </div>
       <div class="fg"><label class="fl">役割・続柄（任意）</label><input class="fi" id="ftree-node-role" placeholder="例：父、祖母、叔父 など"></div>
       <div class="fg"><label class="fl">色</label>
         <div style="display:flex;gap:0.5rem;flex-wrap:wrap;margin-bottom:0.4rem;" id="ftree-color-swatches"></div>
@@ -468,6 +509,16 @@ input[type=color].cpick{width:28px;height:28px;border:none;background:none;curso
       <div class="fg"><label class="fl">対象メンバー</label><div class="cbg" id="modal-mems"></div></div>
 
       <div class="fg"><label class="fl">メモ</label><textarea class="fta" id="f-memo" placeholder="エピソードや詳細..."></textarea></div>
+      <div class="fg"><label class="fl">画像（任意）</label>
+        <div style="display:flex;gap:0.6rem;align-items:center;flex-wrap:wrap;">
+          <button class="btn-ghost" onclick="document.getElementById('f-img-input').click()" style="font-size:0.76rem;padding:0.35rem 0.8rem;">🖼 画像を追加</button>
+          <input type="file" id="f-img-input" accept="image/*" style="display:none" onchange="setEvImage(event)">
+          <button class="btn-ghost" onclick="clearEvImage()" style="font-size:0.76rem;padding:0.35rem 0.8rem;">✕ 削除</button>
+        </div>
+        <div id="f-img-preview" style="margin-top:0.5rem;display:none;">
+          <img id="f-img-thumb" style="max-width:100%;max-height:120px;border-radius:4px;object-fit:cover;border:1px solid var(--border);">
+        </div>
+      </div>
       <button class="btn-primary" style="width:100%;padding:0.72rem;" onclick="submitEvent()">保存する</button>
     </div>
   </div>
@@ -544,17 +595,18 @@ function loadS(){
   updateSyncBadge(S.sbUrl&&S.sbKey?"ok":"off");
 }
 function saveS(){
-  // Don't store sbUrl/sbKey in main data
-  const {sbUrl,sbKey,...rest}=S;
-  localStorage.setItem(SK,JSON.stringify(rest));
-  // If Supabase configured, push async
+  S._savedAt=new Date().toISOString();
+  var saveData={};
+  for(var k in S){if(k!=="sbUrl"&&k!=="sbKey")saveData[k]=S[k];}
+  localStorage.setItem(SK,JSON.stringify(saveData));
   if(S.sbUrl&&S.sbKey)sbPushData(true);
 }
 function updateSyncBadge(state,msg){
-  const b=document.getElementById("sync-badge");
+  var b=document.getElementById("sync-badge");
   if(!b)return;
-  const states={ok:["ok","☁ 同期済"],off:["off","● ローカル"],err:["err","⚠ 同期エラー"],syncing:["syncing","⟳ 同期中"]};
-  const[cls,lbl]=states[state]||states.off;
+  var states={ok:["ok","☁ 同期済"],off:["off","● ローカル"],err:["err","⚠ 同期エラー"],syncing:["syncing","⟳ 同期中"]};
+  var st=states[state]||states.off;
+  var cls=st[0],lbl=st[1];
   b.className="sync-badge "+cls;
   b.textContent=msg||lbl;
 }
@@ -574,9 +626,70 @@ function applyTheme(){
   const lt=document.getElementById("logo-text");if(lt){lt.innerHTML=S.title+"<small>"+S.subtitle+"</small>";lt.style.fontFamily="'"+( S.logoFont||"Playfair Display")+"',serif";}
   const ia=document.getElementById("inp-accent");if(ia)ia.value=S.accent;
   const ib=document.getElementById("inp-bg");if(ib)ib.value=S.bg;
+  applyHeaderImage(S.headerImg||"");
 }
 function applyAccent(v){S.accent=v;document.documentElement.style.setProperty("--accent",v);}
 function applyBg(v){S.bg=v;applyTheme();}
+function applyNavTextColor(color){
+  S.navTextColor=color;
+  const nav=document.querySelector("nav");
+  if(!nav)return;
+  // ナビ内のテキスト・ボタンに色を適用
+  nav.style.setProperty("--nav-tc",color);
+  nav.querySelectorAll(".nav-tab,.logo,.logo small,.sync-badge").forEach(function(el){
+    el.style.setProperty("color",color,"important");
+  });
+  const inp=document.getElementById("nav-text-color");
+  if(inp)inp.value=color;
+}
+function applyHeaderImage(url){
+  const nav=document.querySelector("nav");
+  if(!nav)return;
+  if(url){
+    nav.style.backgroundImage="url('"+url+"')";
+    nav.style.backgroundSize="cover";
+    nav.style.backgroundPosition="center";
+    nav.classList.add("nav-has-img");
+  }else{
+    nav.style.backgroundImage="";
+    nav.classList.remove("nav-has-img");
+    // 文字色をデフォルトに戻す
+    nav.querySelectorAll(".nav-tab,.logo,.logo small,.sync-badge").forEach(function(el){
+      el.style.removeProperty("color");
+    });
+  }
+  if(S.navTextColor&&url)applyNavTextColor(S.navTextColor);
+  const prev=document.getElementById("header-img-preview");
+  const thumb=document.getElementById("header-img-thumb");
+  if(prev&&thumb){
+    if(url){prev.style.display="block";thumb.src=url;}
+    else{prev.style.display="none";thumb.src="";}
+  }
+}
+function setHeaderImage(e){
+  const file=e.target.files[0];if(!file)return;
+  // 画像をリサイズして保存（サイズ削減）
+  const reader=new FileReader();
+  reader.onload=ev=>{
+    const img=new Image();
+    img.onload=()=>{
+      const canvas=document.createElement("canvas");
+      const maxW=1200,maxH=300;
+      const ratio=Math.min(maxW/img.width,maxH/img.height,1);
+      canvas.width=img.width*ratio;canvas.height=img.height*ratio;
+      canvas.getContext("2d").drawImage(img,0,0,canvas.width,canvas.height);
+      S.headerImg=canvas.toDataURL("image/jpeg",0.82);
+      applyHeaderImage(S.headerImg);
+      saveS();
+    };
+    img.src=ev.target.result;
+  };
+  reader.readAsDataURL(file);
+}
+function clearHeaderImage(){
+  S.headerImg="";applyHeaderImage("");saveS();
+  const inp=document.getElementById("header-img-input");if(inp)inp.value="";
+}
 
 /* ---- TITLE ---- */
 
@@ -585,7 +698,7 @@ function applyBg(v){S.bg=v;applyTheme();}
 /* ---- HELPERS ---- */
 function gMem(id){return S.members.find(m=>m.id===id)||{name:id,color:"#888",birth:"",blood:"",birthPref:"",birthTime:"",memo:""};}
 function gCat(id){return S.cats.find(c=>c.id===id)||{name:id,color:"#888"};}
-function fmt(d){const[,m,day]=d.split("-");return m+"月"+day+"日";}
+function fmt(d){var p=d.split("-");return p[1]+"月"+p[2]+"日";}
 function getAge(birth,year){if(!birth)return null;return year-parseInt(birth.slice(0,4));}
 
 /* ---- NAV ---- */
@@ -593,14 +706,19 @@ function renderNavTabs(){
   const allPages={timeline:1,timetable:1,person:1,profile:1,age:1,overview:1,ftree:1,settings:1};
   const order=S.tabOrder||["timeline","timetable","person","profile","age","overview","ftree","settings"];
   const wrap=document.getElementById("nav-tabs");
-  wrap.innerHTML=order.map((id,i)=>{
-    const label=id==="settings"?"設定":(S.tabs[id]||id);
+  // 設定以外のタブ
+  const mainOrder=order.filter(id=>id!=="settings");
+  const mainHtml=mainOrder.map((id,i)=>{
+    const label=S.tabs[id]||id;
     const active=i===0?" active":"";
     return`<button class="nav-tab${active}" id="tab-btn-${id}" draggable="true" data-tabid="${id}" onclick="showPage('${id}',this)">${label}</button>`;
   }).join("");
-  // drag-and-drop reorder
+  // 設定タブは右端に固定
+  const settingsHtml=`<button class="nav-tab nav-tab-settings" id="tab-btn-settings" data-tabid="settings" onclick="showPage('settings',this)" style="margin-left:auto;border-color:transparent;" title="設定">⚙️</button><button class="nav-tab" onclick="try{window.print();}catch(e){alert('ブラウザの共有メニューから「印刷」を選んでください');}" style="border-color:transparent;" title="印刷・PDF保存">🖨️</button>`;
+  wrap.innerHTML=mainHtml+settingsHtml;
+  // drag-and-drop reorder（設定タブ以外）
   let dragSrc=null;
-  wrap.querySelectorAll(".nav-tab").forEach(btn=>{
+  wrap.querySelectorAll(".nav-tab:not(.nav-tab-settings)").forEach(btn=>{
     btn.addEventListener("dragstart",e=>{dragSrc=btn;btn.style.opacity="0.4";e.dataTransfer.effectAllowed="move";});
     btn.addEventListener("dragend",e=>{btn.style.opacity="1";});
     btn.addEventListener("dragover",e=>{e.preventDefault();e.dataTransfer.dropEffect="move";btn.style.borderStyle="dashed";});
@@ -608,11 +726,11 @@ function renderNavTabs(){
     btn.addEventListener("drop",e=>{
       e.preventDefault();btn.style.borderStyle="";
       if(dragSrc===btn)return;
-      const ids=[...wrap.querySelectorAll(".nav-tab")].map(b=>b.dataset.tabid);
+      const ids=[...wrap.querySelectorAll(".nav-tab:not(.nav-tab-settings)")].map(b=>b.dataset.tabid);
       const from=ids.indexOf(dragSrc.dataset.tabid);
       const to=ids.indexOf(btn.dataset.tabid);
       ids.splice(from,1);ids.splice(to,0,dragSrc.dataset.tabid);
-      S.tabOrder=ids;saveS();renderNavTabs();
+      S.tabOrder=[...ids,"settings"];saveS();renderNavTabs();
     });
   });
 }
@@ -662,7 +780,7 @@ function renderTL(){
     by[y].forEach(e=>{
       const mt=e.members.map(id=>{const m=gMem(id);return`<span class="tag tag-mem" style="background:${m.color};color:#0d0d0d">${m.name}</span>`;}).join("");
       const cat=gCat(e.cat);
-      html+=`<div class="ecard"><div class="eleft"><div class="edate">${fmt(e.date)}${e.dateEnd?`<br><span style="font-size:0.68rem;color:var(--muted)">〜 ${fmt(e.dateEnd)}</span>`:""}</div>${mt}</div><div><div class="etitle-row"><div class="etitle">${e.title}</div><div class="eactions"><button class="btn-ed" data-edit="${e.id}">編集</button><button class="btn-cp" data-copy="${e.id}">複製</button><button class="btn-dl" data-del="${e.id}" data-title="${e.title.replace(/"/g,'&quot;')}">削除</button></div></div>${e.memo?`<div class="ememo">${e.memo}</div>`:""}<div class="etags"><span class="tag tag-cat" style="border-color:${cat.color};color:${cat.color}">${cat.name}</span></div></div></div>`;
+      html+=`<div class="ecard"><div class="eleft"><div class="edate">${fmt(e.date)}${e.dateEnd?`<br><span style="font-size:0.68rem;color:var(--muted)">〜 ${fmt(e.dateEnd)}</span>`:""}</div>${mt}</div><div class="econtent">${e.img?`<div class="ecard-img-wrap"><div style="flex:1;min-width:0"><div class="etitle">${e.title}</div>${e.memo?`<div class="ememo">${e.memo}</div>`:""}<div class="etags"><span class="tag tag-cat" style="border-color:${cat.color};color:${cat.color}">${cat.name}</span></div></div><img class="ev-thumb" src="${e.img}" alt="${e.title}"></div>`:`<div class="etitle">${e.title}</div>${e.memo?`<div class="ememo">${e.memo}</div>`:""}<div class="etags"><span class="tag tag-cat" style="border-color:${cat.color};color:${cat.color}">${cat.name}</span></div>`}<div class="eactions"><button class="btn-ed" data-edit="${e.id}">編集</button><button class="btn-cp" data-copy="${e.id}">複製</button><button class="btn-dl" data-del="${e.id}" data-title="${e.title.replace(/"/g,'&quot;')}">削除</button></div></div></div>`;
     });
     html+=`</div><div style="height:1.2rem"></div>`;
   });
@@ -712,7 +830,7 @@ function renderTT(){
 /* ---- PERSON HISTORY (横スクロール年表) ---- */
 function renderPerson(){
   const mems=S.members;
-  if(!phMemberId||!mems.find(m=>m.id===phMemberId))phMemberId=mems[0]?.id;
+  if(!phMemberId||!mems.find(m=>m.id===phMemberId))phMemberId=(mems[0]&&mems[0].id)||undefined;
   // build member tabs
   document.getElementById("ph-member-tabs").innerHTML=mems.map(m=>
     `<button class="ph-mtab${m.id===phMemberId?" active":""}" data-pmem="${m.id}" style="${m.id===phMemberId?"background:"+m.color+";border-color:"+m.color:""}">${m.name}</button>`
@@ -760,7 +878,7 @@ function renderProfile(){
           <div class="prof-name" style="color:${mem.color}">${mem.name}</div>
           <div class="prof-age">${(()=>{
             if(!mem.birth)return"生年月日未設定";
-            const[y,m,d]=mem.birth.split("-");
+            const bp=mem.birth.split("-");const y=bp[0],m=bp[1],d=bp[2];
             const wareki=toWareki(parseInt(y));
             return`${parseInt(y)}年${parseInt(m)}月${parseInt(d)}日<span style="font-size:0.78rem;color:var(--muted);margin-left:0.4em">（${wareki}年）</span><span style="font-size:0.82rem;color:var(--accent);font-weight:700;margin-left:0.5em">${age}歳</span>`;
           })()}</div>
@@ -797,14 +915,14 @@ function renderAgeTable(){
   const allPeople=[...mems,...guests.map(g=>({...g,isGuest:true}))];
   if(!allPeople.length){document.getElementById("age-table-wrap").innerHTML="<div class='empty'>誕生日を設定してください（設定 → メンバー管理）</div>";return;}
   let html=`<table class="age-table"><thead><tr><th class="year-h">西暦</th>`;
-  allPeople.forEach(m=>{html+=`<th style="color:${m.isGuest?"var(--muted)":m.color}">${m.name}${m.isGuest?`<span style="font-size:0.6rem;color:var(--muted);display:block">ゲスト</span>`:""}</th>`;});
+  allPeople.forEach(m=>{html+=`<th style="color:var(--muted)">${m.name}${m.isGuest?`<span style="font-size:0.6rem;color:var(--muted);display:block">ゲスト</span>`:""}</th>`;});
   html+=`<th>この年の出来事</th></tr></thead><tbody>`;
   years.forEach(y=>{
     const isNow=y===now;
     const evs=S.events.filter(e=>e.date.startsWith(String(y)));
     const evTxt=evs.map(e=>{const mt=e.members.map(id=>gMem(id).name).join("・");return`${mt}：${e.title}`;}).join(" / ");
     html+=`<tr class="${isNow?"today-row":""}"><td class="year-col">${y}${isNow?` <span style="font-size:0.65rem;color:var(--accent)">今年</span>`:""}</td>`;
-    allPeople.forEach(m=>{const a=getAge(m.birth,y);html+=`<td class="age-val" style="color:${m.isGuest?"var(--muted)":m.color}">${a!==null?a:"—"}</td>`;});
+    allPeople.forEach(m=>{const a=getAge(m.birth,y);html+=`<td class="age-val" style="color:var(--muted)">${a!==null?a:"—"}</td>`;});
     html+=`<td class="event-col">${evTxt}</td></tr>`;
   });
   html+=`</tbody></table><div style="font-size:0.72rem;font-weight:500;color:var(--muted);margin-top:0.8rem;">※ 西暦 − 生まれ年</div>`;
@@ -964,7 +1082,7 @@ function renderSet(){
   }));
   ml.querySelectorAll(".mem-del").forEach(el=>el.addEventListener("click",()=>{
     if(S.members.length<=1){alert("メンバーは最低1人必要です");return;}
-    const name=S.members.find(m=>m.id===el.dataset.mid)?.name||"このメンバー";
+    const name=(function(){var _m=S.members.find(function(m){return m.id===el.dataset.mid});return _m&&_m.name})()||"このメンバー";
     askConfirm(`「${name}」を削除しますか？`,"関連するイベントからも除外されます。",()=>{
       const id=el.dataset.mid;
       S.members=S.members.filter(m=>m.id!==id);
@@ -989,7 +1107,7 @@ function renderSet(){
   cl.querySelectorAll(".cat-color").forEach(el=>el.addEventListener("input",()=>{const c=S.cats.find(c=>c.id===el.dataset.cid);if(c){c.color=el.value;el.closest(".cat-item").querySelector(".cdot").style.background=el.value;}}));
   cl.querySelectorAll(".cat-del").forEach(el=>el.addEventListener("click",()=>{
     if(S.cats.length<=1){alert("カテゴリは最低1つ必要です");return;}
-    const name=S.cats.find(c=>c.id===el.dataset.cid)?.name||"このカテゴリ";
+    const name=(function(){var _c=S.cats.find(function(c){return c.id===el.dataset.cid});return _c&&_c.name})()||"このカテゴリ";
     askConfirm(`「${name}」を削除しますか？`,"このカテゴリのイベントは最初のカテゴリに変更されます。",()=>{
       const id=el.dataset.cid;
       S.cats=S.cats.filter(c=>c.id!==id);
@@ -1096,9 +1214,63 @@ function duplicateEv(id){
   // open edit modal so user can adjust
   openEditEv(copy.id);
 }
-function openAddModal(){editEvId=null;document.getElementById("modal-ttl").textContent="新しい記録";document.getElementById("f-id").value="";document.getElementById("f-title").value="";document.getElementById("f-date").value=new Date().toISOString().slice(0,10);document.getElementById("f-date-end").value="";document.getElementById("f-memo").value="";buildCats(S.cats[0]?.id);buildMems([]);document.getElementById("modalOv").classList.add("open");document.getElementById("f-title").focus();}
-function openEditEv(id){const e=S.events.find(e=>String(e.id)===String(id));if(!e)return;editEvId=String(e.id);document.getElementById("modal-ttl").textContent="記録を編集";document.getElementById("f-title").value=e.title;document.getElementById("f-date").value=e.date;document.getElementById("f-memo").value=e.memo||"";
-  document.getElementById("f-date-end").value=e.dateEnd||"";buildCats(e.cat);buildMems(e.members);document.getElementById("modalOv").classList.add("open");document.getElementById("f-title").focus();}
+function openAddModal(){
+  editEvId=null;
+  document.getElementById("modal-ttl").textContent="新しい記録";
+  document.getElementById("f-id").value="";
+  document.getElementById("f-title").value="";
+  document.getElementById("f-date").value=new Date().toISOString().slice(0,10);
+  document.getElementById("f-date-end").value="";
+  document.getElementById("f-memo").value="";
+  clearEvImage();
+  buildCats((S.cats[0]&&S.cats[0].id));buildMems([]);
+  document.getElementById("modalOv").classList.add("open");
+  document.getElementById("f-title").focus();
+}
+function openEditEv(id){
+  const e=S.events.find(e=>String(e.id)===String(id));if(!e)return;
+  editEvId=String(e.id);
+  document.getElementById("modal-ttl").textContent="記録を編集";
+  document.getElementById("f-title").value=e.title;
+  document.getElementById("f-date").value=e.date;
+  document.getElementById("f-memo").value=e.memo||"";
+  document.getElementById("f-date-end").value=e.dateEnd||"";
+  // 画像プレビュー
+  if(e.img){
+    document.getElementById("f-img-preview").style.display="block";
+    document.getElementById("f-img-thumb").src=e.img;
+    document.getElementById("f-img-input")._evImg=e.img;
+  }else{clearEvImage();}
+  buildCats(e.cat);buildMems(e.members);
+  document.getElementById("modalOv").classList.add("open");
+  document.getElementById("f-title").focus();
+}
+function setEvImage(ev){
+  const file=ev.target.files[0];if(!file)return;
+  const reader=new FileReader();
+  reader.onload=function(r){
+    const img=new Image();
+    img.onload=function(){
+      const canvas=document.createElement("canvas");
+      const maxW=800,maxH=600;
+      const ratio=Math.min(maxW/img.width,maxH/img.height,1);
+      canvas.width=img.width*ratio;canvas.height=img.height*ratio;
+      canvas.getContext("2d").drawImage(img,0,0,canvas.width,canvas.height);
+      const data=canvas.toDataURL("image/jpeg",0.75);
+      document.getElementById("f-img-thumb").src=data;
+      document.getElementById("f-img-preview").style.display="block";
+      document.getElementById("f-img-input")._evImg=data;
+    };
+    img.src=r.target.result;
+  };
+  reader.readAsDataURL(file);
+}
+function clearEvImage(){
+  document.getElementById("f-img-preview").style.display="none";
+  document.getElementById("f-img-thumb").src="";
+  const inp=document.getElementById("f-img-input");
+  if(inp){inp.value="";inp._evImg="";}
+}
 function closeModal(){document.getElementById("modalOv").classList.remove("open");}
 function closeModalOut(ev){if(ev.target===document.getElementById("modalOv"))closeModal();}
 function submitEvent(){
@@ -1108,7 +1280,9 @@ function submitEvent(){
   let mems=[...document.querySelectorAll(".mchk:checked")].map(c=>c.value);
   if(mems.includes("all"))mems=S.members.map(m=>m.id);
   if(!mems.length)mems=S.members.map(m=>m.id);
-  const ev={id:editEvId||String(Date.now()),title,date,cat:document.getElementById("f-cat").value,members:mems,dateEnd:document.getElementById("f-date-end").value||"",memo:document.getElementById("f-memo").value.trim()};
+  const imgInp=document.getElementById("f-img-input");
+  const img=(imgInp&&imgInp._evImg)||"";
+  const ev={id:editEvId||String(Date.now()),title,date,cat:document.getElementById("f-cat").value,members:mems,dateEnd:document.getElementById("f-date-end").value||"",memo:document.getElementById("f-memo").value.trim(),img:img};
   if(editEvId){const idx=S.events.findIndex(e=>String(e.id)===String(editEvId));if(idx>-1)S.events[idx]=ev;}
   else S.events.push(ev);
   saveS();renderTL();renderFilters();closeModal();
@@ -1150,13 +1324,14 @@ async function sbTestConnection(){
 async function sbPushData(silent=false){
   if(!S.sbUrl||!S.sbKey)return;
   if(!silent)updateSyncBadge("syncing");
-  const st=document.getElementById("sb-status");
-  const {sbUrl,sbKey,sbTable,sbRecordId,...data}=S;
-  const payload={id:sbRecordId||"my-family",data,updated_at:new Date().toISOString()};
+  var st=document.getElementById("sb-status");
+  var data={};
+  for(var k in S){if(k!=="sbUrl"&&k!=="sbKey"&&k!=="sbTable"&&k!=="sbRecordId")data[k]=S[k];}
+  var payload={id:S.sbRecordId||"my-family",data:data,updated_at:new Date().toISOString()};
   try{
-    const res=await fetch(`${sbUrl}/rest/v1/${sbTable||"family_chronicle"}`,{
+    var res=await fetch(S.sbUrl+"/rest/v1/"+(S.sbTable||"family_chronicle"),{
       method:"POST",
-      headers:{"apikey":sbKey,"Authorization":"Bearer "+sbKey,"Content-Type":"application/json","Prefer":"resolution=merge-duplicates"},
+      headers:{"apikey":S.sbKey,"Authorization":"Bearer "+S.sbKey,"Content-Type":"application/json","Prefer":"resolution=merge-duplicates"},
       body:JSON.stringify(payload)
     });
     if(res.ok||res.status===201){
@@ -1252,16 +1427,46 @@ let ftPanning=false,ftPanSX=0,ftPanSY=0,ftPanOX=0,ftPanOY=0;
 let ftViewX=0,ftViewY=0,ftScale=1;
 let ftCanvas=null,ftCtx=null;
 let ftEditNodeId=null;
-const FT_NODE_W=120,FT_NODE_H=52,FT_NODE_R=6;
+const FT_NODE_W=140,FT_NODE_H=66,FT_NODE_R=6;
 
 function getFtree(){
   if(!S.ftrees)S.ftrees={};
   if(!S.ftrees[ftCurrentFamily])S.ftrees[ftCurrentFamily]={nodes:[],edges:[]};
   return S.ftrees[ftCurrentFamily];
 }
+function syncMembersToFtree(){
+  // プロフィールのメンバーをdefault家系図に自動追加（まだいない人だけ）
+  if(!S.ftrees)S.ftrees={};
+  if(!S.ftrees.default)S.ftrees.default={nodes:[],edges:[]};
+  const ft=S.ftrees.default;
+  const now=new Date().getFullYear();
+  S.members.forEach((m,i)=>{
+    const already=ft.nodes.find(n=>n.memberId===m.id||n.name===m.name);
+    if(!already){
+      const cols=ft.nodes.length;
+      ft.nodes.push({
+        id:"n_m_"+m.id,
+        memberId:m.id,
+        name:m.name,
+        color:m.color,
+        birth:m.birth?m.birth.slice(0,4):"",
+        birthFull:m.birth||"",
+        role:"",
+        x:50+(cols%4)*(FT_NODE_W+20),
+        y:50+Math.floor(cols/4)*(FT_NODE_H+30)
+      });
+    }else{
+      // 既存ノードの名前・色・生年を最新に同期
+      already.name=m.name;
+      already.color=m.color;
+      if(m.birth)already.birth=m.birth.slice(0,4);
+    }
+  });
+}
 function renderFtreeTabs(){
   if(!S.ftrees)S.ftrees={};
   if(!Object.keys(S.ftrees).length)S.ftrees.default={nodes:[],edges:[]};
+  syncMembersToFtree(); // プロフィールメンバーを自動追加
   const wrap=document.getElementById("ftree-family-tabs");
   const families=Object.keys(S.ftrees);
   wrap.innerHTML=families.map(f=>`<button class="ftree-ftab${f===ftCurrentFamily?" active":""}" data-fam="${f}">${f==="default"?"メイン家系図":f+"家"}</button>`).join("")+
@@ -1291,54 +1496,105 @@ function renderFtree(){
   drawFtree();
 }
 function drawFtree(){
+  try{
   if(!ftCanvas||!ftCtx)return;
-  const W=ftCanvas.width,H=ftCanvas.height;
-  const bg=getComputedStyle(document.documentElement).getPropertyValue("--surface").trim()||"#1a1a1a";
-  const accentCol=getComputedStyle(document.documentElement).getPropertyValue("--accent").trim()||"#c9a96e";
-  const borderCol=getComputedStyle(document.documentElement).getPropertyValue("--border").trim()||"#333";
-  const textCol=getComputedStyle(document.documentElement).getPropertyValue("--text").trim()||"#f0ece4";
-  const mutedCol=getComputedStyle(document.documentElement).getPropertyValue("--muted").trim()||"#999";
+  var W=ftCanvas.width,H=ftCanvas.height;
+  var bg=getComputedStyle(document.documentElement).getPropertyValue("--surface").trim()||"#1a1a1a";
+  var accentCol=getComputedStyle(document.documentElement).getPropertyValue("--accent").trim()||"#c9a96e";
+  var borderCol=getComputedStyle(document.documentElement).getPropertyValue("--border").trim()||"#333";
+  var textCol=getComputedStyle(document.documentElement).getPropertyValue("--text").trim()||"#f0ece4";
+  var mutedCol=getComputedStyle(document.documentElement).getPropertyValue("--muted").trim()||"#999";
   ftCtx.clearRect(0,0,W,H);
   ftCtx.fillStyle=bg;ftCtx.fillRect(0,0,W,H);
-  const ft=getFtree();
-  // transform
+  var ft=getFtree();
   ftCtx.save();
   ftCtx.translate(ftViewX,ftViewY);
   ftCtx.scale(ftScale,ftScale);
-  // draw edges
-  ft.edges.forEach(e=>{
-    const a=ft.nodes.find(n=>n.id===e.from);
-    const b=ft.nodes.find(n=>n.id===e.to);
-    if(!a||!b)return;
-    const ax=a.x+FT_NODE_W/2,ay=a.y+FT_NODE_H/2;
-    const bx=b.x+FT_NODE_W/2,by=b.y+FT_NODE_H/2;
+  // draw edges - 家系図スタイル（親子関係をグループ化して横棒で繋ぐ）
+  // 親ノードごとに子をまとめて描画
+  var parentIds={};
+  ft.edges.forEach(function(e){
+    var rel=e.rel||"親子";
+    if(rel==="親子"||rel==="子"||rel==="父"||rel==="母"||rel===""){
+      if(!parentIds[e.from])parentIds[e.from]=[];
+      parentIds[e.from].push(e.to);
+    }
+  });
+  // 親子エッジを家系図スタイルで描画
+  var drawnEdges={};
+  Object.keys(parentIds).forEach(function(pid){
+    var parent=ft.nodes.find(function(n){return n.id===pid;});
+    if(!parent)return;
+    var children=parentIds[pid].map(function(cid){return ft.nodes.find(function(n){return n.id===cid;});}).filter(Boolean);
+    if(!children.length)return;
+    var px=parent.x+FT_NODE_W/2;
+    var py=parent.y+FT_NODE_H;
+    var midY=py+30; // 横棒のY位置
+    // 親から縦線
     ftCtx.beginPath();
-    const rel=e.rel||"";
-    if(rel==="配偶者"||rel==="夫婦"){ftCtx.strokeStyle=accentCol;ftCtx.lineWidth=2;ftCtx.setLineDash([]);}
-    else if(rel==="兄弟姉妹"){ftCtx.strokeStyle=mutedCol;ftCtx.lineWidth=1.5;ftCtx.setLineDash([5,3]);}
-    else{ftCtx.strokeStyle=borderCol;ftCtx.lineWidth=1.5;ftCtx.setLineDash([]);}
-    // curved path
-    const mx=(ax+bx)/2,my=(ay+by)/2;
-    const cpX=ax,cpY=by;
-    ftCtx.moveTo(ax,ay);
-    ftCtx.quadraticCurveTo(cpX,cpY,bx,by);
+    ftCtx.strokeStyle=borderCol;ftCtx.lineWidth=1.5;
+    ftCtx.moveTo(px,py);
+    ftCtx.lineTo(px,midY);
     ftCtx.stroke();
-    ftCtx.setLineDash([]);
-    // label
+    if(children.length===1){
+      // 子が1人：直線
+      var cx=children[0].x+FT_NODE_W/2;
+      var cy=children[0].y;
+      ftCtx.beginPath();
+      ftCtx.moveTo(px,midY);
+      ftCtx.lineTo(cx,midY);
+      ftCtx.lineTo(cx,cy);
+      ftCtx.stroke();
+    }else{
+      // 子が複数：横棒で繋ぐ
+      var xs=children.map(function(c){return c.x+FT_NODE_W/2;});
+      var minX=Math.min.apply(null,xs);
+      var maxX=Math.max.apply(null,xs);
+      // 横棒
+      ftCtx.beginPath();
+      ftCtx.moveTo(Math.min(px,minX),midY);
+      ftCtx.lineTo(Math.max(px,maxX),midY);
+      ftCtx.stroke();
+      // 各子への縦線
+      children.forEach(function(c){
+        var cx=c.x+FT_NODE_W/2;
+        ftCtx.beginPath();
+        ftCtx.moveTo(cx,midY);
+        ftCtx.lineTo(cx,c.y);
+        ftCtx.stroke();
+      });
+    }
+    children.forEach(function(c){drawnEdges[pid+"_"+c.id]=true;});
+  });
+  // 配偶者・その他エッジ
+  ft.edges.forEach(function(e){
+    var key=e.from+"_"+e.to;
+    var rkey=e.to+"_"+e.from;
+    if(drawnEdges[key]||drawnEdges[rkey])return;
+    var a=ft.nodes.find(function(n){return n.id===e.from;});
+    var b=ft.nodes.find(function(n){return n.id===e.to;});
+    if(!a||!b)return;
+    var ax=a.x+FT_NODE_W/2,ay=a.y+FT_NODE_H/2;
+    var bx=b.x+FT_NODE_W/2,by=b.y+FT_NODE_H/2;
+    var rel=e.rel||"";
+    ftCtx.beginPath();
+    if(rel==="配偶者"||rel==="夫婦"){
+      ftCtx.strokeStyle=accentCol;ftCtx.lineWidth=2;
+      // 配偶者は直線
+      ftCtx.moveTo(ax,ay);ftCtx.lineTo(bx,by);
+    }else{
+      ftCtx.strokeStyle=mutedCol;ftCtx.lineWidth=1.5;
+      ftCtx.moveTo(ax,ay);ftCtx.lineTo(bx,by);
+    }
+    ftCtx.stroke();
+    // 関係ラベル
     if(e.rel){
+      var mx=(ax+bx)/2,my=(ay+by)/2;
       ftCtx.fillStyle=mutedCol;
-      ftCtx.font="bold 9px 'Noto Sans JP',sans-serif";
+      ftCtx.font="bold 9px sans-serif";
       ftCtx.textAlign="center";
       ftCtx.fillText(e.rel,mx,my-4);
     }
-    // delete button on edge midpoint (draw X)
-    ftCtx.beginPath();
-    ftCtx.arc(mx,my,7,0,Math.PI*2);
-    ftCtx.fillStyle=bg;ftCtx.fill();
-    ftCtx.strokeStyle=borderCol;ftCtx.lineWidth=1;ftCtx.stroke();
-    ftCtx.fillStyle=mutedCol;ftCtx.font="bold 9px sans-serif";ftCtx.textAlign="center";ftCtx.textBaseline="middle";
-    ftCtx.fillText("×",mx,my);
-    ftCtx.textBaseline="alphabetic";
   });
   // draw nodes
   ft.nodes.forEach(node=>{
@@ -1347,10 +1603,8 @@ function drawFtree(){
     const isSelected=(ftConnectMode&&ftConnectFirst===node.id);
     // shadow
     ftCtx.shadowColor="rgba(0,0,0,0.4)";ftCtx.shadowBlur=8;
-    // bg
-    roundRect(ftCtx,x,y,FT_NODE_W,FT_NODE_H,FT_NODE_R);
-    ftCtx.fillStyle=isSelected?"rgba(201,169,110,0.25)":"var(--surface2)";
     const surfaceCol=getComputedStyle(document.documentElement).getPropertyValue("--surface2").trim()||"#222";
+    roundRect(ftCtx,x,y,FT_NODE_W,FT_NODE_H,FT_NODE_R);
     ftCtx.fillStyle=isSelected?"rgba(201,169,110,0.2)":surfaceCol;
     ftCtx.fill();
     ftCtx.shadowBlur=0;
@@ -1368,16 +1622,51 @@ function drawFtree(){
     ftCtx.font="bold 12px 'Noto Sans JP',sans-serif";
     ftCtx.textAlign="center";
     ftCtx.fillText(clipText(ftCtx,node.name,FT_NODE_W-12),x+FT_NODE_W/2,y+24);
-    // role / birth
-    const sub=[node.role,node.birth?node.birth+"年生":""].filter(Boolean).join(" · ");
-    if(sub){
+    // role
+    if(node.role){
       ftCtx.fillStyle=mutedCol;
       ftCtx.font="10px 'Noto Sans JP',sans-serif";
-      ftCtx.fillText(clipText(ftCtx,sub,FT_NODE_W-12),x+FT_NODE_W/2,y+40);
+      ftCtx.fillText(clipText(ftCtx,node.role,FT_NODE_W-12),x+FT_NODE_W/2,y+38);
+    }
+    // birth + age
+    if(node.birth){
+      const nowY=new Date().getFullYear();
+      const age=nowY-parseInt(node.birth);
+      // 月日があれば表示
+      let birthStr="";
+      if(node.birthFull&&node.birthFull.includes("-")){
+        const parts=node.birthFull.split("-");
+        const y=parts[0],mo=parts[1]?parseInt(parts[1])+"月":"",dy=parts[2]?parseInt(parts[2])+"日":"";
+        birthStr=y+"年"+mo+dy+" ("+age+"歳)";
+      }else{
+        birthStr=node.birth+"年生 ("+age+"歳)";
+      }
+      ftCtx.fillStyle=mutedCol;
+      ftCtx.font="9px 'Noto Sans JP',sans-serif";
+      ftCtx.fillText(clipText(ftCtx,birthStr,FT_NODE_W-12),x+FT_NODE_W/2,y+(node.role?52:40));
     }
     ftCtx.textAlign="left";
+    // ノードのアクションボタンを描画
+    const btns=getNodeButtons(node);
+    // ＋ボタン（下）
+    drawNodeBtn(ftCtx,btns.add.x,btns.add.y,BTN_SIZE,"＋",accentCol);
+    // ✕ボタン（右上）
+    drawNodeBtn(ftCtx,btns.del.x,btns.del.y,BTN_SIZE,"✕","#e87c7c");
+    // ✎ボタン（左上）
+    drawNodeBtn(ftCtx,btns.edit.x,btns.edit.y,BTN_SIZE,"✎",mutedCol);
   });
   ftCtx.restore();
+  }catch(err){/* iOS描画エラー無視 */}
+}
+function drawNodeBtn(ctx,x,y,size,label,color){
+  ctx.beginPath();
+  ctx.arc(x+size/2,y+size/2,size/2,0,Math.PI*2);
+  ctx.fillStyle=color+"33";ctx.fill();
+  ctx.strokeStyle=color;ctx.lineWidth=1;ctx.stroke();
+  ctx.fillStyle=color;ctx.font="bold "+(size*0.55)+"px sans-serif";
+  ctx.textAlign="center";ctx.textBaseline="middle";
+  ctx.fillText(label,x+size/2,y+size/2+1);
+  ctx.textBaseline="alphabetic";ctx.textAlign="left";
 }
 function clipText(ctx,text,maxW){
   if(ctx.measureText(text).width<=maxW)return text;
@@ -1394,7 +1683,30 @@ function roundRect(ctx,x,y,w,h,r){
   ctx.lineTo(x,y+r.tl);ctx.quadraticCurveTo(x,y,x+r.tl,y);
   ctx.closePath();
 }
-function screenToWorld(sx,sy){return{x:(sx-ftViewX)/ftScale,y:(sy-ftViewY)/ftScale};}
+const BTN_SIZE=18;
+function getNodeButtons(node){
+  // 各ノードに「＋子追加」「✕削除」「✎編集」ボタン領域を返す
+  return{
+    add:{x:node.x+FT_NODE_W-BTN_SIZE-2,y:node.y+FT_NODE_H+4,w:BTN_SIZE,h:BTN_SIZE,type:"add"},
+    del:{x:node.x+FT_NODE_W-BTN_SIZE-2,y:node.y-BTN_SIZE-4,w:BTN_SIZE,h:BTN_SIZE,type:"del"},
+    edit:{x:node.x+2,y:node.y-BTN_SIZE-4,w:BTN_SIZE,h:BTN_SIZE,type:"edit"},
+  };
+}
+function hitNodeBtn(wx,wy){
+  const ft=getFtree();
+  var nodes=ft.nodes.slice().reverse();
+  for(var i=0;i<nodes.length;i++){
+    var node=nodes[i];
+    var btns=getNodeButtons(node);
+    var keys=Object.keys(btns);
+    for(var j=0;j<keys.length;j++){
+      var btn=btns[keys[j]];
+      if(wx>=btn.x&&wx<=btn.x+btn.w&&wy>=btn.y&&wy<=btn.y+btn.h)
+        return{node:node,btn:btn};
+    }
+  }
+  return null;
+}
 function getNodeAt(wx,wy){
   const ft=getFtree();
   return ft.nodes.slice().reverse().find(n=>wx>=n.x&&wx<=n.x+FT_NODE_W&&wy>=n.y&&wy<=n.y+FT_NODE_H)||null;
@@ -1413,47 +1725,23 @@ function initFtreeEvents(){
   const wrap=document.getElementById("ftree-canvas-wrap");
   // pointer down
   ftCanvas.addEventListener("mousedown",e=>{
-    const{x:wx,y:wy}=screenToWorld(e.offsetX,e.offsetY);
-    if(e.button===2){// right click: delete node
-      e.preventDefault();
-      const nd=getNodeAt(wx,wy);
-      if(nd){
-        askConfirm(`「${nd.name}」を削除しますか？`,"この人物と繋がる線もすべて削除されます。",()=>{
-          const ft=getFtree();
-          ft.nodes=ft.nodes.filter(n=>n.id!==nd.id);
-          ft.edges=ft.edges.filter(e=>e.from!==nd.id&&e.to!==nd.id);
+    var _s=screenToWorld(e.offsetX,e.offsetY);var wx=_s.x,wy=_s.y;
+    if(e.button===2){e.preventDefault();return;}
+    var btnHit=hitNodeBtn(wx,wy);
+    if(btnHit){
+      var _node=btnHit.node,_btn=btnHit.btn;
+      if(_btn.type==="add"){
+        ftAddChildNode(_node.id);
+      }else if(_btn.type==="del"){
+        askConfirm("「"+_node.name+"」を削除しますか？","この人物と繋がる線もすべて削除されます。",function(){
+          var ft=getFtree();
+          ft.nodes=ft.nodes.filter(function(n){return n.id!==_node.id;});
+          ft.edges=ft.edges.filter(function(ev){return ev.from!==_node.id&&ev.to!==_node.id;});
           saveS();drawFtree();
         });
+      }else if(_btn.type==="edit"){
+        openFtreeNodeModal(_node.id);
       }
-      return;
-    }
-    if(ftConnectMode){
-      const nd=getNodeAt(wx,wy);
-      if(nd){
-        if(!ftConnectFirst){
-          ftConnectFirst=nd.id;
-          document.getElementById("ftree-connect-hint").textContent="2人目を選択してください";
-          drawFtree();
-        }else if(ftConnectFirst!==nd.id){
-          const ft=getFtree();
-          const already=ft.edges.find(e=>(e.from===ftConnectFirst&&e.to===nd.id)||(e.from===nd.id&&e.to===ftConnectFirst));
-          if(already){alert("この2人はすでに繋がっています");ftConnectFirst=null;document.getElementById("ftree-connect-hint").textContent="1人目を選択してください";return;}
-          const rel=prompt("関係性を入力してください（例：親子、配偶者、兄弟姉妹）","親子")||"";
-          ft.edges.push({id:"e"+Date.now(),from:ftConnectFirst,to:nd.id,rel});
-          ftConnectFirst=null;
-          document.getElementById("ftree-connect-hint").textContent="1人目を選択してください";
-          saveS();drawFtree();
-        }
-      }
-      return;
-    }
-    // check edge delete
-    const eg=getEdgeMidAt(wx,wy);
-    if(eg){
-      const ft=getFtree();
-      const a=ft.nodes.find(n=>n.id===eg.from)?.name||"";
-      const b=ft.nodes.find(n=>n.id===eg.to)?.name||"";
-      askConfirm(`「${a}」と「${b}」の関係を削除しますか？`,"",()=>{ft.edges=ft.edges.filter(ed=>ed!==eg);saveS();drawFtree();});
       return;
     }
     // drag node
@@ -1462,7 +1750,7 @@ function initFtreeEvents(){
     else{ftPanning=true;ftPanSX=e.clientX;ftPanSY=e.clientY;ftPanOX=ftViewX;ftPanOY=ftViewY;wrap.classList.add("panning");}
   });
   ftCanvas.addEventListener("mousemove",e=>{
-    const{x:wx,y:wy}=screenToWorld(e.offsetX,e.offsetY);
+    var _sw2=screenToWorld(e.offsetX,e.offsetY);var wx=_sw2.x,wy=_sw2.y;
     if(ftDragging){
       ftDragging.x=wx-ftDragOffX;ftDragging.y=wy-ftDragOffY;
       drawFtree();
@@ -1486,8 +1774,7 @@ function initFtreeEvents(){
     ftDragging=null;ftPanning=false;ftCanvas.style.cursor="";document.getElementById("ftree-canvas-wrap").classList.remove("panning");
   });
   ftCanvas.addEventListener("dblclick",e=>{
-    if(ftConnectMode)return;
-    const{x:wx,y:wy}=screenToWorld(e.offsetX,e.offsetY);
+    var _sw2=screenToWorld(e.offsetX,e.offsetY);var wx=_sw2.x,wy=_sw2.y;
     const nd=getNodeAt(wx,wy);
     if(nd)openFtreeNodeModal(nd.id);
   });
@@ -1503,76 +1790,135 @@ function initFtreeEvents(){
   ftCanvas.addEventListener("contextmenu",e=>e.preventDefault());
   // Touch support
   let lastTouch=null;
-  ftCanvas.addEventListener("touchstart",e=>{
-    if(e.touches.length===1){
-      const t=e.touches[0];
-      const rect=ftCanvas.getBoundingClientRect();
-      const ox=t.clientX-rect.left,oy=t.clientY-rect.top;
-      const{x:wx,y:wy}=screenToWorld(ox,oy);
-      const nd=getNodeAt(wx,wy);
-      if(nd){ftDragging=nd;ftDragOffX=wx-nd.x;ftDragOffY=wy-nd.y;}
-      else{ftPanning=true;ftPanSX=t.clientX;ftPanSY=t.clientY;ftPanOX=ftViewX;ftPanOY=ftViewY;}
-      lastTouch={x:ox,y:oy,time:Date.now()};
-    }
-    e.preventDefault();
-  },{passive:false});
-  ftCanvas.addEventListener("touchmove",e=>{
-    if(e.touches.length===1){
-      const t=e.touches[0];
-      const rect=ftCanvas.getBoundingClientRect();
-      const ox=t.clientX-rect.left,oy=t.clientY-rect.top;
-      const{x:wx,y:wy}=screenToWorld(ox,oy);
-      if(ftDragging){ftDragging.x=wx-ftDragOffX;ftDragging.y=wy-ftDragOffY;drawFtree();}
-      else if(ftPanning){ftViewX=ftPanOX+(t.clientX-ftPanSX);ftViewY=ftPanOY+(t.clientY-ftPanSY);drawFtree();}
-    }
-    e.preventDefault();
-  },{passive:false});
-  ftCanvas.addEventListener("touchend",e=>{
-    const t=e.changedTouches[0];
-    const rect=ftCanvas.getBoundingClientRect();
-    const ox=t.clientX-rect.left,oy=t.clientY-rect.top;
-    const now=Date.now();
-    if(lastTouch&&Math.abs(ox-lastTouch.x)<10&&Math.abs(oy-lastTouch.y)<10&&now-lastTouch.time<300){
-      // tap
-      const{x:wx,y:wy}=screenToWorld(ox,oy);
-      if(ftConnectMode){
-        const nd=getNodeAt(wx,wy);
-        if(nd){
-          if(!ftConnectFirst){ftConnectFirst=nd.id;document.getElementById("ftree-connect-hint").textContent="2人目を選択してください";drawFtree();}
-          else if(ftConnectFirst!==nd.id){
-            const ft=getFtree();const rel=prompt("関係性","親子")||"";
-            ft.edges.push({id:"e"+Date.now(),from:ftConnectFirst,to:nd.id,rel});
-            ftConnectFirst=null;document.getElementById("ftree-connect-hint").textContent="1人目を選択してください";
-            saveS();drawFtree();
-          }
-        }
-      }else{
-        const nd=getNodeAt(wx,wy);
-        if(nd)openFtreeNodeModal(nd.id);
+  ftCanvas.addEventListener("touchstart",function(e){
+    try{
+      if(e.touches.length===1){
+        var t=e.touches[0];
+        var rect=ftCanvas.getBoundingClientRect();
+        var ox=t.clientX-rect.left,oy=t.clientY-rect.top;
+        var _sw=screenToWorld(ox,oy);var wx=_sw.x,wy=_sw.y;
+        var nd=getNodeAt(wx,wy);
+        if(nd){ftDragging=nd;ftDragOffX=wx-nd.x;ftDragOffY=wy-nd.y;}
+        else{ftPanning=true;ftPanSX=t.clientX;ftPanSY=t.clientY;ftPanOX=ftViewX;ftPanOY=ftViewY;}
+        lastTouch={x:ox,y:oy,time:Date.now()};
       }
-    }
-    if(ftDragging)saveS();
-    ftDragging=null;ftPanning=false;lastTouch=null;
+      e.preventDefault();
+    }catch(err){}
+  },{passive:false});
+  ftCanvas.addEventListener("touchmove",function(e){
+    try{
+      if(e.touches.length===1){
+        var t=e.touches[0];
+        var rect=ftCanvas.getBoundingClientRect();
+        var ox=t.clientX-rect.left,oy=t.clientY-rect.top;
+        var _sw=screenToWorld(ox,oy);var wx=_sw.x,wy=_sw.y;
+        if(ftDragging){ftDragging.x=wx-ftDragOffX;ftDragging.y=wy-ftDragOffY;drawFtree();}
+        else if(ftPanning){ftViewX=ftPanOX+(t.clientX-ftPanSX);ftViewY=ftPanOY+(t.clientY-ftPanSY);drawFtree();}
+      }
+      e.preventDefault();
+    }catch(err){}
+  },{passive:false});
+  ftCanvas.addEventListener("touchend",function(e){
+    try{
+      var t=e.changedTouches[0];
+      var rect=ftCanvas.getBoundingClientRect();
+      var ox=t.clientX-rect.left,oy=t.clientY-rect.top;
+      var now=Date.now();
+      if(lastTouch&&Math.abs(ox-lastTouch.x)<12&&Math.abs(oy-lastTouch.y)<12&&now-lastTouch.time<300){
+        var _sw=screenToWorld(ox,oy);var wx=_sw.x,wy=_sw.y;
+        var btnHit=hitNodeBtn(wx,wy);
+        if(btnHit){
+          var _bnode=btnHit.node,_bbtn=btnHit.btn;
+          if(_bbtn.type==="add")ftAddChildNode(_bnode.id);
+          else if(_bbtn.type==="del"){
+            askConfirm("「"+_bnode.name+"」を削除しますか？","この人物と繋がる線もすべて削除されます。",function(){
+              var ft=getFtree();
+              ft.nodes=ft.nodes.filter(function(n){return n.id!==_bnode.id;});
+              ft.edges=ft.edges.filter(function(ev){return ev.from!==_bnode.id&&ev.to!==_bnode.id;});
+              saveS();drawFtree();
+            });
+          }else if(_bbtn.type==="edit")openFtreeNodeModal(_bnode.id);
+        }else{
+          var nd=getNodeAt(wx,wy);
+          if(nd)openFtreeNodeModal(nd.id);
+        }
+      }
+      if(ftDragging)saveS();
+      ftDragging=null;ftPanning=false;lastTouch=null;
+    }catch(err){}
   });
 }
-function ftreeToggleConnect(){
-  ftConnectMode=!ftConnectMode;ftConnectFirst=null;
-  const btn=document.getElementById("ftree-connect-btn");
-  const hint=document.getElementById("ftree-connect-hint");
-  btn.style.borderColor=ftConnectMode?"var(--accent)":"";
-  btn.style.color=ftConnectMode?"var(--accent)":"";
-  hint.style.display=ftConnectMode?"inline":"none";
-  if(ftConnectMode)hint.textContent="1人目を選択してください";
-  drawFtree();
+let ftPendingParentId=null;
+function ftreeAddRoot(){
+  ftPendingParentId=null;
+  openFtreeNodeModal(null);
 }
+function ftAddChildNode(parentId){
+  ftPendingParentId=parentId;
+  openFtreeNodeModal(null);
+}
+function ftreeToggleConnect(){}
 function ftreeAutoLayout(){
   const ft=getFtree();
   if(!ft.nodes.length)return;
-  const cols=Math.ceil(Math.sqrt(ft.nodes.length));
-  const gap=20;
-  ft.nodes.forEach((n,i)=>{
-    n.x=50+(i%cols)*(FT_NODE_W+gap);
-    n.y=50+Math.floor(i/cols)*(FT_NODE_H+gap+20);
+  // エッジから親子関係を解析して木構造レイアウトを構築
+  const PAD_X=FT_NODE_W+30, PAD_Y=FT_NODE_H+50;
+  const childMap={};// parentId -> [childId]
+  const parentSet=new Set();
+  ft.edges.forEach(e=>{
+    const rel=e.rel||"";
+    // 「親子」「父」「母」などの関係を親→子とみなす
+    if(rel==="親子"||rel==="父"||rel==="母"||rel==="子"||rel===""){
+      if(!childMap[e.from])childMap[e.from]=[];
+      childMap[e.from].push(e.to);
+      parentSet.add(e.to);
+    }
+  });
+  // ルートノード（親を持たないノード）を特定
+  const roots=ft.nodes.filter(n=>!parentSet.has(n.id)).map(n=>n.id);
+  if(!roots.length){
+    // 親子関係がない場合はグリッド配置
+    const cols=Math.ceil(Math.sqrt(ft.nodes.length));
+    ft.nodes.forEach((n,i)=>{
+      n.x=40+(i%cols)*PAD_X;
+      n.y=40+Math.floor(i/cols)*PAD_Y;
+    });
+    saveS();drawFtree();return;
+  }
+  // 各ノードのサブツリー幅を計算
+  function subtreeWidth(id){
+    const children=childMap[id]||[];
+    if(!children.length)return 1;
+    return children.reduce((s,c)=>s+subtreeWidth(c),0);
+  }
+  // 再帰的に座標を割り当て
+  const positioned=new Set();
+  function place(id,depth,left){
+    const node=ft.nodes.find(n=>n.id===id);
+    if(!node||positioned.has(id))return subtreeWidth(id);
+    positioned.add(id);
+    const children=childMap[id]||[];
+    const w=subtreeWidth(id);
+    // このノードを子ノードの中央に配置
+    node.y=40+depth*PAD_Y;
+    if(!children.length){
+      node.x=40+left*PAD_X;
+    }else{
+      let cur=left;
+      children.forEach(c=>{ cur+=subtreeWidth(c); });
+      // 子の範囲の中央
+      node.x=40+(left+(w-1)/2)*PAD_X;
+      cur=left;
+      children.forEach(c=>{place(c,depth+1,cur);cur+=subtreeWidth(c);});
+    }
+    return w;
+  }
+  let cur=0;
+  roots.forEach(r=>{cur+=place(r,0,cur);});
+  // 配置されていないノードは右端に並べる
+  const unpositioned=ft.nodes.filter(n=>!positioned.has(n.id));
+  unpositioned.forEach((n,i)=>{
+    n.x=40+(cur+i)*PAD_X;n.y=40;
   });
   saveS();drawFtree();
 }
@@ -1580,16 +1926,40 @@ function ftreeResetZoom(){ftViewX=0;ftViewY=0;ftScale=1;drawFtree();}
 function ftreeAddNode(){openFtreeNodeModal(null);}
 function openFtreeNodeModal(id){
   ftEditNodeId=id;
-  const ft=getFtree();
-  const node=id?ft.nodes.find(n=>n.id===id):null;
+  var ft=getFtree();
+  var node=id?ft.nodes.find(function(n){return n.id===id;}):null;
+  var birthY="",birthM="",birthD="";
+  if(node){
+    if(node.birthFull){
+      var parts=node.birthFull.split("-");
+      birthY=parts[0]||"";
+      birthM=parts[1]?parseInt(parts[1])+"":"";
+      birthD=parts[2]?parseInt(parts[2])+"":"";
+    }else if(node.birth){
+      birthY=node.birth;
+    }
+    if(node.memberId){
+      var mem=S.members.find(function(m){return m.id===node.memberId;});
+      if(mem&&mem.birth){
+        var mparts=mem.birth.split("-");
+        birthY=mparts[0]||birthY;
+        birthM=mparts[1]?parseInt(mparts[1])+"":birthM;
+        birthD=mparts[2]?parseInt(mparts[2])+"":birthD;
+      }
+    }
+  }
   document.getElementById("ftree-modal-ttl").textContent=node?"人物を編集":"人物を追加";
   document.getElementById("ftree-node-id").value=id||"";
-  document.getElementById("ftree-node-name").value=node?.name||"";
-  document.getElementById("ftree-node-birth").value=node?.birth||"";
-  document.getElementById("ftree-node-role").value=node?.role||"";
-  const sw=document.getElementById("ftree-color-swatches");
-  const cur=node?.color||FTREE_COLORS[0];
-  sw.innerHTML=FTREE_COLORS.map(c=>`<div style="width:24px;height:24px;border-radius:50%;background:${c};cursor:pointer;border:2px solid ${c===cur?"var(--text)":"transparent"};flex-shrink:0;transition:all 0.15s;" data-fc="${c}" onclick="ftreePickColor('${c}')"></div>`).join("");
+  document.getElementById("ftree-node-name").value=(node&&node.name)||"";
+  document.getElementById("ftree-node-year").value=birthY;
+  document.getElementById("ftree-node-month").value=birthM;
+  document.getElementById("ftree-node-day").value=birthD;
+  document.getElementById("ftree-node-role").value=(node&&node.role)||"";
+  var sw=document.getElementById("ftree-color-swatches");
+  var cur2=(node&&node.color)||FTREE_COLORS[0];
+  sw.innerHTML=FTREE_COLORS.map(function(c){
+    return '<div style="width:24px;height:24px;border-radius:50%;background:'+c+';cursor:pointer;border:2px solid '+(c===cur2?"var(--text)":"transparent")+';flex-shrink:0;" data-fc="'+c+'" onclick="ftreePickColor(\''+c+'\')"></div>';
+  }).join("");
   document.getElementById("ftreeNodeModal").classList.add("open");
   document.getElementById("ftree-node-name").focus();
 }
@@ -1598,23 +1968,45 @@ function ftreePickColor(c){
 }
 function closeFtreeModal(){document.getElementById("ftreeNodeModal").classList.remove("open");}
 function saveFtreeNode(){
-  const name=document.getElementById("ftree-node-name").value.trim();
+  var name=document.getElementById("ftree-node-name").value.trim();
   if(!name){alert("名前は必須です");return;}
-  const birth=document.getElementById("ftree-node-birth").value.trim();
-  const role=document.getElementById("ftree-node-role").value.trim();
-  const activeSw=[...document.querySelectorAll("[data-fc]")].find(el=>el.style.borderColor.includes("var(--text)")||el.style.borderColor==="#f0ece4"||el.style.borderColor==="rgb(240, 236, 228)");
-  const color=activeSw?.dataset.fc||FTREE_COLORS[0];
-  const ft=getFtree();
-  const existId=document.getElementById("ftree-node-id").value;
+  var y=document.getElementById("ftree-node-year").value.trim();
+  var mo=document.getElementById("ftree-node-month").value.trim();
+  var d=document.getElementById("ftree-node-day").value.trim();
+  var birth=y||"";
+  var birthFull=y?(y+(mo?"-"+(mo.length<2?"0"+mo:mo):"")+(mo&&d?"-"+(d.length<2?"0"+d:d):"")):"";
+  var role=document.getElementById("ftree-node-role").value.trim();
+  var allSw=document.querySelectorAll("[data-fc]");
+  var activeSw=null;
+  for(var si=0;si<allSw.length;si++){
+    var bc=allSw[si].style.borderColor;
+    if(bc&&(bc.indexOf("var(--text)")>-1||bc==="#f0ece4"||bc==="rgb(240, 236, 228)"||bc==="rgb(240,236,228)")){
+      activeSw=allSw[si];break;
+    }
+  }
+  var color=(activeSw&&activeSw.dataset.fc)||FTREE_COLORS[0];
+  var ft=getFtree();
+  var existId=document.getElementById("ftree-node-id").value;
   if(existId){
-    const idx=ft.nodes.findIndex(n=>n.id===existId);
-    if(idx>-1)ft.nodes[idx]={...ft.nodes[idx],name,birth,role,color};
+    var idx=ft.nodes.findIndex(function(n){return n.id===existId;});
+    if(idx>-1){
+      var old=ft.nodes[idx];
+      ft.nodes[idx]={id:old.id,memberId:old.memberId,x:old.x,y:old.y,name:name,birth:birth,birthFull:birthFull,role:role,color:color};
+    }
   }else{
-    const ft2=getFtree();
-    const offset=ft2.nodes.length;
-    ft2.nodes.push({id:"n"+Date.now(),name,birth,role,color,x:60+(offset%4)*140,y:60+Math.floor(offset/4)*100});
+    var parentNode=ftPendingParentId?ft.nodes.find(function(n){return n.id===ftPendingParentId;}):null;
+    var sibCount=ftPendingParentId?ft.edges.filter(function(e){return e.from===ftPendingParentId;}).length:0;
+    var newId="n"+Date.now();
+    var nx=parentNode?parentNode.x+sibCount*(FT_NODE_W+24):40+ft.nodes.length*(FT_NODE_W+20);
+    var ny=parentNode?parentNode.y+(FT_NODE_H+60):40;
+    ft.nodes.push({id:newId,name:name,birth:birth,birthFull:birthFull,role:role,color:color,x:nx,y:ny});
+    if(ftPendingParentId){
+      ft.edges.push({id:"e"+Date.now(),from:ftPendingParentId,to:newId,rel:"親子"});
+    }
+    ftPendingParentId=null;
   }
   saveS();closeFtreeModal();renderFtreeTabs();drawFtree();
+  if(!existId)ftreeAutoLayout();
 }
 
 /* ---- INIT ---- */
@@ -1627,13 +2019,46 @@ const now2=new Date().getFullYear();
 document.getElementById("age-from").value=now2-5;
 document.getElementById("age-to").value=now2+10;
 
+// ページを開いたとき、Supabase設定済みなら自動で最新データを取得
+(async()=>{
+  try{
+    if(!S.sbUrl||!S.sbKey)return;
+    updateSyncBadge("syncing","⟳ 読込中");
+    const res=await fetch(`${S.sbUrl}/rest/v1/${S.sbTable||"family_chronicle"}?id=eq.${S.sbRecordId||"my-family"}&limit=1`,
+      {headers:{"apikey":S.sbKey,"Authorization":"Bearer "+S.sbKey}});
+    if(!res.ok){updateSyncBadge("err");return;}
+    const rows=await res.json();
+    if(!rows||!rows.length){updateSyncBadge("ok","☁ 新規");return;}
+    const remote=rows[0].data;
+    if(!remote){updateSyncBadge("ok");return;}
+    const remoteTime=new Date(rows[0].updated_at||0).getTime();
+    const localTime=S._savedAt?new Date(S._savedAt).getTime():0;
+    if(remoteTime>localTime){
+      const sbConf=localStorage.getItem(SK+"_sb");
+      let sbBak={url:S.sbUrl,key:S.sbKey,table:S.sbTable,recordId:S.sbRecordId};
+      if(sbConf){try{sbBak=JSON.parse(sbConf);}catch(e){}}
+      S={...S,...remote,tabs:{...DEF_TABS,...(remote.tabs||{})},guests:remote.guests||[],ftrees:remote.ftrees||{}};
+      S.sbUrl=sbBak.url||"";S.sbKey=sbBak.key||"";S.sbTable=sbBak.table||"family_chronicle";S.sbRecordId=sbBak.recordId||"my-family";
+      if(!S.tabOrder)S.tabOrder=["timeline","timetable","person","profile","age","overview","ftree","settings"];
+      if(!S.tabOrder.includes("ftree")){const si=S.tabOrder.indexOf("settings");si>=0?S.tabOrder.splice(si,0,"ftree"):S.tabOrder.push("ftree");}
+      if(!S.tabs.ftree)S.tabs.ftree="家系図";
+      localStorage.setItem(SK,JSON.stringify(S));
+      try{applyTheme();renderNavTabs();renderFilters();renderTL();updatePageTitles();
+      const lt=document.getElementById("logo-text");if(lt)lt.innerHTML=S.title+"<small>"+S.subtitle+"</small>";}catch(e2){}
+    }
+    updateSyncBadge("ok");
+  }catch(e){try{updateSyncBadge("err");}catch(e2){}}
+})();
+
 // Family tree canvas: resize on window resize
 window.addEventListener("resize",()=>{
-  if(document.getElementById("page-ftree").classList.contains("active"))renderFtree();
+  try{if(document.getElementById("page-ftree").classList.contains("active"))renderFtree();}catch(e){}
 });
 // Set canvas height based on viewport
-const ftCanvasWrap=document.getElementById("ftree-canvas-wrap");
-if(ftCanvasWrap){ftCanvasWrap.style.height=Math.max(380,window.innerHeight-320)+"px";}
+try{
+  const ftCanvasWrap=document.getElementById("ftree-canvas-wrap");
+  if(ftCanvasWrap){ftCanvasWrap.style.height=Math.max(380,window.innerHeight-320)+"px";}
+}catch(e){}
 </script>
 </body>
 </html>
