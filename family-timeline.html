@@ -15,8 +15,9 @@ nav{display:flex;align-items:center;justify-content:space-between;padding:1rem 1
 .nav-has-img::before{content:"";position:absolute;inset:0;background:rgba(0,0,0,0.68);z-index:0;}
 .nav-has-img>*{position:relative;z-index:1;}
 .logo-wrap{display:flex;align-items:center;gap:0.5rem;}
-.logo{font-family:"Cormorant Garamond",serif;font-size:1.6rem;font-weight:400;letter-spacing:0.1em;color:var(--accent);cursor:pointer;}
+.logo{font-family:"Cormorant Garamond",serif;font-size:2.1rem;font-weight:400;letter-spacing:0.1em;color:var(--accent);cursor:pointer;}
 .logo small{display:block;font-family:"Noto Sans JP",sans-serif;font-size:0.65rem;letter-spacing:0.3em;color:var(--muted);margin-top:0.1rem;font-weight:400;}
+.tag-cat{background:transparent;border:1px solid;font-size:0.6rem;}
 
 .edit-btn{background:none;border:none;color:var(--muted);cursor:pointer;font-size:0.85rem;padding:0.2rem 0.3rem;transition:color 0.2s;}
 .edit-btn:hover{color:var(--accent);}
@@ -352,24 +353,6 @@ input[type=color].cpick{width:28px;height:28px;border:none;background:none;curso
     <div class="ov-sec"><div class="sec-lbl">RECENT 10 EVENTS</div><div class="rlist" id="rlist"></div></div>
   </div>
 </div>
-<div id="page-ftree" class="page">
-  <div class="ftree-wrap">
-    <div class="page-title" id="ftree-page-title">家系図</div>
-    <div class="ftree-family-tabs" id="ftree-family-tabs"></div>
-    <div class="ftree-toolbar">
-      <button class="btn-primary" onclick="ftreeAddRoot()" style="font-size:0.76rem;padding:0.38rem 0.9rem;">＋ 先祖を追加</button>
-      <button class="btn-ghost" onclick="ftreeAutoLayout()" style="font-size:0.76rem;padding:0.38rem 0.9rem;">⊞ 自動整列</button>
-      <button class="btn-ghost" onclick="ftreeResetZoom()" style="font-size:0.76rem;padding:0.38rem 0.9rem;">⬜ 表示リセット</button>
-    </div>
-    <div class="ftree-canvas-wrap" id="ftree-canvas-wrap">
-      <canvas id="ftree-canvas"></canvas>
-      <div class="ftree-tooltip" id="ftree-tooltip"></div>
-    </div>
-    <div class="ftree-hint">
-      ノードの「＋」：子を追加 ／ 「✕」：削除 ／ 「✎」：編集 ／ ドラッグ：移動 ／ ホイール：ズーム
-    </div>
-  </div>
-</div>
 <div id="page-settings" class="page">
   <div class="set-wrap">
     <div class="set-sec">
@@ -552,7 +535,7 @@ const BG_PRESETS=["#0d0d0d","#1c1c1e","#2c2c2e","#ffffff","#f5f5f5","#e8e8e8","#
 const PREFS=["A","B","O","AB"];
 const PREFS_ALL=["A","B","O","AB","A+","A-","B+","B-","O+","O-","AB+","AB-"];
 const JAPAN_PREFS=["北海道","青森","岩手","宮城","秋田","山形","福島","茨城","栃木","群馬","埼玉","千葉","東京","神奈川","新潟","富山","石川","福井","山梨","長野","岐阜","静岡","愛知","三重","滋賀","京都","大阪","兵庫","奈良","和歌山","鳥取","島根","岡山","広島","山口","徳島","香川","愛媛","高知","福岡","佐賀","長崎","熊本","大分","宮崎","鹿児島","沖縄"];
-const DEF_TABS={timeline:"年表",timetable:"テーブル",person:"人物史",profile:"プロフィール",age:"年齢一覧",overview:"俯瞰",ftree:"家系図"};
+const DEF_TABS={timeline:"年表",timetable:"テーブル",person:"人物史",profile:"プロフィール",age:"年齢一覧",overview:"俯瞰"};
 const DEF_MEM=[
   {id:"m1",name:"ママ",color:"#e8a598",birth:"1985-03-15",birthTime:"",birthPref:"東京",blood:"A",memo:"",icon:""},
   {id:"m2",name:"パパ",color:"#7eb3c8",birth:"1983-07-20",birthTime:"",birthPref:"大阪",blood:"O",memo:"",icon:""},
@@ -565,6 +548,7 @@ const DEF_CAT=[
   {id:"c3",name:"習い事",color:"#98c9a3"},
   {id:"c4",name:"健康",color:"#e8a598"},
   {id:"c5",name:"住まい",color:"#c9b8e8"},
+  {id:"c6",name:"その他",color:"#aaaaaa"},
 ];
 const SAMPLE=[
   {id:"s1",title:"Family Chronicle へようこそ！",date:"2026-05-26",cat:"c5",members:["m1","m2","m3","m4"],importance:"★★★",memo:"家族みんなの大切な記録をここに残していこう。"},
@@ -573,7 +557,7 @@ const SAMPLE=[
   {id:"s4",title:"そろばん 3級 合格",date:"2025-09-10",cat:"c3",members:["m3"],importance:"★★",memo:"半年間の努力が実った！"},
 ];
 
-let S={title:"Family Chronicle",subtitle:"家族年表",logoFont:"Playfair Display",tabs:{...DEF_TABS},tabOrder:["timeline","timetable","person","profile","age","overview","ftree","settings"],events:[],members:[...DEF_MEM.map(m=>({...m}))],cats:[...DEF_CAT.map(c=>({...c}))],accent:"#c9a96e",bg:"#0d0d0d",guests:[],ftrees:{},sbUrl:"",sbKey:"",sbTable:"family_chronicle",sbRecordId:"my-family"};
+let S={title:"Family Chronicle",subtitle:"家族年表",logoFont:"Playfair Display",tabs:{...DEF_TABS},tabOrder:["timeline","timetable","person","profile","age","overview","settings"],events:[],members:[...DEF_MEM.map(m=>({...m}))],cats:[...DEF_CAT.map(c=>({...c}))],accent:"#c9a96e",bg:"#0d0d0d",guests:[],sbUrl:"",sbKey:"",sbTable:"family_chronicle",sbRecordId:"my-family"};
 let fMem="all",fCat="all",ttY=new Date().getFullYear(),ttMode="month";
 let pendingCb=null; // generic confirm callback
 let editEvId=null;
@@ -582,13 +566,14 @@ let phMemberId=null;
 /* ---- PERSIST ---- */
 function loadS(){
   const r=localStorage.getItem(SK);
-  if(r){try{const p=JSON.parse(r);S={...S,...p,tabs:{...DEF_TABS,...(p.tabs||{})},guests:p.guests||[],ftrees:p.ftrees||{}};}catch(e){}}
+  if(r){try{const p=JSON.parse(r);S={...S,...p,tabs:{...DEF_TABS,...(p.tabs||{})},guests:p.guests||[]};}catch(e){}}
   else{S.events=[...SAMPLE];}
-  // 必ず ftree が tabOrder に含まれるよう保証
-  if(!S.tabOrder)S.tabOrder=["timeline","timetable","person","profile","age","overview","ftree","settings"];
-  if(!S.tabOrder.includes("ftree")){const si=S.tabOrder.indexOf("settings");si>=0?S.tabOrder.splice(si,0,"ftree"):S.tabOrder.push("ftree");}
-  if(!S.tabs.ftree)S.tabs.ftree="家系図";
-  // load supabase config from separate localStorage key (security)
+  // 「その他」カテゴリがなければ追加
+  if(!S.cats.find(function(c){return c.id==="c6";})){
+    S.cats.push({id:"c6",name:"その他",color:"#aaaaaa"});
+  }
+  if(!S.tabOrder)S.tabOrder=["timeline","timetable","person","profile","age","overview","settings"];
+  S.tabOrder=S.tabOrder.filter(function(id){return id!=="ftree";});
   const sbConf=localStorage.getItem(SK+"_sb");
   if(sbConf){try{const c=JSON.parse(sbConf);S.sbUrl=c.url||"";S.sbKey=c.key||"";S.sbTable=c.table||"family_chronicle";S.sbRecordId=c.recordId||"my-family";}catch(e){}}
   applyTheme();
@@ -703,8 +688,7 @@ function getAge(birth,year){if(!birth)return null;return year-parseInt(birth.sli
 
 /* ---- NAV ---- */
 function renderNavTabs(){
-  const allPages={timeline:1,timetable:1,person:1,profile:1,age:1,overview:1,ftree:1,settings:1};
-  const order=S.tabOrder||["timeline","timetable","person","profile","age","overview","ftree","settings"];
+  const order=S.tabOrder||["timeline","timetable","person","profile","age","overview","settings"];
   const wrap=document.getElementById("nav-tabs");
   // 設定以外のタブ
   const mainOrder=order.filter(id=>id!=="settings");
@@ -746,7 +730,6 @@ function showPage(n,btn){
   if(n==="age")renderAgeTable();
   if(n==="person")renderPerson();
   if(n==="profile")renderProfile();
-  if(n==="ftree"){renderFtreeTabs();renderFtree();}
 }
 
 /* ---- FILTERS ---- */
@@ -1143,7 +1126,7 @@ function addCat(){S.cats.push({id:"c"+Date.now(),name:"新カテゴリ",color:"#
 
 
 function updatePageTitles(){
-  const idMap={timeline:"timeline-page-title",timetable:"tt-page-title",person:"ph-page-title",profile:"prof-page-title",age:"age-page-title",overview:"ov-page-title",ftree:"ftree-page-title"};
+  const idMap={timeline:"timeline-page-title",timetable:"tt-page-title",person:"ph-page-title",profile:"prof-page-title",age:"age-page-title",overview:"ov-page-title"};
   Object.entries(S.tabs).forEach(([k,v])=>{
     const elId=idMap[k]||(k+"-page-title");
     const el=document.getElementById(elId);
