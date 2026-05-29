@@ -186,6 +186,16 @@ nav{display:flex;align-items:center;justify-content:space-between;padding:1rem 1
 /* Node tooltip */
 .ftree-tooltip{position:absolute;background:var(--surface2);border:1px solid var(--accent);padding:0.35rem 0.7rem;font-size:0.72rem;font-weight:600;color:var(--text);pointer-events:none;border-radius:2px;white-space:nowrap;z-index:100;display:none;}
 
+.link-card{background:var(--surface);border:1px solid var(--border);padding:1rem 1.2rem;margin-bottom:0.6rem;border-radius:2px;transition:border-color 0.2s;}
+.link-card:hover{border-color:var(--accent);}
+.link-title{font-size:0.95rem;font-weight:700;margin-bottom:0.3rem;}
+.link-url{font-size:0.78rem;color:var(--accent);word-break:break-all;margin-bottom:0.4rem;}
+.link-url a{color:var(--accent);text-decoration:none;}
+.link-url a:hover{text-decoration:underline;}
+.link-memo{font-size:0.8rem;color:var(--muted);line-height:1.7;margin-bottom:0.4rem;}
+.link-cat-badge{display:inline-block;font-size:0.68rem;font-weight:700;padding:0.15rem 0.5rem;border:1px solid var(--border);border-radius:10px;color:var(--muted);margin-bottom:0.4rem;}
+.link-actions{display:flex;gap:0.4rem;justify-content:flex-end;}
+
 /* SETTINGS */
 .set-wrap{padding:1.5rem 1.8rem;max-width:720px;}
 .set-sec{background:var(--surface);border:1px solid var(--border);padding:1.3rem 1.5rem;margin-bottom:1rem;}
@@ -354,6 +364,14 @@ input[type=color].cpick{width:28px;height:28px;border:none;background:none;curso
     <div class="ov-sec"><div class="sec-lbl">RECENT 10 EVENTS</div><div class="rlist" id="rlist"></div></div>
   </div>
 </div>
+<div id="page-links" class="page">
+  <div class="set-wrap">
+    <div class="page-title" id="links-page-title">リンク集</div>
+    <p style="font-size:0.8rem;color:var(--muted);margin-bottom:1.2rem;line-height:1.8;">家族で共有したいリンクをまとめられます。学校・病院・習い事など何でも！</p>
+    <button class="btn-primary" onclick="openLinkModal()" style="margin-bottom:1.4rem;">＋ リンクを追加</button>
+    <div id="links-list"></div>
+  </div>
+</div>
 <div id="page-settings" class="page">
   <div class="set-wrap">
     <div class="set-sec">
@@ -410,8 +428,15 @@ input[type=color].cpick{width:28px;height:28px;border:none;background:none;curso
     </div>
     <div class="set-sec">
       <div class="set-ttl">☁️ Supabase クラウド同期</div>
-      <div style="font-size:0.78rem;color:var(--muted);margin-bottom:1rem;line-height:1.8;">Supabaseに接続すると、PCとスマホなど複数デバイスで同じデータを共有できます。<br>
-        <a href="https://supabase.com" target="_blank" style="color:var(--accent)">supabase.com</a> でプロジェクトを作成し、URLとAnon Keyを入力してください。</div>
+      <div style="font-size:0.78rem;color:var(--muted);margin-bottom:0.8rem;line-height:1.9;">
+        📱 <b>基本的には何もしなくてOK！</b><br>
+        記録を追加・編集すると自動でクラウドに保存されます。<br>
+        別のデバイスで開くと自動で最新データが読み込まれます。<br><br>
+        ⚠️ <b>データがおかしくなった時だけ手動で操作：</b><br>
+        ・「↑ クラウドへ保存」… <b>今いるデバイスのデータ</b>をクラウドに上書き保存<br>
+        ・「↓ クラウドから取得」… クラウドのデータをこのデバイスに上書き取得<br><br>
+        ⚡ <b>初めて使うデバイスでは</b> URL・Key を入力して「接続を保存」してください。
+      </div>
       <div class="set-irow"><label>Project URL</label><input type="text" id="sb-url" placeholder="https://xxxx.supabase.co" style="width:280px;font-size:0.76rem;"></div>
       <div class="set-irow"><label>Anon Key</label><input type="password" id="sb-key" placeholder="eyJhbGciOi..." style="width:280px;font-size:0.76rem;"></div>
       <div class="set-irow"><label>テーブル名</label><input type="text" id="sb-table" placeholder="family_chronicle" style="width:160px;"></div>
@@ -480,6 +505,21 @@ input[type=color].cpick{width:28px;height:28px;border:none;background:none;curso
   </div>
 </div>
 
+<!-- LINK MODAL -->
+<div class="overlay" id="linkModal" onclick="if(event.target===this)closeLinkModal()">
+  <div class="modal">
+    <div class="mhd"><span class="mttl" id="link-modal-ttl">リンクを追加</span><button class="mx" onclick="closeLinkModal()">✕</button></div>
+    <div class="mbd">
+      <input type="hidden" id="link-id">
+      <div class="fg"><label class="fl">タイトル *</label><input class="fi" id="link-title" placeholder="例：えみの小学校"></div>
+      <div class="fg"><label class="fl">URL *</label><input class="fi" type="url" id="link-url" placeholder="https://..."></div>
+      <div class="fg"><label class="fl">メモ（任意）</label><textarea class="fta" id="link-memo" placeholder="例：連絡先・時間割など何でも"></textarea></div>
+      <div class="fg"><label class="fl">カテゴリ（任意）</label><input class="fi" id="link-cat" placeholder="例：学校、病院、習い事"></div>
+      <button class="btn-primary" style="width:100%;padding:0.72rem;" onclick="saveLink()">保存する</button>
+    </div>
+  </div>
+</div>
+
 <!-- EVENT MODAL -->
 <div class="overlay" id="modalOv" onclick="closeModalOut(event)">
   <div class="modal">
@@ -536,7 +576,7 @@ const BG_PRESETS=["#0d0d0d","#1c1c1e","#2c2c2e","#ffffff","#f5f5f5","#e8e8e8","#
 const PREFS=["A","B","O","AB"];
 const PREFS_ALL=["A","B","O","AB","A+","A-","B+","B-","O+","O-","AB+","AB-"];
 const JAPAN_PREFS=["北海道","青森","岩手","宮城","秋田","山形","福島","茨城","栃木","群馬","埼玉","千葉","東京","神奈川","新潟","富山","石川","福井","山梨","長野","岐阜","静岡","愛知","三重","滋賀","京都","大阪","兵庫","奈良","和歌山","鳥取","島根","岡山","広島","山口","徳島","香川","愛媛","高知","福岡","佐賀","長崎","熊本","大分","宮崎","鹿児島","沖縄"];
-const DEF_TABS={timeline:"年表",timetable:"テーブル",person:"人物史",profile:"プロフィール",age:"年齢一覧",overview:"俯瞰"};
+const DEF_TABS={timeline:"年表",timetable:"テーブル",person:"人物史",profile:"プロフィール",age:"年齢一覧",overview:"俯瞰",links:"リンク集"};
 const DEF_MEM=[
   {id:"m1",name:"ママ",color:"#e8a598",birth:"1985-03-15",birthTime:"",birthPref:"東京",blood:"A",memo:"",icon:""},
   {id:"m2",name:"パパ",color:"#7eb3c8",birth:"1983-07-20",birthTime:"",birthPref:"大阪",blood:"O",memo:"",icon:""},
@@ -558,7 +598,7 @@ const SAMPLE=[
   {id:"s4",title:"そろばん 3級 合格",date:"2025-09-10",cat:"c3",members:["m3"],importance:"★★",memo:"半年間の努力が実った！"},
 ];
 
-let S={title:"Family Chronicle",subtitle:"家族年表",logoFont:"Playfair Display",tabs:{...DEF_TABS},tabOrder:["timeline","timetable","person","profile","age","overview","settings"],events:[],members:[...DEF_MEM.map(m=>({...m}))],cats:[...DEF_CAT.map(c=>({...c}))],accent:"#c9a96e",bg:"#0d0d0d",guests:[],sbUrl:"",sbKey:"",sbTable:"family_chronicle",sbRecordId:"my-family"};
+let S={title:"Family Chronicle",subtitle:"家族年表",logoFont:"Playfair Display",tabs:{...DEF_TABS},tabOrder:["timeline","timetable","person","profile","age","overview","links","settings"],events:[],members:[...DEF_MEM.map(m=>({...m}))],cats:[...DEF_CAT.map(c=>({...c}))],accent:"#c9a96e",bg:"#0d0d0d",guests:[],links:[],sbUrl:"",sbKey:"",sbTable:"family_chronicle",sbRecordId:"my-family"};
 let fMem="all",fCat="all",ttY=new Date().getFullYear(),ttMode="month",ttMemFilter=[];
 let pendingCb=null; // generic confirm callback
 let editEvId=null;
@@ -567,14 +607,18 @@ let phMemberId=null;
 /* ---- PERSIST ---- */
 function loadS(){
   const r=localStorage.getItem(SK);
-  if(r){try{const p=JSON.parse(r);S={...S,...p,tabs:{...DEF_TABS,...(p.tabs||{})},guests:p.guests||[]};}catch(e){}}
+  if(r){try{const p=JSON.parse(r);S={...S,...p,tabs:{...DEF_TABS,...(p.tabs||{})},guests:p.guests||[],links:p.links||[]};}catch(e){}}
   else{S.events=[...SAMPLE];}
+  if(!S.links)S.links=[];
   // 「その他」カテゴリがなければ追加
   if(!S.cats.find(function(c){return c.id==="c6";})){
     S.cats.push({id:"c6",name:"その他",color:"#aaaaaa"});
   }
-  if(!S.tabOrder)S.tabOrder=["timeline","timetable","person","profile","age","overview","settings"];
+  if(!S.tabOrder)S.tabOrder=["timeline","timetable","person","profile","age","overview","links","settings"];
   S.tabOrder=S.tabOrder.filter(function(id){return id!=="ftree";});
+  if(S.tabs&&S.tabs.ftree)delete S.tabs.ftree;
+  if(!S.tabOrder.includes("links")){const si=S.tabOrder.indexOf("settings");si>=0?S.tabOrder.splice(si,0,"links"):S.tabOrder.push("links");}
+  if(!S.tabs.links)S.tabs.links="リンク集";
   const sbConf=localStorage.getItem(SK+"_sb");
   if(sbConf){try{const c=JSON.parse(sbConf);S.sbUrl=c.url||"";S.sbKey=c.key||"";S.sbTable=c.table||"family_chronicle";S.sbRecordId=c.recordId||"my-family";}catch(e){}}
   applyTheme();
@@ -704,7 +748,7 @@ function getAge(birth,year){
 
 /* ---- NAV ---- */
 function renderNavTabs(){
-  const order=S.tabOrder||["timeline","timetable","person","profile","age","overview","settings"];
+  const order=S.tabOrder||["timeline","timetable","person","profile","age","overview","links","settings"];
   const wrap=document.getElementById("nav-tabs");
   // 設定以外のタブ
   const mainOrder=order.filter(id=>id!=="settings");
@@ -746,6 +790,7 @@ function showPage(n,btn){
   if(n==="age")renderAgeTable();
   if(n==="person")renderPerson();
   if(n==="profile")renderProfile();
+  if(n==="links")renderLinks();
 }
 
 /* ---- FILTERS ---- */
@@ -1004,7 +1049,7 @@ function renderSet(){
   // Tab order list
   const tabOrderList=document.getElementById("tab-order-list");
   if(tabOrderList){
-    const order=(S.tabOrder||["timeline","timetable","person","profile","age","overview","ftree","settings"]).filter(id=>id!=="settings");
+    const order=(S.tabOrder||["timeline","timetable","person","profile","age","overview","settings"]).filter(id=>id!=="settings");
     tabOrderList.innerHTML=order.map((id,i)=>`
       <div class="tab-order-item" data-tabid="${id}">
         <div class="tab-order-label">TAB ${i+1}</div>
@@ -1160,7 +1205,7 @@ function addCat(){S.cats.push({id:"c"+Date.now(),name:"新カテゴリ",color:"#
 
 
 function updatePageTitles(){
-  const idMap={timeline:"timeline-page-title",timetable:"tt-page-title",person:"ph-page-title",profile:"prof-page-title",age:"age-page-title",overview:"ov-page-title"};
+  const idMap={timeline:"timeline-page-title",timetable:"tt-page-title",person:"ph-page-title",profile:"prof-page-title",age:"age-page-title",overview:"ov-page-title",links:"links-page-title"};
   Object.entries(S.tabs).forEach(([k,v])=>{
     const elId=idMap[k]||(k+"-page-title");
     const el=document.getElementById(elId);
@@ -2026,6 +2071,62 @@ function saveFtreeNode(){
   if(!existId)ftreeAutoLayout();
 }
 
+/* ---- LINKS ---- */
+function renderLinks(){
+  const list=document.getElementById("links-list");
+  if(!list)return;
+  if(!S.links||!S.links.length){
+    list.innerHTML="<div class='empty'>リンクがまだありません。「＋ リンクを追加」から登録してください。</div>";
+    return;
+  }
+  list.innerHTML=S.links.map(function(lk){
+    return`<div class="link-card">
+      ${lk.cat?`<div class="link-cat-badge">${lk.cat}</div>`:""}
+      <div class="link-title">${lk.title}</div>
+      <div class="link-url"><a href="${lk.url}" target="_blank">${lk.url}</a></div>
+      ${lk.memo?`<div class="link-memo">${lk.memo.replace(/\n/g,"<br>")}</div>`:""}
+      <div class="link-actions">
+        <button class="btn-ed" onclick="openLinkModal('${lk.id}')">編集</button>
+        <button class="btn-dl" onclick="delLink('${lk.id}')">削除</button>
+      </div>
+    </div>`;
+  }).join("");
+}
+function openLinkModal(id){
+  const lk=id?(S.links||[]).find(function(l){return l.id===id;}):null;
+  document.getElementById("link-modal-ttl").textContent=lk?"リンクを編集":"リンクを追加";
+  document.getElementById("link-id").value=id||"";
+  document.getElementById("link-title").value=(lk&&lk.title)||"";
+  document.getElementById("link-url").value=(lk&&lk.url)||"";
+  document.getElementById("link-memo").value=(lk&&lk.memo)||"";
+  document.getElementById("link-cat").value=(lk&&lk.cat)||"";
+  document.getElementById("linkModal").classList.add("open");
+  document.getElementById("link-title").focus();
+}
+function closeLinkModal(){document.getElementById("linkModal").classList.remove("open");}
+function saveLink(){
+  const title=document.getElementById("link-title").value.trim();
+  const url=document.getElementById("link-url").value.trim();
+  if(!title||!url){alert("タイトルとURLは必須です");return;}
+  const memo=document.getElementById("link-memo").value.trim();
+  const cat=document.getElementById("link-cat").value.trim();
+  const existId=document.getElementById("link-id").value;
+  if(!S.links)S.links=[];
+  if(existId){
+    var idx=S.links.findIndex(function(l){return l.id===existId;});
+    if(idx>-1)S.links[idx]={id:existId,title,url,memo,cat};
+  }else{
+    S.links.push({id:"lk"+Date.now(),title,url,memo,cat});
+  }
+  saveS();closeLinkModal();renderLinks();
+}
+function delLink(id){
+  askConfirm("このリンクを削除しますか？","",function(){
+    S.links=(S.links||[]).filter(function(l){return l.id!==id;});
+    saveS();renderLinks();
+  });
+}
+
 /* ---- INIT ---- */
 document.getElementById("btn-add-member").addEventListener("click",addMember);
 document.getElementById("btn-add-cat").addEventListener("click",addCat);
@@ -2056,7 +2157,7 @@ document.getElementById("age-to").value=now2+10;
       if(sbConf){try{sbBak=JSON.parse(sbConf);}catch(e){}}
       S={...S,...remote,tabs:{...DEF_TABS,...(remote.tabs||{})},guests:remote.guests||[],ftrees:remote.ftrees||{}};
       S.sbUrl=sbBak.url||"";S.sbKey=sbBak.key||"";S.sbTable=sbBak.table||"family_chronicle";S.sbRecordId=sbBak.recordId||"my-family";
-      if(!S.tabOrder)S.tabOrder=["timeline","timetable","person","profile","age","overview","ftree","settings"];
+      if(!S.tabOrder)S.tabOrder=["timeline","timetable","person","profile","age","overview","settings"];
       if(!S.tabOrder.includes("ftree")){const si=S.tabOrder.indexOf("settings");si>=0?S.tabOrder.splice(si,0,"ftree"):S.tabOrder.push("ftree");}
       if(!S.tabs.ftree)S.tabs.ftree="家系図";
       localStorage.setItem(SK,JSON.stringify(S));
