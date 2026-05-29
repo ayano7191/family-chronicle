@@ -9,8 +9,7 @@
 :root{--bg:#0d0d0d;--surface:#1a1a1a;--surface2:#222;--border:#333;--text:#f0ece4;--muted:#999;--accent:#c9a96e;}
 *{margin:0;padding:0;box-sizing:border-box;}
 body{background:var(--bg);color:var(--text);font-family:"Noto Sans JP",sans-serif;font-weight:400;min-height:100vh;font-size:15px;}
-/* NAV */
-nav{display:flex;align-items:center;justify-content:space-between;padding:1rem 1.8rem;border-bottom:1px solid var(--border);position:sticky;top:0;background:var(--bg);z-index:200;gap:0.8rem;flex-wrap:wrap;}
+nav{display:flex;align-items:center;justify-content:space-between;padding:1.2rem 1.8rem;border-bottom:1px solid var(--border);position:sticky;top:0;background:var(--bg);z-index:200;gap:0.8rem;flex-wrap:wrap;min-height:90px;}
 .nav-has-img{background-size:cover;background-position:center;background-repeat:no-repeat;}
 .nav-has-img::before{content:"";position:absolute;inset:0;background:rgba(0,0,0,0.68);z-index:0;}
 .nav-has-img>*{position:relative;z-index:1;}
@@ -203,6 +202,9 @@ nav{display:flex;align-items:center;justify-content:space-between;padding:1rem 1
 .link-cat-badge{display:inline-block;font-size:0.68rem;font-weight:700;padding:0.15rem 0.5rem;border:1px solid var(--border);border-radius:10px;color:var(--muted);margin-bottom:0.4rem;}
 .link-actions{display:flex;gap:0.4rem;justify-content:flex-end;}
 
+.drag-handle{color:var(--muted);cursor:grab;font-size:1rem;padding:0 0.4rem;user-select:none;flex-shrink:0;}
+.drag-handle:active{cursor:grabbing;}
+.mem-item.drag-over{border-color:var(--accent);background:var(--surface2);}
 /* SETTINGS */
 .set-wrap{padding:1.5rem 1.8rem;max-width:720px;}
 .set-sec{background:var(--surface);border:1px solid var(--border);padding:1.3rem 1.5rem;margin-bottom:1rem;}
@@ -1095,8 +1097,9 @@ function renderSet(){
   // MEMBERS
   const ml=document.getElementById("members-list");
   ml.innerHTML=S.members.map(m=>`
-    <div class="mem-item" data-mid="${m.id}">
+    <div class="mem-item" data-mid="${m.id}" draggable="true">
       <div class="mem-item-top">
+        <span class="drag-handle" title="ドラッグして並び替え">☰</span>
         <div class="cdot" style="background:${m.color}"></div>
         <input class="ninput mem-name" data-mid="${m.id}" value="${m.name}" placeholder="名前">
         <input type="color" class="cpick mem-color" data-mid="${m.id}" value="${m.color}">
@@ -1163,6 +1166,27 @@ function renderSet(){
       saveS();renderSet();
     });
   }));
+
+  // メンバードラッグ並び替え
+  let memDragSrc=null;
+  ml.querySelectorAll(".mem-item").forEach(item=>{
+    item.addEventListener("dragstart",e=>{memDragSrc=item;item.style.opacity="0.4";e.dataTransfer.effectAllowed="move";});
+    item.addEventListener("dragend",e=>{item.style.opacity="1";ml.querySelectorAll(".mem-item").forEach(i=>i.classList.remove("drag-over"));});
+    item.addEventListener("dragover",e=>{e.preventDefault();item.classList.add("drag-over");});
+    item.addEventListener("dragleave",e=>{item.classList.remove("drag-over");});
+    item.addEventListener("drop",e=>{
+      e.preventDefault();item.classList.remove("drag-over");
+      if(!memDragSrc||memDragSrc===item)return;
+      const ids=[...ml.querySelectorAll(".mem-item")].map(el=>el.dataset.mid);
+      const from=ids.indexOf(memDragSrc.dataset.mid);
+      const to=ids.indexOf(item.dataset.mid);
+      const newOrder=[...S.members];
+      const moved=newOrder.splice(from,1)[0];
+      newOrder.splice(to,0,moved);
+      S.members=newOrder;
+      saveS();renderSet();
+    });
+  });
 
   // CATS
   const cl=document.getElementById("cats-list");
