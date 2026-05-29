@@ -1419,15 +1419,26 @@ async function sbPullData(){
   if(st){st.textContent="取得中...";st.style.color="var(--accent)";}
   updateSyncBadge("syncing");
   try{
-    const res=await fetch(`${url}/rest/v1/${table}?id=eq.${rid}&limit=1`,{headers:{"apikey":key,"Authorization":"Bearer "+key}});
+    const res=await fetch(url+"/rest/v1/"+table+"?id=eq."+rid+"&limit=1",{headers:{"apikey":key,"Authorization":"Bearer "+key}});
     if(!res.ok){if(st){st.textContent="✗ 取得失敗 ("+res.status+")";st.style.color="#e87c7c";}updateSyncBadge("err");return;}
     const rows=await res.json();
-    if(!rows.length){if(st){st.textContent="データなし（初回は「クラウドへ保存」を先に）";st.style.color="var(--muted)";}updateSyncBadge("off");return;}
+    if(!rows.length){if(st){st.textContent="データなし（初回は「↑ クラウドへ保存」を先に）";st.style.color="var(--muted)";}updateSyncBadge("off");return;}
     const remote=rows[0].data;
     if(!remote){if(st){st.textContent="データが空です";st.style.color="var(--muted)";}return;}
-    askConfirm("クラウドからデータを取得しますか？","現在のローカルデータが上書きされます。",()=>{
-      S={...S,...remote,tabs:{...DEF_TABS,...(remote.tabs||{})},guests:remote.guests||[],ftrees:remote.ftrees||{}};
-      saveS();applyTheme();renderNavTabs();renderFilters();renderTL();updatePageTitles();
+    askConfirm("クラウドからデータを取得しますか？","現在のローカルデータが上書きされます。",function(){
+      var sbBak={url:url,key:key,table:table,recordId:rid};
+      S={...S,...remote,tabs:{...DEF_TABS,...(remote.tabs||{})},guests:remote.guests||[],links:remote.links||[]};
+      S.sbUrl=sbBak.url;S.sbKey=sbBak.key;S.sbTable=sbBak.table;S.sbRecordId=sbBak.recordId;
+      // 不正なタブを除去
+      var validIds=["timeline","timetable","person","profile","age","overview","links","settings"];
+      S.tabOrder=(S.tabOrder||[]).filter(function(id){return validIds.indexOf(id)>-1;});
+      if(!S.tabOrder.includes("links")){const si=S.tabOrder.indexOf("settings");si>=0?S.tabOrder.splice(si,0,"links"):S.tabOrder.push("links");}
+      if(!S.tabOrder.includes("settings"))S.tabOrder.push("settings");
+      if(S.tabs){delete S.tabs.ftree;}
+      S.tabs.links="リンク集";
+      saveS();
+      try{applyTheme();renderNavTabs();renderFilters();renderTL();updatePageTitles();
+      const lt=document.getElementById("logo-text");if(lt)lt.innerHTML=S.title+"<small>"+S.subtitle+"</small>";}catch(e2){}
       updateSyncBadge("ok");
       if(st){st.textContent="✓ 取得完了！";st.style.color="#7ec87e";}
       alert("クラウドからデータを取得しました！");
