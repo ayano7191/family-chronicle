@@ -9,7 +9,7 @@
 :root{--bg:#0d0d0d;--surface:#1a1a1a;--surface2:#222;--border:#333;--text:#f0ece4;--muted:#999;--accent:#c9a96e;}
 *{margin:0;padding:0;box-sizing:border-box;}
 body{background:var(--bg);color:var(--text);font-family:"Noto Sans JP",sans-serif;font-weight:400;min-height:100vh;font-size:15px;}
-nav{display:flex;align-items:center;justify-content:space-between;padding:1.2rem 1.8rem;border-bottom:1px solid var(--border);position:sticky;top:0;background:var(--bg);z-index:200;gap:0.8rem;flex-wrap:wrap;min-height:90px;}
+nav{display:flex;align-items:center;justify-content:space-between;padding:1.5rem 1.8rem;border-bottom:1px solid var(--border);position:sticky;top:0;background:var(--bg);z-index:200;gap:0.8rem;flex-wrap:wrap;min-height:180px;}
 .nav-has-img{background-size:cover;background-position:center;background-repeat:no-repeat;}
 .nav-has-img::before{content:"";position:absolute;inset:0;background:rgba(0,0,0,0.68);z-index:0;}
 .nav-has-img>*{position:relative;z-index:1;}
@@ -423,6 +423,14 @@ input[type=color].cpick{width:28px;height:28px;border:none;background:none;curso
         <input type="file" id="header-img-input" accept="image/*" style="display:none" onchange="setHeaderImage(event)">
         <button class="btn-ghost" onclick="clearHeaderImage()" style="font-size:0.78rem;">✕ 画像を削除</button>
       </div>
+      <div style="display:flex;align-items:center;gap:0.6rem;margin-bottom:0.8rem;flex-wrap:wrap;">
+        <span style="font-size:0.78rem;color:var(--muted);">表示位置：</span>
+        <button class="tc-btn" onclick="setHeaderPos('top')" id="hpos-top">上</button>
+        <button class="tc-btn" onclick="setHeaderPos('center')" id="hpos-center">中央</button>
+        <button class="tc-btn" onclick="setHeaderPos('bottom')" id="hpos-bottom">下</button>
+        <button class="tc-btn" onclick="setHeaderPos('left')" id="hpos-left">左</button>
+        <button class="tc-btn" onclick="setHeaderPos('right')" id="hpos-right">右</button>
+      </div>
       <div style="display:flex;align-items:center;gap:0.8rem;margin-bottom:0.8rem;">
         <span style="font-size:0.78rem;color:var(--muted);">ナビ文字色：</span>
         <input type="color" id="nav-text-color" value="#ffffff" oninput="applyNavTextColor(this.value)" style="width:32px;height:32px;border:1px solid var(--border);background:none;cursor:pointer;padding:2px;border-radius:3px;">
@@ -681,18 +689,28 @@ function applyNavTextColor(color){
   const inp=document.getElementById("nav-text-color");
   if(inp)inp.value=color;
 }
+function setHeaderPos(pos){
+  S.headerImgPos=pos;
+  const nav=document.querySelector("nav");
+  if(nav)nav.style.backgroundPosition=pos;
+  // ボタンのアクティブ状態更新
+  ["top","center","bottom","left","right"].forEach(function(p){
+    const btn=document.getElementById("hpos-"+p);
+    if(btn)btn.classList.toggle("active",p===pos);
+  });
+  saveS();
+}
 function applyHeaderImage(url){
   const nav=document.querySelector("nav");
   if(!nav)return;
   if(url){
     nav.style.backgroundImage="url('"+url+"')";
     nav.style.backgroundSize="cover";
-    nav.style.backgroundPosition="center";
+    nav.style.backgroundPosition=S.headerImgPos||"center";
     nav.classList.add("nav-has-img");
   }else{
     nav.style.backgroundImage="";
     nav.classList.remove("nav-has-img");
-    // 文字色をデフォルトに戻す
     nav.querySelectorAll(".nav-tab,.logo,.logo small,.sync-badge").forEach(function(el){
       el.style.removeProperty("color");
     });
@@ -704,6 +722,11 @@ function applyHeaderImage(url){
     if(url){prev.style.display="block";thumb.src=url;}
     else{prev.style.display="none";thumb.src="";}
   }
+  // 位置ボタンのアクティブ状態
+  ["top","center","bottom","left","right"].forEach(function(p){
+    const btn=document.getElementById("hpos-"+p);
+    if(btn)btn.classList.toggle("active",p===(S.headerImgPos||"center"));
+  });
 }
 function setHeaderImage(e){
   const file=e.target.files[0];if(!file)return;
