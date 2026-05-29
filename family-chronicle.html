@@ -454,7 +454,7 @@ input[type=color].cpick{width:28px;height:28px;border:none;background:none;curso
         <button class="btn-primary" onclick="sbSaveConfig()" style="font-size:0.8rem;">接続を保存</button>
         <button class="btn-ghost" onclick="sbTestConnection()" style="font-size:0.8rem;">接続テスト</button>
         <button class="btn-ghost" onclick="sbPullData()" style="font-size:0.8rem;">↓ クラウドから取得</button>
-        <button class="btn-ghost" onclick="sbPushData()" style="font-size:0.8rem;">↑ クラウドへ保存</button>
+        <button class="btn-ghost" onclick="confirmPush()" style="font-size:0.8rem;">↑ クラウドへ保存</button>
         <span id="sb-status" style="font-size:0.74rem;color:var(--muted);"></span>
       </div>
     </div>
@@ -560,12 +560,12 @@ input[type=color].cpick{width:28px;height:28px;border:none;background:none;curso
 <!-- CONFIRM -->
 <div class="confirm-ov" id="confirm-ov">
   <div class="confirm-box">
-    <div class="confirm-icon">🗑️</div>
+    <div class="confirm-icon" id="confirm-icon">🗑️</div>
     <div class="confirm-msg" id="confirm-msg"></div>
     <div class="confirm-sub" id="confirm-sub">削除すると元に戻せません。本当によいですか？</div>
     <div class="confirm-btns">
       <button class="btn-cnc" onclick="closeConfirm()">キャンセル</button>
-      <button class="btn-cndl" onclick="doConfirm()">削除する</button>
+      <button class="btn-cndl" id="confirm-ok-btn" onclick="doConfirm()">削除する</button>
     </div>
   </div>
 </div>
@@ -1290,10 +1290,13 @@ function importData(evt){
 }
 
 /* ---- CONFIRM DIALOG (single reusable) ---- */
-function askConfirm(msg,sub,cb){
+function askConfirm(msg,sub,cb,btnLabel,icon){
   pendingCb=cb;
   document.getElementById("confirm-msg").textContent=msg;
-  document.getElementById("confirm-sub").textContent=sub;
+  document.getElementById("confirm-sub").textContent=sub||"";
+  document.getElementById("confirm-ok-btn").textContent=btnLabel||"削除する";
+  document.getElementById("confirm-ok-btn").style.background=btnLabel?"var(--accent)":"#e05555";
+  document.getElementById("confirm-icon").textContent=icon||(btnLabel?"☁️":"🗑️");
   document.getElementById("confirm-ov").classList.add("open");
 }
 function closeConfirm(){pendingCb=null;document.getElementById("confirm-ov").classList.remove("open");}
@@ -1418,6 +1421,15 @@ async function sbTestConnection(){
     updateSyncBadge("err");
   }
 }
+function confirmPush(){
+  const okBtn=document.getElementById("confirm-ok-btn");
+  const confirmIcon=document.getElementById("confirm-icon");
+  if(okBtn){okBtn.textContent="保存する";okBtn.style.background="var(--accent)";}
+  if(confirmIcon)confirmIcon.textContent="☁️";
+  askConfirm("クラウドへ保存しますか？","クラウドのデータが今いるデバイスのデータで上書きされます。",function(){
+    sbPushData(false);
+  });
+}
 async function sbPushData(silent=false){
   if(!S.sbUrl||!S.sbKey)return;
   if(!silent)updateSyncBadge("syncing");
@@ -1460,9 +1472,12 @@ async function sbPullData(){
     if(!rows.length){if(st){st.textContent="データなし（初回は「↑ クラウドへ保存」を先に）";st.style.color="var(--muted)";}updateSyncBadge("off");return;}
     const remote=rows[0].data;
     if(!remote){if(st){st.textContent="データが空です";st.style.color="var(--muted)";}return;}
+    // 取得用にボタンラベルを一時変更
+    const okBtn=document.getElementById("confirm-ok-btn");
+    const confirmIcon=document.getElementById("confirm-icon");
+    if(okBtn)okBtn.textContent="取得する";
+    if(confirmIcon)confirmIcon.textContent="☁️";
     askConfirm("クラウドからデータを取得しますか？","現在のローカルデータが上書きされます。",function(){
-      var sbBak={url:url,key:key,table:table,recordId:rid};
-      S={...S,...remote,tabs:{...DEF_TABS,...(remote.tabs||{})},guests:remote.guests||[],links:remote.links||[]};
       S.sbUrl=sbBak.url;S.sbKey=sbBak.key;S.sbTable=sbBak.table;S.sbRecordId=sbBak.recordId;
       // 不正なタブを除去
       var validIds=["timeline","timetable","person","profile","age","overview","links","settings"];
