@@ -761,6 +761,11 @@ function clearHeaderImage(){
 function gMem(id){return S.members.find(m=>m.id===id)||{name:id,color:"#888",birth:"",blood:"",birthPref:"",birthTime:"",memo:""};}
 function gCat(id){return S.cats.find(c=>c.id===id)||{name:id,color:"#888"};}
 function fmt(d){var p=d.split("-");return p[1]+"月"+p[2]+"日";}
+function contrastColor(hex){
+  var r=parseInt(hex.slice(1,3),16),g=parseInt(hex.slice(3,5),16),b=parseInt(hex.slice(5,7),16);
+  var luminance=(0.299*r+0.587*g+0.114*b)/255;
+  return luminance>0.55?"#333333":"#ffffff";
+}
 function getAge(birth,year){
   if(!birth)return null;
   var byear=parseInt(birth.slice(0,4));
@@ -854,7 +859,7 @@ function renderTL(){
   Object.keys(by).sort((a,b)=>b-a).forEach(y=>{
     html+=`<div class="year-div"><div class="year-div-lbl"><div class="year-div-west">${y}</div><div class="year-div-wa">${toWareki(parseInt(y))}</div></div><div class="year-div-line"></div></div><div class="evlist">`;
     by[y].forEach(e=>{
-      const mt=e.members.map(id=>{const m=gMem(id);return`<span class="tag tag-mem" style="background:${m.color};color:#0d0d0d">${m.name}</span>`;}).join("");
+      const mt=e.members.map(id=>{const m=gMem(id);return`<span class="tag tag-mem" style="background:${m.color};color:${contrastColor(m.color)}">${m.name}</span>`;}).join("");
       const cat=gCat(e.cat);
       html+=`<div class="ecard"><div class="eleft"><div class="edate">${fmt(e.date)}${e.dateEnd?`<br><span style="font-size:0.68rem;color:var(--muted)">〜 ${fmt(e.dateEnd)}</span>`:""}</div>${mt}</div><div class="econtent">${e.img?`<div class="ecard-img-wrap"><div style="flex:1;min-width:0"><div class="etitle">${e.title}</div>${e.memo?`<div class="ememo">${e.memo}</div>`:""}<div class="etags"><span class="tag tag-cat" style="border-color:${cat.color};color:${cat.color}">${cat.name}</span></div></div><img class="ev-thumb" src="${e.img}" alt="${e.title}"></div>`:`<div class="etitle">${e.title}</div>${e.memo?`<div class="ememo">${e.memo}</div>`:""}<div class="etags"><span class="tag tag-cat" style="border-color:${cat.color};color:${cat.color}">${cat.name}</span></div>`}<div class="eactions"><button class="btn-ed" data-edit="${e.id}">編集</button><button class="btn-cp" data-copy="${e.id}">複製</button><button class="btn-dl" data-del="${e.id}" data-title="${e.title.replace(/"/g,'&quot;')}">削除</button></div></div></div>`;
     });
@@ -1064,7 +1069,7 @@ function renderOv(){
   }).join("");
   const rec=[...S.events].sort((a,b)=>b.date.localeCompare(a.date)).slice(0,10);
   document.getElementById("rlist").innerHTML=rec.map(e=>{
-    const mt=e.members.map(id=>{const m=gMem(id);return`<span class="tag tag-mem" style="background:${m.color};color:#0d0d0d;font-size:0.6rem;padding:0.1rem 0.32rem">${m.name}</span>`;}).join("");
+    const mt=e.members.map(id=>{const m=gMem(id);return`<span class="tag tag-mem" style="background:${m.color};color:${contrastColor(m.color)};font-size:0.6rem;padding:0.1rem 0.32rem">${m.name}</span>`;}).join("");
     return`<div class="ritem"><div class="rdate">${e.date.slice(0,4)}年 ${fmt(e.date)}</div><div class="rttl">${e.title}</div><div class="rtags">${mt}</div></div>`;
   }).join("");
 }
