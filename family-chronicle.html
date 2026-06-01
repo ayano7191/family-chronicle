@@ -11,15 +11,16 @@
 <meta name="description" content="家族の年表・プロフィール・ライフプランを記録するアプリ">
 <link rel="manifest" href="data:application/json,{&quot;name&quot;:&quot;Family Chronicle&quot;,&quot;short_name&quot;:&quot;FamilyCh&quot;,&quot;start_url&quot;:&quot;.&quot;,&quot;display&quot;:&quot;standalone&quot;,&quot;background_color&quot;:&quot;%230d0d0d&quot;,&quot;theme_color&quot;:&quot;%23c9a96e&quot;,&quot;icons&quot;:[{&quot;src&quot;:&quot;data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' rx='20' fill='%230d0d0d'/%3E%3Ctext y='.9em' font-size='80' x='10'%3E📖%3C/text%3E%3C/svg%3E&quot;,&quot;sizes&quot;:&quot;any&quot;,&quot;type&quot;:&quot;image/svg+xml&quot;}]}">
 <title>Family Chronicle</title>
-<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@300;400;600&family=Cinzel:wght@400;700&family=DM+Serif+Display&family=Libre+Baskerville:wght@400;700&family=Noto+Serif+JP:wght@400;700&family=Playfair+Display:wght@400;700;900&family=Noto+Sans+JP:wght@400;500;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@300;400;600&family=Playfair+Display:wght@400;700;900&family=Great+Vibes&family=Pinyon+Script&family=Noto+Sans+JP:wght@400;500;700&display=swap" rel="stylesheet">
 <style>
 :root{--bg:#0d0d0d;--surface:#1a1a1a;--surface2:#222;--border:#333;--text:#f0ece4;--muted:#999;--accent:#c9a96e;}
 *{margin:0;padding:0;box-sizing:border-box;}
 body{background:var(--bg);color:var(--text);font-family:"Noto Sans JP",sans-serif;font-weight:400;min-height:100vh;font-size:15px;}
-nav{display:flex;flex-direction:column;align-items:stretch;padding:1rem 1.8rem 0;border-bottom:1px solid var(--border);position:sticky;top:0;background:var(--bg);z-index:200;gap:0.5rem;min-height:auto;}
+nav{display:flex;flex-direction:column;align-items:stretch;padding:1.6rem 1.8rem 0;border-bottom:1px solid var(--border);position:sticky;top:0;background:var(--bg);z-index:200;gap:0.6rem;min-height:auto;}
 .nav-has-img{background-size:cover;background-position:center;background-repeat:no-repeat;}
-.nav-has-img::before{content:"";position:absolute;inset:0;background:rgba(0,0,0,0.68);z-index:0;}
-.nav-has-img>*{position:relative;z-index:1;}
+.nav-has-img::before{content:"";position:absolute;inset:0;background:rgba(0,0,0,0.55);z-index:0;}
+.nav-has-img>*{position:relative;z-index:1;text-shadow:0 1px 4px rgba(0,0,0,0.7);}
+.nav-has-img .logo small{color:rgba(255,255,255,0.75);}
 .nav-tabs{display:flex;gap:0.2rem;flex-wrap:nowrap;align-items:center;overflow-x:auto;-webkit-overflow-scrolling:touch;scrollbar-width:none;padding-bottom:4px;}
 .nav-tabs::-webkit-scrollbar{display:none;}
 .logo-wrap{display:flex;align-items:center;gap:0.5rem;}
@@ -45,9 +46,9 @@ nav{display:flex;flex-direction:column;align-items:stretch;padding:1rem 1.8rem 0
 .stats-bar strong{color:var(--accent);font-weight:700;}
 
 /* FILTERS */
-.filters{padding:0.9rem 1.8rem;display:flex;gap:1.2rem;flex-wrap:wrap;border-bottom:1px solid var(--border);align-items:center;}
-.filter-group{display:flex;gap:0.35rem;flex-wrap:wrap;align-items:center;}
-.filter-label{font-size:0.68rem;font-weight:700;letter-spacing:0.2em;color:var(--muted);}
+.filters{padding:0.9rem 1.8rem;display:flex;gap:1.5rem;flex-wrap:wrap;border-bottom:1px solid var(--border);align-items:center;}
+.filter-group{display:flex;gap:0.35rem;flex-wrap:wrap;align-items:center;background:var(--surface2);border-radius:4px;padding:0.35rem 0.6rem;}
+.filter-label{font-size:0.68rem;font-weight:700;letter-spacing:0.2em;color:var(--accent);padding-right:0.2rem;}
 .fbtn{background:transparent;border:1px solid var(--border);color:var(--muted);padding:0.28rem 0.75rem;font-size:0.74rem;font-weight:500;font-family:"Noto Sans JP",sans-serif;cursor:pointer;transition:all 0.2s;border-radius:2px;}
 .fbtn:hover,.fbtn.active{border-color:var(--accent);color:var(--accent);}
 
@@ -208,7 +209,7 @@ nav{display:flex;flex-direction:column;align-items:stretch;padding:1rem 1.8rem 0
 .lp-table th{background:var(--surface2);font-weight:700;color:var(--muted);}
 .lp-table th.lp-mem-head{font-size:0.9rem;font-weight:700;letter-spacing:0.05em;}
 .lp-table td{background:var(--surface);}
-.lp-table td.lp-year-td{text-align:left;background:var(--surface);position:sticky;left:0;z-index:2;min-width:78px;border-right:2px solid var(--border);}
+.lp-table td.lp-year-td{text-align:left;background:var(--surface);position:sticky;left:0;z-index:2;min-width:78px;border-right:2px solid var(--border);max-width:90px;}
 .lp-table tr.lp-now td{background:rgba(201,169,110,0.15) !important;}
 .lp-table tr.lp-now td.lp-year-td{border-left:3px solid var(--accent);}
 .lp-event{display:inline-block;border-radius:3px;padding:0.18rem 0.5rem;font-size:0.68rem;font-weight:700;margin:1px 1px 3px;line-height:1.5;cursor:pointer;transition:opacity 0.15s,transform 0.1s;}
@@ -336,7 +337,11 @@ input[type=color].cpick{width:28px;height:28px;border:none;background:none;curso
   nav{padding:0.8rem 1rem 0;}
   .logo{font-size:1.6rem;}
   .btn-primary{font-size:0.78rem;padding:0.5rem 0.8rem;}
-  .lp-table th,.lp-table td{padding:0.3rem 0.4rem;font-size:0.72rem;}
+  .lp-table th,.lp-table td{padding:0.25rem 0.3rem;font-size:0.68rem;}
+  .lp-table td.lp-year-td{min-width:54px;}
+  .lp-age-badge{font-size:0.58rem;}
+  .lp-event{font-size:0.62rem;padding:0.12rem 0.3rem;}
+  .lp-amount-badge{font-size:0.55rem;}
   .age-table th,.age-table td{font-size:0.7rem;padding:0.3rem 0.4rem;}
   #lp-fab{bottom:1rem;right:1rem;width:46px;height:46px;font-size:1.3rem;}
 }
@@ -678,12 +683,10 @@ input[type=color].cpick{width:28px;height:28px;border:none;background:none;curso
 <script>
 const SK="family_v5";
 const LOGO_FONTS=[
-  {name:"Playfair Display",label:"Playfair（おすすめ）"},
-  {name:"Cormorant Garamond",label:"Cormorant（細め）"},
-  {name:"Cinzel",label:"Cinzel（クラシック）"},
-  {name:"DM Serif Display",label:"DM Serif"},
-  {name:"Libre Baskerville",label:"Baskerville"},
-  {name:"Noto Serif JP",label:"明朝体（日本語）"},
+  {name:"Playfair Display",label:"Playfair"},
+  {name:"Cormorant Garamond",label:"Cormorant"},
+  {name:"Great Vibes",label:"Great Vibes（筆記体）"},
+  {name:"Pinyon Script",label:"Pinyon Script（筆記体）"},
 ];
 const ACC_THEMES=["#e87c7c","#e8956e","#e8b86e","#e8d96e","#a8d46e","#6ec87e","#6ec8b8","#6ea8d4","#7e8ee8","#9e7ec8","#d47ec8","#e87ca8"];
 const BG_PRESETS=["#0d0d0d","#1c1c1e","#2c2c2e","#ffffff","#f5f5f5","#e8e8e8","#f5f0e8","#ede8e0"];
@@ -2362,13 +2365,14 @@ function renderLifePlan(){
     });
   });
 
+  var lpColW=window.innerWidth<500?'72px':window.innerWidth<768?'90px':'130px';
   var showMems=lpActiveMid==='all'?mems:mems.filter(function(m){return m.id===lpActiveMid;});
 
   var html='<div style="overflow:auto;max-height:70vh;position:relative;"><table class="lp-table" style="border-collapse:separate;border-spacing:0;">';
   html+='<thead><tr>';
   html+='<th style="text-align:left;min-width:72px;position:sticky;top:0;left:0;z-index:20;background:var(--surface2);">年</th>';
   showMems.forEach(function(m){
-    html+='<th class="lp-mem-head" style="color:'+m.color+';min-width:130px;position:sticky;top:0;z-index:10;background:var(--surface2);">'+m.name+'</th>';
+    html+='<th class="lp-mem-head" style="color:'+m.color+';min-width:'+lpColW+';position:sticky;top:0;z-index:10;background:var(--surface2);">'+m.name+'</th>';
   });
   html+='</tr></thead><tbody>';
 
@@ -2385,16 +2389,24 @@ function renderLifePlan(){
       var age=y-by;
       var cells='<span style="font-size:0.68rem;color:var(--muted);display:block;margin-bottom:3px;">'+age+'歳</span>';
 
-      // 学校イベント
+      // 学校イベント（クリックで削除確認）
       (schoolMap[m.id][y]||[]).forEach(function(ev){
-        cells+='<span class="lp-event" style="background:'+ev.color+'55;color:var(--text)" onclick="openLpModal(\''+m.id+'\','+y+',null,\''+ev.label+'\')">'+ev.label+'</span>';
+        var sid=ev.sid||(m.id+'_'+ev.label+'_'+y);
+        cells+='<span class="lp-event lp-school" title="タップで編集・削除" style="background:'+ev.color+'44;color:var(--text);border-color:'+ev.color+'88;" onclick="openLpSchoolModal(\''+m.id+'\','+y+',\''+sid+'\',\''+ev.label+'\',\''+ev.color+'\')">'+ev.label+'</span>';
       });
 
-      // カスタムイベント
+      // カスタムイベント（クリックで編集・削除）
       ((S.lpEvents[m.id]||[]).filter(function(ev){return ev.year===y;})).forEach(function(ev){
-        cells+='<span class="lp-event" style="background:'+(ev.color||'var(--accent)')+'55;color:var(--text)" onclick="openLpModal(\''+m.id+'\','+y+',\''+ev.id+'\')">'+ev.label+'</span>';
+        var hasMemo=ev.memo?' lp-has-memo':'';
+        var hasAmt=ev.amount?' lp-has-amount':'';
+        var tip=[];
+        if(ev.memo)tip.push(ev.memo);
+        if(ev.amount)tip.push('目標：'+ev.amount.toLocaleString()+'円');
+        var tipStr=tip.length?' title="'+tip.join(' / ')+'"':'';
+        cells+='<span class="lp-event lp-custom'+hasMemo+hasAmt+'" style="background:'+(ev.color||'var(--accent)')+'55;color:var(--text);border-color:'+(ev.color||'var(--accent)')+'99;"'+tipStr+' onclick="openLpModal(\''+m.id+'\','+y+',\''+ev.id+'\')">'+ev.label+'</span>';
+        if(ev.amount)cells+='<span class="lp-amount-badge">¥'+ev.amount.toLocaleString()+'</span>';
       });
-      html+='<td style="min-width:130px;">'+cells+'</td>';
+      html+='<td style="min-width:'+lpColW+'">'+cells+'</td>';
     });
     html+='</tr>';
   });
@@ -2435,7 +2447,8 @@ function openLpModal(mid,year,evId,defaultLabel){
   document.getElementById("lp-ev-month").value=(ev&&ev.month)||"";
   document.getElementById("lp-ev-amount").value=(ev&&ev.amount)||"";
   document.getElementById("lp-ev-memo").value=(ev&&ev.memo)||"";
-  document.getElementById("lp-del-btn").style.display=evId?"block":"none";
+  var delBtnEl=document.getElementById("lp-del-btn");
+  if(delBtnEl){delBtnEl.style.display=evId?"block":"none";delBtnEl.textContent="削除";delBtnEl.onclick=deleteLpEvent;}
   var sw=document.getElementById("lp-color-swatches");
   var cur=(ev&&ev.color)||LP_COLORS[0];
   sw.innerHTML=LP_COLORS.map(function(c){
@@ -2468,11 +2481,40 @@ function saveLpEvent(){
   }
   saveS();closeLpModal();renderLifePlan();
 }
-function lpHideSchool(mid,sid){
-  if(!S.lpHiddenSchool)S.lpHiddenSchool={};
-  if(!S.lpHiddenSchool[mid])S.lpHiddenSchool[mid]=[];
-  if(S.lpHiddenSchool[mid].indexOf(sid)===-1)S.lpHiddenSchool[mid].push(sid);
-  saveS();renderLifePlan();
+function openLpSchoolModal(mid,year,sid,label,color){
+  // 学校イベントをモーダルで編集できるよう一時データとしてセット
+  if(!S.lpEvents)S.lpEvents={};
+  if(!S.lpEvents[mid])S.lpEvents[mid]=[];
+  // すでにカスタム化されているか確認（同じsidを持つものを探す）
+  var existing=S.lpEvents[mid].find(function(e){return e.sid===sid;});
+  if(!existing){
+    // 学校イベントをlpEventsに変換コピーして編集可能に
+    var newId="lps"+Date.now();
+    existing={id:newId,sid:sid,label:label,year:year,month:4,color:color,amount:0,memo:""};
+    S.lpEvents[mid].push(existing);
+  }
+  // 削除ボタンのラベルを「非表示にする」に変更
+  var delBtn=document.getElementById("lp-del-btn");
+  if(delBtn){delBtn.textContent="非表示にする";delBtn.style.display="block";delBtn.onclick=function(){lpHideSchoolFromModal(mid,sid,existing.id);};}
+  openLpModal(mid,year,existing.id,label);
+}
+function lpHideSchoolFromModal(mid,sid,evId){
+  askConfirm('この項目を非表示にしますか？','進路変更などに。再表示は設定からリセットできます。',function(){
+    if(!S.lpHiddenSchool)S.lpHiddenSchool={};
+    if(!S.lpHiddenSchool[mid])S.lpHiddenSchool[mid]=[];
+    if(S.lpHiddenSchool[mid].indexOf(sid)===-1)S.lpHiddenSchool[mid].push(sid);
+    // lpEventsからも削除
+    if(evId)S.lpEvents[mid]=(S.lpEvents[mid]||[]).filter(function(e){return e.id!==evId;});
+    saveS();closeLpModal();renderLifePlan();
+  },'非表示にする','🗑️');
+}
+function lpHideSchool(mid,sid,label){
+  askConfirm('「'+label+'」を削除しますか？','進路変更などで非表示にできます。元に戻すには設定からリセットしてください。',function(){
+    if(!S.lpHiddenSchool)S.lpHiddenSchool={};
+    if(!S.lpHiddenSchool[mid])S.lpHiddenSchool[mid]=[];
+    if(S.lpHiddenSchool[mid].indexOf(sid)===-1)S.lpHiddenSchool[mid].push(sid);
+    saveS();renderLifePlan();
+  },'削除する','🗑️');
 }
 function deleteLpEvent(){
   var mid=document.getElementById("lp-ev-mid-sel").value||document.getElementById("lp-ev-id-old").value;
