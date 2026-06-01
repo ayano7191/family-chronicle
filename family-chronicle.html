@@ -2572,9 +2572,14 @@ document.getElementById("lp-to").value=now2+20;
       if(sbConf){try{sbBak=JSON.parse(sbConf);}catch(e){}}
       S={...S,...remote,tabs:{...DEF_TABS,...(remote.tabs||{})},guests:remote.guests||[],ftrees:remote.ftrees||{}};
       S.sbUrl=sbBak.url||"";S.sbKey=sbBak.key||"";S.sbTable=sbBak.table||"family_chronicle";S.sbRecordId=sbBak.recordId||"my-family";
-      if(!S.tabOrder)S.tabOrder=["timeline","timetable","person","profile","age","overview","settings"];
+      if(!S.tabOrder)S.tabOrder=["timeline","timetable","person","profile","age","overview","links","lifeplan","settings"];
       S.tabOrder=S.tabOrder.filter(function(id){return id!=="ftree"&&id!=="null"&&id!=="undefined";});
       if(S.tabs&&S.tabs.ftree)delete S.tabs.ftree;
+      if(!S.tabOrder.includes("links")){const si=S.tabOrder.indexOf("settings");si>=0?S.tabOrder.splice(si,0,"links"):S.tabOrder.push("links");}
+      if(!S.tabOrder.includes("lifeplan")){const si=S.tabOrder.indexOf("settings");si>=0?S.tabOrder.splice(si,0,"lifeplan"):S.tabOrder.push("lifeplan");}
+      if(!S.tabs.links)S.tabs.links="リンク集";
+      if(!S.tabs.lifeplan)S.tabs.lifeplan="ライフプラン";
+      S.lpEvents=S.lpEvents||{};
       localStorage.setItem(SK,JSON.stringify(S));
       try{applyTheme();renderNavTabs();renderFilters();renderTL();updatePageTitles();
       const lt=document.getElementById("logo-text");if(lt)lt.innerHTML=S.title+"<small>"+S.subtitle+"</small>";}catch(e2){}
