@@ -33,7 +33,7 @@ nav{display:flex;flex-direction:column;align-items:stretch;padding:1rem 1.8rem 0
 .nav-tabs::-webkit-scrollbar{display:none;}
 .nav-tab{background:none;border:1px solid transparent;color:var(--muted);padding:0.42rem 0.9rem;font-family:"Noto Sans JP",sans-serif;font-size:0.78rem;font-weight:500;letter-spacing:0.1em;cursor:pointer;transition:all 0.2s;border-radius:2px;white-space:nowrap;writing-mode:horizontal-tb;flex-shrink:0;}
 .nav-tab:hover{color:var(--text);}
-.nav-tab.active{border-color:var(--accent);color:var(--accent);}
+.nav-tab.active{border-color:var(--accent);color:var(--accent);font-weight:700;}
 .btn-primary{background:var(--accent);color:var(--bg);border:none;padding:0.5rem 1.2rem;font-family:"Noto Sans JP",sans-serif;font-size:0.78rem;font-weight:700;letter-spacing:0.1em;cursor:pointer;border-radius:2px;white-space:nowrap;transition:opacity 0.2s;}
 .btn-primary:hover{opacity:0.85;}
 .btn-ghost{background:none;border:1px solid var(--border);color:var(--muted);padding:0.5rem 1rem;font-family:"Noto Sans JP",sans-serif;font-size:0.75rem;font-weight:500;cursor:pointer;border-radius:2px;transition:all 0.2s;}
@@ -153,7 +153,7 @@ nav{display:flex;flex-direction:column;align-items:stretch;padding:1rem 1.8rem 0
 .prof-age{font-size:0.82rem;font-weight:500;color:var(--muted);margin-bottom:1rem;line-height:1.6;}
 .prof-fields{display:flex;flex-direction:column;gap:0.5rem;}
 .prof-field{display:flex;gap:0.8rem;align-items:flex-start;}
-.prof-field-label{font-size:0.68rem;font-weight:700;letter-spacing:0.1em;color:var(--muted);width:52px;flex-shrink:0;padding-top:0.1rem;line-height:1.4;word-break:keep-all;}
+.prof-field-label{font-size:0.68rem;font-weight:700;letter-spacing:0.1em;color:var(--muted);width:72px;flex-shrink:0;padding-top:0.1rem;line-height:1.4;white-space:nowrap;}
 .prof-field-val{font-size:0.8rem;font-weight:500;flex:1;line-height:1.6;word-break:break-word;color:var(--muted);}
 .prof-divider{height:1px;background:var(--border);margin:1rem 0;}
 .prof-stats-row{display:flex;gap:1.2rem;}
@@ -203,19 +203,27 @@ nav{display:flex;flex-direction:column;align-items:stretch;padding:1rem 1.8rem 0
 
 /* LIFEPLAN */
 .lp-table{border-collapse:collapse;width:100%;}
-.lp-table th,.lp-table td{border:1px solid var(--border);padding:0.5rem 0.6rem;font-size:0.78rem;white-space:nowrap;text-align:center;vertical-align:top;}
+.lp-table th,.lp-table td{border:1px solid var(--border);padding:0.5rem 0.7rem;font-size:0.78rem;white-space:nowrap;text-align:center;vertical-align:top;}
 .lp-table thead tr th{position:sticky;top:0;z-index:10;background:var(--surface2);}
 .lp-table th{background:var(--surface2);font-weight:700;color:var(--muted);}
-.lp-table th.lp-mem-head{font-size:0.9rem;font-weight:700;}
+.lp-table th.lp-mem-head{font-size:0.9rem;font-weight:700;letter-spacing:0.05em;}
 .lp-table td{background:var(--surface);}
-.lp-table td.lp-year-td{text-align:left;background:var(--surface);position:sticky;left:0;z-index:2;min-width:72px;}
-.lp-table tr.lp-now td{background:rgba(201,169,110,0.18) !important;}
-.lp-event{display:inline-block;border-radius:2px;padding:0.15rem 0.4rem;font-size:0.68rem;font-weight:700;margin:1px 1px 2px;line-height:1.4;cursor:pointer;}
-.lp-event:hover{opacity:0.75;}
-.lp-wareki{font-size:0.6rem;color:var(--muted);display:block;}
-.lp-mem-tab{background:none;border:none;border-bottom:2px solid transparent;padding:0.4rem 0.8rem;font-size:0.82rem;font-weight:700;cursor:pointer;font-family:inherit;color:var(--muted);transition:all 0.2s;white-space:nowrap;}
+.lp-table td.lp-year-td{text-align:left;background:var(--surface);position:sticky;left:0;z-index:2;min-width:78px;border-right:2px solid var(--border);}
+.lp-table tr.lp-now td{background:rgba(201,169,110,0.15) !important;}
+.lp-table tr.lp-now td.lp-year-td{border-left:3px solid var(--accent);}
+.lp-event{display:inline-block;border-radius:3px;padding:0.18rem 0.5rem;font-size:0.68rem;font-weight:700;margin:1px 1px 3px;line-height:1.5;cursor:pointer;transition:opacity 0.15s,transform 0.1s;}
+.lp-event:hover{opacity:0.8;transform:scale(1.04);}
+.lp-event.lp-school{border-left:3px solid rgba(255,255,255,0.4);}
+.lp-event.lp-custom{border-left:3px solid rgba(255,255,255,0.7);}
+.lp-event.lp-has-memo::after{content:"📝";font-size:0.55rem;margin-left:2px;opacity:0.7;}
+.lp-event.lp-has-amount::after{content:"💰";font-size:0.55rem;margin-left:2px;opacity:0.8;}
+.lp-event.lp-has-memo.lp-has-amount::after{content:"📝💰";font-size:0.55rem;margin-left:2px;opacity:0.8;}
+.lp-wareki{font-size:0.6rem;color:var(--muted);display:block;margin-top:1px;}
+.lp-age-badge{font-size:0.62rem;color:var(--muted);display:block;margin-bottom:4px;font-weight:500;}
+.lp-mem-tab{background:none;border:none;border-bottom:2px solid transparent;padding:0.4rem 0.9rem;font-size:0.82rem;font-weight:700;cursor:pointer;font-family:inherit;color:var(--muted);transition:all 0.2s;white-space:nowrap;}
 .lp-mem-tab.active{color:var(--text);}
 .lp-mem-tab:hover{color:var(--text);}
+.lp-amount-badge{font-size:0.6rem;color:var(--accent);display:block;margin-top:1px;font-weight:700;}
 .lp-add-btn{display:none;}
 .link-card{background:var(--surface);border:1px solid var(--border);padding:1rem 1.2rem;margin-bottom:0.6rem;border-radius:2px;transition:border-color 0.2s;}
 .link-card:hover{border-color:var(--accent);}
@@ -440,7 +448,6 @@ input[type=color].cpick{width:28px;height:28px;border:none;background:none;curso
       <span style="font-size:0.78rem;color:var(--muted);">〜</span>
       <input type="number" class="age-input" id="lp-to" style="width:70px;">
       <button class="tc-btn" onclick="renderLifePlan()">更新</button>
-      <button class="tc-btn" id="lp-toggle-ev" onclick="lpToggleEvents()" style="margin-left:0.5rem;">📋 年表の記録を非表示</button>
     </div>
     <div id="lifeplan-wrap" style="overflow-x:auto;position:relative;"></div>
     <!-- 右下の追加ボタン -->
@@ -594,10 +601,13 @@ input[type=color].cpick{width:28px;height:28px;border:none;background:none;curso
     <div class="mhd"><span class="mttl" id="lp-modal-ttl">ライフイベントを追加</span><button class="mx" onclick="closeLpModal()">✕</button></div>
     <div class="mbd">
       <input type="hidden" id="lp-ev-id">
-      <input type="hidden" id="lp-ev-mid">
+      <input type="hidden" id="lp-ev-id-old">
+      <div class="fg"><label class="fl">メンバー *</label><select class="fs" id="lp-ev-mid-sel"></select></div>
       <div class="fg"><label class="fl">イベント名 *</label><input class="fi" id="lp-ev-label" placeholder="例：大学卒業、就職、結婚"></div>
       <div class="fg"><label class="fl">年 *</label><input class="fi" type="number" id="lp-ev-year" placeholder="2030"></div>
       <div class="fg"><label class="fl">月（任意）</label><input class="fi" type="number" id="lp-ev-month" placeholder="4" min="1" max="12"></div>
+      <div class="fg"><label class="fl">目標金額（任意）</label><div style="display:flex;gap:0.4rem;align-items:center;"><input class="fi" type="number" id="lp-ev-amount" placeholder="例：3000000" style="flex:1;"><span style="font-size:0.78rem;color:var(--muted);white-space:nowrap;">円</span></div></div>
+      <div class="fg"><label class="fl">メモ（任意）</label><textarea class="fta" id="lp-ev-memo" placeholder="例：大学の入学金・授業料の目安" style="min-height:60px;"></textarea></div>
       <div class="fg"><label class="fl">色</label>
         <div style="display:flex;gap:0.4rem;flex-wrap:wrap;" id="lp-color-swatches"></div>
       </div>
@@ -707,6 +717,7 @@ let fMem="all",fCat="all",ttY=new Date().getFullYear(),ttMode="month",ttMemFilte
 let pendingCb=null; // generic confirm callback
 let editEvId=null;
 let phMemberId=null;
+let lpActiveMid=null;
 
 /* ---- PERSIST ---- */
 function loadS(){
@@ -726,6 +737,8 @@ function loadS(){
   if(!S.tabs.links)S.tabs.links="リンク集";
   if(!S.tabOrder.includes("lifeplan")){const si=S.tabOrder.indexOf("settings");si>=0?S.tabOrder.splice(si,0,"lifeplan"):S.tabOrder.push("lifeplan");}
   if(!S.tabs.lifeplan)S.tabs.lifeplan="ライフプラン";
+  // タブ設定を強制同期
+  Object.keys(DEF_TABS).forEach(function(k){if(!S.tabs[k])S.tabs[k]=DEF_TABS[k];});
   const sbConf=localStorage.getItem(SK+"_sb");
   if(sbConf){try{const c=JSON.parse(sbConf);S.sbUrl=c.url||"";S.sbKey=c.key||"";S.sbTable=c.table||"family_chronicle";S.sbRecordId=c.recordId||"my-family";}catch(e){}}
   applyTheme();
@@ -877,8 +890,9 @@ function getAge(birth,year){
 function renderNavTabs(){
   const order=S.tabOrder||["timeline","timetable","person","profile","age","overview","links","settings"];
   const wrap=document.getElementById("nav-tabs");
-  // 設定以外のタブ
-  const mainOrder=order.filter(id=>id!=="settings");
+  // nullや存在しないページIDを除去
+  const validIds=["timeline","timetable","person","profile","age","overview","links","lifeplan"];
+  const mainOrder=order.filter(id=>id&&id!=="settings"&&id!=="ftree"&&id!=="null"&&id!=="undefined"&&validIds.includes(id));
   const mainHtml=mainOrder.map((id,i)=>{
     const label=S.tabs[id]||id;
     const active=i===0?" active":"";
@@ -901,6 +915,9 @@ function renderNavTabs(){
       const from=ids.indexOf(dragSrc.dataset.tabid);
       const to=ids.indexOf(btn.dataset.tabid);
       ids.splice(from,1);ids.splice(to,0,dragSrc.dataset.tabid);
+      // lifeplan/linksが欠落しないよう補完
+      if(!ids.includes("lifeplan")){const si=ids.indexOf("settings");si>=0?ids.splice(si,0,"lifeplan"):ids.push("lifeplan");}
+      if(!ids.includes("links")){const si=ids.indexOf("settings");si>=0?ids.splice(si,0,"links"):ids.push("links");}
       S.tabOrder=[...ids,"settings"];saveS();renderNavTabs();
     });
   });
@@ -908,7 +925,9 @@ function renderNavTabs(){
 function showPage(n,btn){
   document.querySelectorAll(".page").forEach(p=>p.classList.remove("active"));
   document.querySelectorAll(".nav-tab").forEach(b=>b.classList.remove("active"));
-  document.getElementById("page-"+n).classList.add("active");
+  const pageEl=document.getElementById("page-"+n);
+  if(!pageEl)return;
+  pageEl.classList.add("active");
   btn.classList.add("active");
   updatePageTitles();
   // FAB非表示
@@ -1113,14 +1132,11 @@ function renderAgeTable(){
   if(!allPeople.length){document.getElementById("age-table-wrap").innerHTML="<div class='empty'>誕生日を設定してください（設定 → メンバー管理）</div>";return;}
   let html=`<table class="age-table"><thead><tr><th class="year-h">西暦</th>`;
   allPeople.forEach(m=>{html+=`<th style="color:var(--muted)">${m.name}${m.isGuest?`<span style="font-size:0.6rem;color:var(--muted);display:block">ゲスト</span>`:""}</th>`;});
-  html+=`<th>この年の出来事</th></tr></thead><tbody>`;
+  html+=`</tr></thead><tbody>`;
   years.forEach(y=>{
     const isNow=y===now;
-    const evs=S.events.filter(e=>e.date.startsWith(String(y)));
-    const evTxt=evs.map(e=>{const mt=e.members.map(id=>gMem(id).name).join("・");return`${mt}：${e.title}`;}).join(" / ");
     html+=`<tr class="${isNow?"today-row":""}"><td class="year-col">${y}${isNow?` <span style="font-size:0.65rem;color:var(--accent)">今年</span>`:""}</td>`;
-    allPeople.forEach(m=>{const a=getAge(m.birth,y);html+=`<td class="age-val" style="color:var(--muted)">${a!==null?a:"—"}</td>`;});
-    html+=`<td class="event-col">${evTxt}</td></tr>`;
+    allPeople.forEach(m=>{const a=getAge(m.birth,y);html+=`<td class="age-val" style="color:var(--muted)">${a!==null?a+"歳":"—"}</td>`;});
   });
   html+=`</tbody></table><div style="font-size:0.72rem;font-weight:500;color:var(--muted);margin-top:0.8rem;">※ 西暦 − 生まれ年</div>`;
   // Guest list management
@@ -1403,6 +1419,8 @@ function importData(evt){
       const data=JSON.parse(e.target.result);
       askConfirm("インポートしますか？","現在のデータが上書きされます。",()=>{
         S={...S,...data,tabs:{...DEF_TABS,...(data.tabs||{})}};
+        if(S.tabs&&S.tabs.ftree)delete S.tabs.ftree;
+        S.tabOrder=(S.tabOrder||[]).filter(function(id){return id!=="ftree"&&id!=="null"&&id!=="undefined";});
         saveS();applyTheme();renderNavTabs();renderFilters();renderTL();updatePageTitles();
         alert("インポート完了！");
       });
@@ -2256,44 +2274,45 @@ function saveFtreeNode(){
 
 /* ---- LIFEPLAN ---- */
 // 学校イベントを生年月日から自動生成
-function getSchoolEvents(birthDate){
+function getSchoolEvents(birthDate,mid){
   if(!birthDate)return[];
   var bp=birthDate.split("-");
   var by=parseInt(bp[0]),bm=parseInt(bp[1]||1);
-  // 4月2日以降生まれは翌年度扱い
   var baseYear=by+(bm>=4?1:0);
+  // 非表示リスト（削除済み）
+  var hidden=(S.lpHiddenSchool&&S.lpHiddenSchool[mid])||[];
   var events=[];
-  // 幼稚園・保育園（3歳〜）
+  function add(year,month,label,color){
+    var sid=(mid||"")+"_"+label+"_"+year;
+    if(hidden.indexOf(sid)>-1)return;
+    events.push({year:year,month:month,label:label,color:color,type:"school",sid:sid,mid:mid});
+  }
   var y3=baseYear+3;
-  events.push({year:y3,month:4,label:"年少",color:"#98c9a3",type:"school"});
-  events.push({year:y3+1,month:4,label:"年中",color:"#98c9a3",type:"school"});
-  events.push({year:y3+2,month:4,label:"年長",color:"#98c9a3",type:"school"});
-  // 小学校（6歳〜）
+  add(y3,4,"年少","#98c9a3");
+  add(y3+1,4,"年中","#98c9a3");
+  add(y3+2,4,"年長","#98c9a3");
   var es=baseYear+6;
-  events.push({year:es,month:4,label:"小1入学",color:"#7eb3c8",type:"school"});
-  events.push({year:es+3,month:4,label:"小4",color:"#7eb3c8",type:"school"});
-  events.push({year:es+5,month:3,label:"小卒業",color:"#7eb3c8",type:"school"});
-  // 中学校
-  events.push({year:es+6,month:4,label:"中1入学",color:"#c9b8e8",type:"school"});
-  events.push({year:es+8,month:3,label:"中卒業",color:"#c9b8e8",type:"school"});
-  // 高校
-  events.push({year:es+9,month:4,label:"高1入学",color:"#e8a598",type:"school"});
-  events.push({year:es+11,month:3,label:"高卒業",color:"#e8a598",type:"school"});
-  // 大学（一般的なケース）
-  events.push({year:es+12,month:4,label:"大学入学",color:"#c9a96e",type:"school"});
-  events.push({year:es+15,month:3,label:"大学卒業",color:"#c9a96e",type:"school"});
+  add(es,4,"小1入学","#7eb3c8");
+  add(es+1,4,"小2","#7eb3c8");
+  add(es+2,4,"小3","#7eb3c8");
+  add(es+3,4,"小4","#7eb3c8");
+  add(es+4,4,"小5","#7eb3c8");
+  add(es+5,3,"小卒業","#7eb3c8");
+  add(es+6,4,"中1入学","#c9b8e8");
+  add(es+7,4,"中2","#c9b8e8");
+  add(es+8,3,"中卒業","#c9b8e8");
+  add(es+9,4,"高1入学","#e8a598");
+  add(es+10,4,"高2","#e8a598");
+  add(es+11,3,"高卒業","#e8a598");
+  add(es+12,4,"大学入学","#c9a96e");
+  add(es+15,3,"大学卒業","#c9a96e");
   return events;
 }
 
 
 const LP_COLORS=["#7eb3c8","#98c9a3","#c9b8e8","#e8a598","#c9a96e","#e8d96e","#aaaaaa","#98c9c9"];
-var lpShowEvents=true;
-function lpToggleEvents(){
-  lpShowEvents=!lpShowEvents;
-  var btn=document.getElementById("lp-toggle-ev");
-  if(btn)btn.textContent=lpShowEvents?"📋 年表の記録を非表示":"📋 年表の記録を表示";
-  renderLifePlan();
-}
+var lpShowEvents=false;
+function lpToggleEvents(){}
 
 function renderLifePlan(){
   var nowY=new Date().getFullYear();
@@ -2326,7 +2345,7 @@ function renderLifePlan(){
   var schoolMap={};
   mems.forEach(function(m){
     schoolMap[m.id]={};
-    getSchoolEvents(m.birth).forEach(function(ev){
+    getSchoolEvents(m.birth,m.id).forEach(function(ev){
       if(!schoolMap[m.id][ev.year])schoolMap[m.id][ev.year]=[];
       schoolMap[m.id][ev.year].push(ev);
     });
@@ -2357,7 +2376,8 @@ function renderLifePlan(){
     var isNow=y===nowY;
     var nowBg=isNow?'rgba(201,169,110,0.12)':'var(--surface)';
     html+='<tr class="'+(isNow?'lp-now':'')+'"><td class="lp-year-td" style="position:sticky;left:0;z-index:5;background:'+nowBg+';">';
-    html+='<span style="font-size:0.82rem;font-weight:700;color:'+(isNow?'var(--accent)':'var(--muted)')+'">'+y+'</span>';
+    html+='<span style="font-family:\'Cormorant Garamond\',serif;font-size:1.05rem;font-weight:600;color:'+(isNow?'var(--accent)':'var(--text)')+'">'+y+'</span>';
+    if(isNow)html+='<span style="font-size:0.58rem;background:var(--accent);color:#111;border-radius:2px;padding:0 3px;margin-left:3px;font-weight:700;vertical-align:middle;">今年</span>';
     html+='<span class="lp-wareki">'+toWareki(y)+'年</span></td>';
 
     showMems.forEach(function(m){
@@ -2374,16 +2394,6 @@ function renderLifePlan(){
       ((S.lpEvents[m.id]||[]).filter(function(ev){return ev.year===y;})).forEach(function(ev){
         cells+='<span class="lp-event" style="background:'+(ev.color||'var(--accent)')+'55;color:var(--text)" onclick="openLpModal(\''+m.id+'\','+y+',\''+ev.id+'\')">'+ev.label+'</span>';
       });
-
-      // 年表の記録（表示フラグONの時のみ）
-      if(lpShowEvents){
-        ((evMap[m.id]&&evMap[m.id][y])||[]).forEach(function(ev){
-          var cat=gCat(ev.cat);
-          var title=ev.title.length>8?ev.title.slice(0,8)+'…':ev.title;
-          cells+='<span class="lp-event" style="background:'+cat.color+'44;color:var(--text)" title="'+ev.title+'">'+title+'</span>';
-        });
-      }
-
       html+='<td style="min-width:130px;">'+cells+'</td>';
     });
     html+='</tr>';
@@ -2414,10 +2424,17 @@ function openLpModal(mid,year,evId,defaultLabel){
   var ev=evId?(S.lpEvents[mid]||[]).find(function(e){return e.id===evId;}):null;
   document.getElementById("lp-modal-ttl").textContent=ev?"ライフイベントを編集":"ライフイベントを追加";
   document.getElementById("lp-ev-id").value=evId||"";
-  document.getElementById("lp-ev-mid").value=mid;
+  // メンバーselectを描画
+  var selEl=document.getElementById("lp-ev-mid-sel");
+  var mems2=S.members.filter(function(m){return m.birth;});
+  selEl.innerHTML=mems2.map(function(m){
+    return '<option value="'+m.id+'" style="color:'+m.color+'"'+(m.id===mid?' selected':'')+'>'+m.name+'</option>';
+  }).join("");
   document.getElementById("lp-ev-label").value=(ev&&ev.label)||defaultLabel||"";
   document.getElementById("lp-ev-year").value=(ev&&ev.year)||year;
   document.getElementById("lp-ev-month").value=(ev&&ev.month)||"";
+  document.getElementById("lp-ev-amount").value=(ev&&ev.amount)||"";
+  document.getElementById("lp-ev-memo").value=(ev&&ev.memo)||"";
   document.getElementById("lp-del-btn").style.display=evId?"block":"none";
   var sw=document.getElementById("lp-color-swatches");
   var cur=(ev&&ev.color)||LP_COLORS[0];
@@ -2434,7 +2451,9 @@ function saveLpEvent(){
   var year=parseInt(document.getElementById("lp-ev-year").value);
   if(!label||!year){alert("イベント名と年は必須です");return;}
   var month=parseInt(document.getElementById("lp-ev-month").value)||0;
-  var mid=document.getElementById("lp-ev-mid").value;
+  var amount=parseInt(document.getElementById("lp-ev-amount").value)||0;
+  var memo=(document.getElementById("lp-ev-memo").value||"").trim();
+  var mid=document.getElementById("lp-ev-mid-sel").value||document.getElementById("lp-ev-id-old").value;
   var evId=document.getElementById("lp-ev-id").value;
   var allSw=document.querySelectorAll("[data-lpc]");
   var color=LP_COLORS[0];
@@ -2443,14 +2462,20 @@ function saveLpEvent(){
   if(!S.lpEvents[mid])S.lpEvents[mid]=[];
   if(evId){
     var idx=S.lpEvents[mid].findIndex(function(e){return e.id===evId;});
-    if(idx>-1)S.lpEvents[mid][idx]={id:evId,label:label,year:year,month:month,color:color};
+    if(idx>-1)S.lpEvents[mid][idx]={id:evId,label:label,year:year,month:month,color:color,amount:amount,memo:memo};
   }else{
-    S.lpEvents[mid].push({id:"lp"+Date.now(),label:label,year:year,month:month,color:color});
+    S.lpEvents[mid].push({id:"lp"+Date.now(),label:label,year:year,month:month,color:color,amount:amount,memo:memo});
   }
   saveS();closeLpModal();renderLifePlan();
 }
+function lpHideSchool(mid,sid){
+  if(!S.lpHiddenSchool)S.lpHiddenSchool={};
+  if(!S.lpHiddenSchool[mid])S.lpHiddenSchool[mid]=[];
+  if(S.lpHiddenSchool[mid].indexOf(sid)===-1)S.lpHiddenSchool[mid].push(sid);
+  saveS();renderLifePlan();
+}
 function deleteLpEvent(){
-  var mid=document.getElementById("lp-ev-mid").value;
+  var mid=document.getElementById("lp-ev-mid-sel").value||document.getElementById("lp-ev-id-old").value;
   var evId=document.getElementById("lp-ev-id").value;
   if(!evId)return;
   askConfirm("このイベントを削除しますか？","",function(){
@@ -2548,8 +2573,8 @@ document.getElementById("lp-to").value=now2+20;
       S={...S,...remote,tabs:{...DEF_TABS,...(remote.tabs||{})},guests:remote.guests||[],ftrees:remote.ftrees||{}};
       S.sbUrl=sbBak.url||"";S.sbKey=sbBak.key||"";S.sbTable=sbBak.table||"family_chronicle";S.sbRecordId=sbBak.recordId||"my-family";
       if(!S.tabOrder)S.tabOrder=["timeline","timetable","person","profile","age","overview","settings"];
-      if(!S.tabOrder.includes("ftree")){const si=S.tabOrder.indexOf("settings");si>=0?S.tabOrder.splice(si,0,"ftree"):S.tabOrder.push("ftree");}
-      if(!S.tabs.ftree)S.tabs.ftree="家系図";
+      S.tabOrder=S.tabOrder.filter(function(id){return id!=="ftree"&&id!=="null"&&id!=="undefined";});
+      if(S.tabs&&S.tabs.ftree)delete S.tabs.ftree;
       localStorage.setItem(SK,JSON.stringify(S));
       try{applyTheme();renderNavTabs();renderFilters();renderTL();updatePageTitles();
       const lt=document.getElementById("logo-text");if(lt)lt.innerHTML=S.title+"<small>"+S.subtitle+"</small>";}catch(e2){}
