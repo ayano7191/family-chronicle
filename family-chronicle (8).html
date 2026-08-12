@@ -1451,7 +1451,7 @@ function confirmPush(){
   if(confirmIcon)confirmIcon.textContent="☁️";
   askConfirm("クラウドへ保存しますか？","クラウドのデータが今いるデバイスのデータで上書きされます。",function(){
     sbPushData(false);
-  });
+  },"保存する","☁️");
 }
 async function sbPushData(silent=false){
   if(!S.sbUrl||!S.sbKey)return;
@@ -1504,7 +1504,7 @@ async function sbPullData(){
       S.sbUrl=sbBak.url;S.sbKey=sbBak.key;S.sbTable=sbBak.table;S.sbRecordId=sbBak.recordId;
       // 不正なタブを除去
       var validIds=["timeline","timetable","person","profile","age","overview","links","settings"];
-      S.tabOrder=(S.tabOrder||[]).filter(function(id){return validIds.indexOf(id)>-1;});
+      S.tabOrder=(S.tabOrder||[]).filter(function(id){return validIds.indexOf(id)>-1;},"取得する","📥");
       if(!S.tabOrder.includes("links")){const si=S.tabOrder.indexOf("settings");si>=0?S.tabOrder.splice(si,0,"links"):S.tabOrder.push("links");}
       if(!S.tabOrder.includes("settings"))S.tabOrder.push("settings");
       if(S.tabs){delete S.tabs.ftree;}
