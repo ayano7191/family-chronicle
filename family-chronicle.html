@@ -341,8 +341,6 @@ input[type=color].cpick{width:28px;height:28px;border:none;background:none;curso
     <div id="logo-display"><div class="logo" id="logo-text"></div></div>
   </div>
   <div class="nav-tabs" id="nav-tabs"></div>
-  <span class="sync-badge off" id="sync-badge" title="Supabase同期状態">● ローカル</span>
-  <button class="btn-primary" onclick="openAddModal()">＋ 記録を追加</button>
 </nav>
 <div id="page-timeline" class="page active">
   <div class="page-title" id="timeline-page-title" style="padding:1rem 1.8rem 0;font-family:'Playfair Display',serif;font-size:1.6rem;font-weight:700;color:var(--accent);letter-spacing:0.05em;"></div>
@@ -373,22 +371,20 @@ input[type=color].cpick{width:28px;height:28px;border:none;background:none;curso
 </div>
 <div id="page-profile" class="page">
   <div class="prof-wrap">
-    <div class="page-title" id="prof-page-title">プロフィール</div>
+    <div class="page-title" id="prof-page-title">家族</div>
     <div class="prof-grid" id="prof-grid"></div>
-  </div>
-</div>
-<div id="page-age" class="page">
-  <div class="age-wrap">
-    <div class="page-title" id="age-page-title">年齢一覧</div>
-    <div class="age-controls">
-      <span class="age-label">表示範囲：</span>
-      <input type="number" class="age-input" id="age-from">
-      <span class="age-label">〜</span>
-      <input type="number" class="age-input" id="age-to">
-      <button class="tc-btn" onclick="renderAgeTable()">更新</button>
-      <button class="tc-btn" onclick="openGuestModal()" style="margin-left:0.5rem;">＋ ゲスト追加</button>
+    <div style="margin-top:2rem;padding-top:1.5rem;border-top:1px solid var(--border);">
+      <div style="font-size:0.68rem;font-weight:700;letter-spacing:0.25em;color:var(--muted);margin-bottom:1rem;">年齢早見表</div>
+      <div class="age-controls">
+        <span class="age-label">表示範囲：</span>
+        <input type="number" class="age-input" id="age-from">
+        <span class="age-label">〜</span>
+        <input type="number" class="age-input" id="age-to">
+        <button class="tc-btn" onclick="renderAgeTable()">更新</button>
+        <button class="tc-btn" onclick="openGuestModal()" style="margin-left:0.5rem;">＋ ゲスト追加</button>
+      </div>
+      <div id="age-table-wrap" style="overflow-x:auto;"></div>
     </div>
-    <div id="age-table-wrap"></div>
   </div>
 </div>
 <div id="page-overview" class="page">
@@ -651,7 +647,7 @@ const BG_PRESETS=["#0d0d0d","#1c1c1e","#2c2c2e","#ffffff","#f5f5f5","#e8e8e8","#
 const PREFS=["A","B","O","AB"];
 const PREFS_ALL=["A","B","O","AB","A+","A-","B+","B-","O+","O-","AB+","AB-"];
 const JAPAN_PREFS=["北海道","青森","岩手","宮城","秋田","山形","福島","茨城","栃木","群馬","埼玉","千葉","東京","神奈川","新潟","富山","石川","福井","山梨","長野","岐阜","静岡","愛知","三重","滋賀","京都","大阪","兵庫","奈良","和歌山","鳥取","島根","岡山","広島","山口","徳島","香川","愛媛","高知","福岡","佐賀","長崎","熊本","大分","宮崎","鹿児島","沖縄"];
-const DEF_TABS={timeline:"年表",timetable:"テーブル",person:"人物史",profile:"プロフィール",age:"年齢一覧",overview:"俯瞰",links:"リンク集",lifeplan:"ライフプラン"};
+const DEF_TABS={timeline:"年表",timetable:"テーブル",person:"人物史",profile:"家族",overview:"俯瞰",links:"リンク集",lifeplan:"ライフプラン"};
 const DEF_MEM=[
   {id:"m1",name:"ママ",color:"#e8a598",birth:"1985-03-15",birthTime:"",birthPref:"東京",blood:"A",memo:"",icon:""},
   {id:"m2",name:"パパ",color:"#7eb3c8",birth:"1983-07-20",birthTime:"",birthPref:"大阪",blood:"O",memo:"",icon:""},
@@ -673,7 +669,7 @@ const SAMPLE=[
   {id:"s4",title:"そろばん 3級 合格",date:"2025-09-10",cat:"c3",members:["m3"],importance:"★★",memo:"半年間の努力が実った！"},
 ];
 
-let S={title:"Family Chronicle",subtitle:"家族年表",logoFont:"Playfair Display",tabs:{...DEF_TABS},tabOrder:["timeline","timetable","person","profile","age","overview","links","lifeplan","settings"],events:[],members:[...DEF_MEM.map(m=>({...m}))],cats:[...DEF_CAT.map(c=>({...c}))],accent:"#c9a96e",bg:"#0d0d0d",guests:[],links:[],sbUrl:"",sbKey:"",sbTable:"family_chronicle",sbRecordId:"my-family"};
+let S={title:"Family Chronicle",subtitle:"家族年表",logoFont:"Playfair Display",tabs:{...DEF_TABS},tabOrder:["timeline","timetable","person","profile","overview","links","lifeplan","settings"],events:[],members:[...DEF_MEM.map(m=>({...m}))],cats:[...DEF_CAT.map(c=>({...c}))],accent:"#c9a96e",bg:"#0d0d0d",guests:[],links:[],sbUrl:"",sbKey:"",sbTable:"family_chronicle",sbRecordId:"my-family"};
 let fMem="all",fCat="all",ttY=new Date().getFullYear(),ttMode="month",ttMemFilter=[];
 let pendingCb=null; // generic confirm callback
 let editEvId=null;
@@ -690,7 +686,7 @@ function loadS(){
     S.cats.push({id:"c6",name:"その他",color:"#aaaaaa"});
   }
   if(!S.tabOrder)S.tabOrder=["timeline","timetable","person","profile","age","overview","links","settings"];
-  S.tabOrder=S.tabOrder.filter(function(id){return id&&id!=="ftree"&&id!=="null"&&id!=="undefined";});
+  S.tabOrder=S.tabOrder.filter(function(id){return id&&id!=="ftree"&&id!=="null"&&id!=="undefined"&&id!=="age";});
   if(S.tabs&&S.tabs.ftree)delete S.tabs.ftree;
   if(!S.tabOrder.includes("links")){const si=S.tabOrder.indexOf("settings");si>=0?S.tabOrder.splice(si,0,"links"):S.tabOrder.push("links");}
   if(!S.tabs.links)S.tabs.links="リンク集";
@@ -845,14 +841,14 @@ function renderNavTabs(){
   const order=S.tabOrder||["timeline","timetable","person","profile","age","overview","links","settings"];
   const wrap=document.getElementById("nav-tabs");
   // 設定以外のタブ
-  const mainOrder=order.filter(id=>id!=="settings"&&id!=="null"&&id!=="undefined"&&id!=="ftree");
+  const mainOrder=order.filter(id=>id!=="settings"&&id!=="null"&&id!=="undefined"&&id!=="ftree"&&id!=="age");
   const mainHtml=mainOrder.map((id,i)=>{
     const label=S.tabs[id]||id;
     const active=i===0?" active":"";
     return`<button class="nav-tab${active}" id="tab-btn-${id}" draggable="true" data-tabid="${id}" onclick="showPage('${id}',this)">${label}</button>`;
   }).join("");
   // 設定タブは右端に固定
-  const settingsHtml=`<button class="nav-tab nav-tab-settings" id="tab-btn-settings" data-tabid="settings" onclick="showPage('settings',this)" style="margin-left:auto;border-color:transparent;" title="設定">⚙️</button><button class="nav-tab" onclick="try{window.print();}catch(e){alert('ブラウザの共有メニューから「印刷」を選んでください');}" style="border-color:transparent;" title="印刷・PDF保存">🖨️</button>`;
+  const settingsHtml=`<span class="sync-badge off" id="sync-badge" title="Supabase同期状態" style="align-self:center;margin-left:auto;margin-right:0.4rem;">● ローカル</span><button class="btn-primary" onclick="openAddModal()" style="align-self:center;font-size:0.75rem;padding:0.4rem 0.9rem;white-space:nowrap;">＋ 記録を追加</button><button class="nav-tab nav-tab-settings" id="tab-btn-settings" data-tabid="settings" onclick="showPage('settings',this)" style="border-color:transparent;" title="設定">⚙️</button><button class="nav-tab" onclick="try{window.print();}catch(e){alert('ブラウザの共有メニューから「印刷」を選んでください');}" style="border-color:transparent;" title="印刷・PDF保存">🖨️</button>`;
   wrap.innerHTML=mainHtml+settingsHtml;
   // drag-and-drop reorder（設定タブ以外）
   let dragSrc=null;
@@ -885,7 +881,7 @@ function showPage(n,btn){
   if(n==="timetable")renderTT();
   if(n==="age")renderAgeTable();
   if(n==="person")renderPerson();
-  if(n==="profile")renderProfile();
+  if(n==="profile"){renderProfile();renderAgeTable();}
   if(n==="links")renderLinks();
   if(n==="lifeplan")renderLifePlan();
 }
@@ -1147,7 +1143,9 @@ function renderSet(){
   // Tab order list
   const tabOrderList=document.getElementById("tab-order-list");
   if(tabOrderList){
-    const order=(S.tabOrder||["timeline","timetable","person","profile","age","overview","links","lifeplan","settings"]).filter(id=>id!=="settings"&&id!=="null"&&id!=="undefined"&&id!=="ftree");
+    const validTabIds=["timeline","timetable","person","profile","overview","links","lifeplan"];
+    const order=(S.tabOrder||[...validTabIds,"settings"]).filter(id=>id!=="settings"&&id!=="null"&&id!=="undefined"&&id!=="ftree"&&id!=="age");
+    const hidden=validTabIds.filter(id=>!order.includes(id));
     tabOrderList.innerHTML=order.map((id,i)=>`
       <div class="tab-order-item" data-tabid="${id}">
         <div class="tab-order-label">TAB ${i+1}</div>
@@ -1156,26 +1154,47 @@ function renderSet(){
           <button class="tab-order-btn tab-up" data-idx="${i}" ${i===0?"disabled style='opacity:0.3'":""}>▲</button>
           <button class="tab-order-btn tab-dn" data-idx="${i}" ${i===order.length-1?"disabled style='opacity:0.3'":""}>▼</button>
         </div>
-      </div>`).join("");
+        <button class="tab-order-btn tab-hide" data-tabid="${id}" style="width:auto;padding:0 6px;border-color:#e05555;color:#e05555;" title="このタブを非表示">✕</button>
+      </div>`).join("")+
+      (hidden.length?`<div style="margin-top:0.8rem;padding-top:0.8rem;border-top:1px dashed var(--border);">
+        <div style="font-size:0.68rem;color:var(--muted);margin-bottom:0.5rem;font-weight:700;letter-spacing:0.15em;">非表示中のタブ</div>
+        <div style="display:flex;flex-wrap:wrap;gap:0.4rem;">${hidden.map(id=>`<button class="tc-btn tab-show" data-tabid="${id}" style="font-size:0.72rem;">＋ ${S.tabs[id]||DEF_TABS[id]||id}</button>`).join("")}</div>
+      </div>`:"");
     tabOrderList.querySelectorAll(".tab-order-input").forEach(el=>el.addEventListener("input",()=>{
-      const m=S.members; // just to avoid unused var
       S.tabs[el.dataset.tabid]=el.value;
     }));
     tabOrderList.querySelectorAll(".tab-up").forEach(btn=>btn.addEventListener("click",()=>{
       const idx=parseInt(btn.dataset.idx);
       if(idx===0)return;
-      const ord=S.tabOrder.filter(id=>id!=="settings"&&id!=="null"&&id!=="undefined"&&id!=="ftree");
+      const ord=S.tabOrder.filter(id=>id!=="settings"&&id!=="null"&&id!=="undefined"&&id!=="ftree"&&id!=="age");
       [ord[idx-1],ord[idx]]=[ord[idx],ord[idx-1]];
       S.tabOrder=[...ord,"settings"];
       renderSet();
     }));
     tabOrderList.querySelectorAll(".tab-dn").forEach(btn=>btn.addEventListener("click",()=>{
       const idx=parseInt(btn.dataset.idx);
-      const ord=S.tabOrder.filter(id=>id!=="settings"&&id!=="null"&&id!=="undefined"&&id!=="ftree");
+      const ord=S.tabOrder.filter(id=>id!=="settings"&&id!=="null"&&id!=="undefined"&&id!=="ftree"&&id!=="age");
       if(idx>=ord.length-1)return;
       [ord[idx],ord[idx+1]]=[ord[idx+1],ord[idx]];
       S.tabOrder=[...ord,"settings"];
       renderSet();
+    }));
+    tabOrderList.querySelectorAll(".tab-hide").forEach(btn=>btn.addEventListener("click",()=>{
+      const id=btn.dataset.tabid;
+      const label=S.tabs[id]||DEF_TABS[id]||id;
+      askConfirm("「"+label+"」タブを非表示にしますか？","設定画面からいつでも再表示できます。",()=>{
+        S.tabOrder=S.tabOrder.filter(t=>t!==id);
+        if(!S.tabOrder.includes("settings"))S.tabOrder.push("settings");
+        renderSet();renderNavTabs();
+      },"非表示にする","👀");
+    }));
+    tabOrderList.querySelectorAll(".tab-show").forEach(btn=>btn.addEventListener("click",()=>{
+      const id=btn.dataset.tabid;
+      if(!S.tabOrder.includes(id)){
+        const si=S.tabOrder.indexOf("settings");
+        si>=0?S.tabOrder.splice(si,0,id):S.tabOrder.push(id);
+      }
+      renderSet();renderNavTabs();
     }));
   }
 
@@ -2466,10 +2485,10 @@ function saveLink(){
   saveS();closeLinkModal();renderLinks();
 }
 function delLink(id){
-  askConfirm("このリンクを削除しますか？","",function(){
+  askConfirm("このリンクを削除しますか？","削除すると元に戻せません。",function(){
     S.links=(S.links||[]).filter(function(l){return l.id!==id;});
     saveS();renderLinks();
-  });
+  },"削除する","🗑️");
 }
 
 /* ---- INIT ---- */
@@ -2505,12 +2524,14 @@ document.getElementById("lp-to").value=now2+20;
       S={...S,...remote,tabs:{...DEF_TABS,...(remote.tabs||{})},guests:remote.guests||[],ftrees:remote.ftrees||{}};
       S.sbUrl=sbBak.url||"";S.sbKey=sbBak.key||"";S.sbTable=sbBak.table||"family_chronicle";S.sbRecordId=sbBak.recordId||"my-family";
       if(!S.tabOrder)S.tabOrder=["timeline","timetable","person","profile","age","overview","links","lifeplan","settings"];
-      S.tabOrder=S.tabOrder.filter(function(id){return id!=="ftree"&&id!=="null"&&id!=="undefined";});
+      S.tabOrder=S.tabOrder.filter(function(id){return id!=="ftree"&&id!=="null"&&id!=="undefined"&&id!=="age";});
       if(S.tabs&&S.tabs.ftree)delete S.tabs.ftree;
       if(!S.tabOrder.includes("links")){const si=S.tabOrder.indexOf("settings");si>=0?S.tabOrder.splice(si,0,"links"):S.tabOrder.push("links");}
       if(!S.tabOrder.includes("lifeplan")){const si=S.tabOrder.indexOf("settings");si>=0?S.tabOrder.splice(si,0,"lifeplan"):S.tabOrder.push("lifeplan");}
       if(!S.tabs.links)S.tabs.links="リンク集";
       if(!S.tabs.lifeplan)S.tabs.lifeplan="ライフプラン";
+      S.tabs.profile="家族";
+      delete S.tabs.age;
       S.lpEvents=S.lpEvents||{};
       S.lpHiddenSchool=S.lpHiddenSchool||{};
       localStorage.setItem(SK,JSON.stringify(S));
